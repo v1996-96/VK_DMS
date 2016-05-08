@@ -1,0 +1,104 @@
+/**
+ *	Login, Lockscreen and Registrations pages
+ *	04/2016
+ */
+
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;lang=en");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,300,500,700");
+
+
+/* Basic styles */
+* { box-sizing: border-box; }
+html, body{
+	min-height: 100%;
+}
+body{
+	margin: 0;
+	background: url(../img/bg_blurred.jpg);
+	/*background: #efefef;*/
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+
+/* Gomeniuk styles */
+.gomeniuk{
+	padding: 20px 25px;
+	width: 400px;
+	min-height: 200px;
+	margin: 0 auto;
+	margin-top: 180px;
+	border-radius: 2px;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	background: #fff;
+}
+.gomeniuk > h1{
+	margin: 0;
+	padding: 0;
+	font-family: "Open Sans", sans-serif;
+	font-size: 24px;
+	color: #333;
+	font-weight: 300;
+	text-align: center;
+	margin-bottom: 25px;
+}
+
+
+/* Input styles */
+.gomeniuk_group{
+	margin-bottom: 25px;
+	position: relative;
+}
+input[type="text"],
+input[type="password"] {
+	width: 100%;
+	margin: 0;
+	height: 36px;
+	line-height: 36px;
+	border: none;
+	border-bottom: 1px solid #1abc9c;
+	outline: none;
+	font-family: "Open Sans", sans-serif;
+	font-weight: 400;
+	font-size: 16px;
+	color: #333;
+	position: relative;
+	z-index: 100;
+	background: transparent;
+}
+input[type="text"] + label,
+input[type="password"] + label{
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+	height: 36px;
+	line-height: 36px;
+	margin: 0;
+	font-family: "Open Sans", sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	color: #1abc9c;
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-ms-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;
+}
+input[type="text"]:focus + label,
+input[type="password"]:focus + label,
+input[type="text"]:valid + label,
+input[type="password"]:valid + label{
+	height: 18px;
+	line-height: 18px;
+	font-size: 10px;
+	color: #666;
+	top: -18px; 
+}
+input[type="text"]:valid + label,
+input[type="password"]:valid + label{
+	color: transparent;
+}
