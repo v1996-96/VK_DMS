@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login page</title>
+    <title><?php echo SITE_TITLE; ?> - Страница авторизации</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/login.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/login.css" rel="stylesheet">
 
 </head>
 <body>
@@ -31,19 +31,19 @@
 
         <div class="body">
             <div class="tabs-inner active" id="loginTab">
-                <form>
+                <form method="POST">
                     <div class="gomeniuk_group">
-                        <input type="text" required="required" />
+                        <input name="email" type="text" required="required" />
                         <label>Email</label>
                     </div>
 
                     <div class="gomeniuk_group">
-                        <input type="password" required="required" />
+                        <input name="password" type="password" required="required" />
                         <label>Пароль</label>
                     </div>
 
                     <div class="gomeniuk_group">
-                        <button type="button" class="btn btn-success">
+                        <button type="submit" name="action" value="loginAuth" class="btn btn-success">
                             Войти
                         </button>
                     </div>
@@ -51,13 +51,13 @@
                     <p class="info">Войдите при помощи аккаунта Вконтакте:</p>
 
                     <div class="gomeniuk_group">
-                        <a href="companies.html" type="button" class="btn btn-primary">
+                        <button type="submit" name="action" value="loginVK" class="btn btn-primary">
                             <i class="fa fa-vk"></i>
-                        </a>
+                        </button>
                     </div>
 
                     <p class="text-center">
-                        <a href="restore.html">Восстановление пароля</a>
+                        <a href="/restore">Восстановление пароля</a>
                     </p>
                 </form>
             </div>
@@ -110,7 +110,7 @@
 
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.js" type="text/javascript"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js" type="text/javascript"></script>
     
     <script type="text/javascript">
         var App = (function($){

@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Companies</title>
+    <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
+    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -67,7 +67,7 @@
 
 
                         <li>
-                            <a href="login.html">
+                            <a href="/logOut">
                                 <i class="fa fa-sign-out"></i> Выйти
                             </a>
                         </li>
@@ -92,7 +92,7 @@
                 
                 <div class="row">
                     <div class="col-md-3">
-                        <a href="dashboard.html">
+                        <a href="/styleru/dashboard">
                             <div class="ibox">
                                 <div class="ibox-content product-box">
                                     <div class="product-imitation">
@@ -111,58 +111,14 @@
                             </div>
                         </a>
                     </div>
-
-                    <div class="col-md-3">
-                        <a href="dashboard.html">
-                            <div class="ibox">
-                                <div class="ibox-content product-box">
-                                    <div class="product-imitation">
-                                        [ Картинка ]
-                                    </div>
-                                    <div class="product-desc">
-                                        <span class="product-price yellow-bg">
-                                            Руководитель
-                                        </span>
-                                        <span class="product-name">Styleru</span>
-                                        <div class="small m-t-xs">
-                                            Many desktop publishing packages and web page editors now.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-3">
-                        <a href="dashboard.html">
-                            <div class="ibox">
-                                <div class="ibox-content product-box">
-                                    <div class="product-imitation">
-                                        [ Картинка ]
-                                    </div>
-                                    <div class="product-desc">
-                                        <span class="product-price lazur-bg">
-                                            Сотрудник
-                                        </span>
-                                        <span class="product-name">Styleru</span>
-                                        <div class="small m-t-xs">
-                                            Many desktop publishing packages and web page editors now.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
                 </div>
 
             </div>
 
 
-            <div class="footer">
-                <div>
-                    <strong>Copyright</strong> Example Company &copy; 2014-2015
-                </div>
-            </div>
+            <!-- Footer -->
+            <include href="templates/Footer.php" />
+
         </div>
     </div>
 
@@ -209,14 +165,14 @@
 
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
+    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
+    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
+    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
 
     <script type="text/javascript">
         $(function () {
