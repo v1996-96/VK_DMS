@@ -52,11 +52,15 @@ $f3->route('GET|POST /@company/employee', 'Employee\ListController->Gateway');
 $f3->route('GET|POST /@company/employee/@EmployeeId', 'Employee\ProfileController->Gateway');
 
 // Departments
+$f3->route('GET|POST /@company/departments', 'Department\ListController->Gateway');
+$f3->route('GET|POST /@company/departments/@DepartmentId', 'Department\DashboardController->Gateway');
+$f3->route('GET|POST /@company/departments/@DepartmentId/documents', 'Department\DocumentsController->Gateway');
 
 // Projects
+$f3->route('GET|POST /@company/projects', 'Projects\ListController->Gateway');
 
 // Documents
-
+$f3->route('GET|POST /@company/documents', 'Documents\MainController->Gateway');
 
 
 // $f3->set('ONERROR',

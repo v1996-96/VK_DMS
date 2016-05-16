@@ -12,7 +12,7 @@ defined('_EXECUTED') or die('Restricted access');
                 <a href="#" data-toggle="dropdown">Styleru <span class="caret"></span></a>
                 <ul class="dropdown-menu animated pulse">
                     <li>
-                        <a href="companies.html">Сменить компанию</a>
+                        <a href="/companies">Сменить компанию</a>
                     </li>
                 </ul>
             </h3>

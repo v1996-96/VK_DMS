@@ -43,7 +43,7 @@
             </li>
 
 
-            <li <?php echo (isset($_page_type) && $_page_type == 'department_list') ? 'class="active"' : ''; ?>>
+            <li <?php echo (isset($_page_type) && in_array($_page_type, array('department_list', 'department_dashboard', 'department_documents'))) ? 'class="active"' : ''; ?>>
                 <a href="/styleru/departments">
                     <i class="fa fa-cubes"></i> 
                     <span class="nav-label">Отделы</span>

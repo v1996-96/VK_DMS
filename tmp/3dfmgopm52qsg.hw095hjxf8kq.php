@@ -41,6 +41,15 @@
                         </li>
                     </ol>
                 </div>
+                <div class="col-lg-3">
+                    <div class="title-action">
+                        <a href="#addEmployeeModal" data-toggle="modal" class="btn btn-success pull-right">Добавить</a>
+                        <div class="btn-group pull-right" style="margin-right: 10px;">
+                            <button type="button" class="btn btn-white"><i class="fa fa-th-large"></i></button>
+                            <button type="button" class="btn btn-white"><i class="fa fa-th-list"></i></button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -102,6 +111,38 @@
 
 
     </div>
+
+
+
+    <div class="modal inmodal" id="addEmployeeModal" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <!-- <i class="fa fa-building-o modal-icon"></i> -->
+                    <h4 class="modal-title">Добавление сотрудника</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-md-9 block-center">
+                            <form>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="vk_id">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Mainly scripts -->
