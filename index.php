@@ -37,6 +37,8 @@ $f3->set('auth', $auth);
 /* ROUTES
  ************************************************/
 
+$f3->route('GET /phpinfo', function(){ phpinfo(); });
+
 // Authorization & registration & restore
 $f3->route('GET|POST /', 'Auth\AuthController->Login');
 $f3->route('GET|POST /vkCallback', 'Auth\AuthController->VKCallback');
@@ -64,7 +66,6 @@ $f3->route('GET|POST /@company/projects/@ProjectId', 'Projects\DashboardControll
 
 // Documents
 $f3->route('GET|POST /@company/documents', 'Documents\MainController->Gateway');
-
 
 // $f3->set('ONERROR',
 //     function($f3) {

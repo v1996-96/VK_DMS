@@ -158,7 +158,11 @@ abstract class Base
 		'fIdUser'    => 'id_user',  # user's id field name in token table
 		'fToken'     => 'token',	# token field name in token table
 		'fTokenIp'   => 'user_ip',	# user's ip field name in token table
-		'fTokenAdd'  => 'time_add'	# token's time add field name in token table
+		'fTokenAdd'  => 'time_add',	# token's time add field name in token table
+		'fVkId'		 => 'VK',
+		'fAccessToken' => 'VK_AccessToken',
+		'fVkAuthorized' => 'VK_Authorized',
+		'fVkExpiresIn' => 'VK_ExpiresIn'
 		);
 }
 

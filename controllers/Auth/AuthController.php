@@ -64,6 +64,13 @@ class AuthController
 
 		if ( $this->auth->hasError() )
 			$this->f3->set('login_error', $this->auth->getStatus());
+
+		if (isset($_GET["vk_error"])) {
+			$errorText = isset($_GET["vk_desc"]) ? 
+							$_GET["vk_desc"] : "Ошибка авторизации Вконтакте";
+
+			$this->f3->set('login_error', $errorText);
+		}
 	}
 
 
@@ -71,7 +78,9 @@ class AuthController
 	 * Login through VKontakte account
 	 */
 	private function LoginVK() {
-		\OAuthVK::goToAuth( "http://trush.prodans.ru" );
+		$vk = new \OAuthVK();
+		$vk->URL_CALLBACK = "http://" . $_SERVER["HTTP_HOST"] . "/vkCallback";
+		$vk->goToAuth();
 	}
 
 
@@ -79,7 +88,18 @@ class AuthController
 	 * That method catches redirect from VK
 	 */
 	public function VKCallback() {
-		echo "string";
+		$vk = new \OAuthVK();
+		$vk->URL_CALLBACK = "http://" . $_SERVER["HTTP_HOST"] . "/vkCallback";
+		if ($vk->catchResponse()) {
+			echo "string";
+			$this->auth->loginVK( $vk->token, $vk->userId, $vk->expires );
+
+			if ( $this->auth->hasError() )
+				var_dump($this->auth->getStatus());
+
+		} else {
+			$this->f3->reroute("/?vk_error=1");
+		}
 	}
 
 

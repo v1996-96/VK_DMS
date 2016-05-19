@@ -42,6 +42,30 @@ trait Functions
 
 
 	/**
+	 * Create new token
+	 * @param  int    $id_user  User id
+	 * @param  bool   $remember Use cookies or session
+	 */
+	private function _newVkToken($id_user, $accessToken, $expires, $remember = false){
+		// Create new token
+		$newToken = $this->_hash( $this->_generate(30) );
+		$this->_db_insertVkToken($newToken, $id_user, $accessToken, $expires);
+
+		// Save token on user's side
+		if ($remember) {
+			$cookie = setcookie($this->hashName, 
+								$newToken, 
+								time() + $this->authTime, 
+								$this->cookiePath);
+			if(!$cookie)
+				$_SESSION[ $this->hashName ] = $newToken;
+		} else {
+			$_SESSION[ $this->hashName ] = $newToken;
+		}
+	}
+
+
+	/**
 	 * Get current token
 	 * @return string|bool Token
 	 */

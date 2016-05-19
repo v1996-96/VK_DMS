@@ -53,17 +53,19 @@
                     </div>
 
                     <p class="info">Войдите при помощи аккаунта Вконтакте:</p>
+                </form>
 
+                <form method="POST">
                     <div class="gomeniuk_group">
-                        <button type="submit" name="action" value="loginVK" class="btn btn-primary">
+                        <button name="action" value="loginVK" id="loginVKBtn" class="btn btn-primary">
                             <i class="fa fa-vk"></i>
                         </button>
                     </div>
-
-                    <p class="text-center">
-                        <a href="/restore">Восстановление пароля</a>
-                    </p>
                 </form>
+
+                <p class="text-center">
+                    <a href="/restore">Восстановление пароля</a>
+                </p>
             </div>
 
             <div class="tabs-inner" id="registerTab">
@@ -116,7 +118,8 @@
     <!-- Mainly scripts -->
     <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js" type="text/javascript"></script>
 
-    <script src="//vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+    <!-- <script src="//vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script> -->
+    <script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
     
     <script type="text/javascript">
         var App = (function($){
@@ -174,11 +177,7 @@
             this.init = function(){
                 tabs.setHandlers();
 
-                VK.init(function() { 
-                    parent.vk.init();
-                }, function() {
-                    alert("error");
-                }, '5.52');
+
             }
 
             return {

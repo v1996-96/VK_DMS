@@ -95,6 +95,60 @@ class Auth extends Base
 
 		return true;
 	}
+
+
+	/**
+	 * Login into system using vk
+	 * @param  string $authToken User's auth token
+	 * @param  string $vkId      User's vk id
+	 * @return bool            	 Successful login or not
+	 */	
+	public function loginVK($authToken, $vkId, $expires, $remember = false) {
+		// Check for existing errors
+		if ($this->error || is_null($this->__DB))
+			return false;
+		
+		// Check user's ip
+		if (!$this->_checkIPList())
+			return false;
+
+		// Check fields
+		if ($authToken == '' || $vkId == '')
+			return $this->_setError("Empty fields");
+
+		// Check incoming data
+		$userInfo = $this->_db_getUser("vk", array( 'id' => $vkId ));
+		if (!($userInfo &&
+			count($userInfo) == 1)) {
+			return $this->_setError("User not registered");
+
+		} elseif (!$this->_checkRole($userInfo[0][ $this->fRole ])) {
+			// Check if user has the right to visit page
+			return false;
+		}
+
+		// Check for multiple connections
+		$tokenInfo = $this->_db_getToken( (int)$userInfo[0]['id'] );
+		if (!$this->multiple) {
+			if ($this->onMultiple == 'allow') {
+				$this->_db_deleteToken( $userInfo[0] );
+
+			} elseif ($tokenInfo && count($tokenInfo) >= 1) {
+				return $this->_setError("User is already logged in");
+			}
+		}
+
+		// Create new token
+		$this->_newVkToken( $userInfo[0]['id'], $authToken, $expires, $remember );
+
+		// Make log
+		$this->_log("Successful login by user #".$userInfo[0]['id'], "Success");
+
+		if ($this->reroute)
+			$this->reroute( $this->successUrl );
+
+		return true;
+	}
 	
 
 	/**

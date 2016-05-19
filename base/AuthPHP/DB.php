@@ -131,13 +131,29 @@ trait DB{
 	 * @param  int    $id_user User id
 	 * @return bool
 	 */
+	private function _db_insertVkToken($token, $id_user, $accessToken, $expires){
+		if ($this->error) return null;
+
+		return $this->_db_set('INSERT INTO '.$this->tUserToken.
+							  ' ('.$this->fTokenAdd.', '.$this->fToken.', '.$this->fIdUser.', '.$this->fTokenIp.', '.$this->fVkAuthorized.', '.$this->fAccessToken.', '.$this->fVkExpiresIn.') 
+							  VALUES (?, ?, ?, ?, ?, ?, ?)',
+							  array( date("Y-m-d H:i:s"), $token, (int)$id_user, $_SERVER['REMOTE_ADDR'] , 1, $accessToken, $expires));
+	}
+
+
+	/**
+	 * Insert new token into DB
+	 * @param  string $token   Token itself
+	 * @param  int    $id_user User id
+	 * @return bool
+	 */
 	private function _db_insertToken($token, $id_user){
 		if ($this->error) return null;
 
 		return $this->_db_set('INSERT INTO '.$this->tUserToken.
-							  ' ('.$this->fToken.', '.$this->fIdUser.', '.$this->fTokenIp.') 
-							  VALUES (?, ?, ?)',
-							  array( $token, (int)$id_user, $_SERVER['REMOTE_ADDR'] ));
+							  ' ('.$this->fTokenAdd.', '.$this->fToken.', '.$this->fIdUser.', '.$this->fTokenIp.') 
+							  VALUES (?, ?, ?, ?)',
+							  array( date("Y-m-d H:i:s"), $token, (int)$id_user, $_SERVER['REMOTE_ADDR'] ));
 	}
 
 
@@ -202,6 +218,11 @@ trait DB{
 						  		  ' WHERE id = ?'.
 						  		  ' AND '.$this->fPassword.' = ?',
 						  		  array( (int)$data["id"], $data['pwd'] ));
+		} elseif ($find == "vk") {
+			return $this->_db_get('SELECT id, '.$this->fRole.' 
+						  		  FROM '.$this->tUserInfo.
+						  		  ' WHERE '.$this->fVkId.' = ?',
+						  		  array( (int)$data["id"] ));
 		} else
 			return null;
 	}
