@@ -126,7 +126,54 @@
 
                                         <hr>
 
-                                        <table id="projectList" class="table table-striped table-bordered table-hover">
+                                        <table class="table table-hover no-margins">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="project-status">
+                                                        <span class="label label-primary">Active</span>
+                                                    </td>
+                                                    <td class="project-title">
+                                                        <a href="project_detail.html">Contract with Zender Company</a>
+                                                        <br/>
+                                                        <small>Created 14.08.2014</small>
+                                                    </td>
+                                                    <td class="project-completion">
+                                                        <small>Задач:</small><br>
+                                                        <h5 class="no-margins">12</h5>
+                                                    </td>
+                                                    <td class="project-completion">
+                                                        <small>Сотрудников:</small><br>
+                                                        <h5 class="no-margins">15</h5>
+                                                    </td>
+                                                    <td class="project-actions">
+                                                        <a href="#" class="btn btn-success btn-sm">Перейти</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="project-status">
+                                                        <span class="label label-warning">Closed</span>
+                                                    </td>
+                                                    <td class="project-title">
+                                                        <a href="project_detail.html">Contract with Zender Company</a>
+                                                        <br/>
+                                                        <small>Created 14.08.2014</small>
+                                                    </td>
+                                                    <td class="project-completion">
+                                                        <small>Задач:</small><br>
+                                                        <h5 class="no-margins">12</h5>
+                                                    </td>
+                                                    <td class="project-completion">
+                                                        <small>Сотрудников:</small><br>
+                                                        <h5 class="no-margins">15</h5>
+                                                    </td>
+                                                    <td class="project-actions">
+                                                        <a href="#" class="btn btn-success btn-sm">Перейти</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table id="projectList" class="hidden table table-striped table-bordered table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>Название</th>
@@ -155,13 +202,13 @@
                                     <div class="panel-body">
 
                                         <a href="#" class="btn btn-primary">Добавить сотрудника</a>
-                                        <a href="#" class="btn btn-warning">Добавить менеджера</a>
+                                        <a href="#" class="btn btn-warning">Добавить руководителя</a>
 
                                         <hr>
 
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <h4>Менеджеры</h4>
+                                                <h4>Руководители</h4>
                                                 <table id="departmentEmployeeList" class="table table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
