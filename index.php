@@ -42,10 +42,10 @@ $f3->route('GET /phpinfo', function(){ phpinfo(); });
 // Authorization & registration & restore
 $f3->route('GET|POST /', 'Auth\AuthController->Login');
 $f3->route('GET|POST /vkCallback', 'Auth\AuthController->VKCallback');
-$f3->route('GET|POST /registration', 'Auth\RegistrationController->Register');
 $f3->route("GET|POST /logOut", "Auth\AuthController->LogOut");
 $f3->route("GET|POST /lockscreen", "Auth\AuthController->Lockscreen");
 $f3->route("GET|POST /checkStatus", "Auth\AuthController->CheckStatus");
+$f3->route('GET|POST /registration', 'Auth\RegistrationController->Gateway');
 
 // Companies page
 $f3->route('GET|POST /companies', 'Companies\ListingController->Gateway');

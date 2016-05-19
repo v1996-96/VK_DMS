@@ -24,6 +24,8 @@ class AuthController
 		$this->auth = $f3->get('auth');
 		$this->db   = $f3->get('db');
 		$this->view = new View;
+		$this->f3->set("pageTab", "login");
+		$this->f3->set("showRegistrationFields", false);
 	}
 
 
@@ -91,14 +93,14 @@ class AuthController
 		$vk = new \OAuthVK();
 		$vk->URL_CALLBACK = "http://" . $_SERVER["HTTP_HOST"] . "/vkCallback";
 		if ($vk->catchResponse()) {
-			echo "string";
 			$this->auth->loginVK( $vk->token, $vk->userId, $vk->expires );
 
 			if ( $this->auth->hasError() )
-				var_dump($this->auth->getStatus());
+				$this->f3->reroute("/?vk_error=1");
 
 		} else {
-			$this->f3->reroute("/?vk_error=1");
+			$desc = $vk->errorText != "" ? "&vk_desc=" . $vk->errorText : "";
+			$this->f3->reroute("/?vk_error=1" . $desc);
 		}
 	}
 

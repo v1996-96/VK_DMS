@@ -14,6 +14,8 @@ class OAuthVK
     public $userId;
     public $expires;
 
+    public $errorText = "";
+
 
     public function goToAuth() { 
         $this->redirect(self::URL_AUTHORIZE . 
@@ -28,16 +30,14 @@ class OAuthVK
 
     public function catchResponse() {
         if (isset($_GET["error"])) {
-            $errorText = isset($_GET["error_description"]) ? 
-                            "&vk_desc" . $_GET["error_description"] : "";
-
-            $this->f3->reroute("/?vk_error=1" . $errorText);
+            $this->errorText = isset($_GET["error_description"]) ? $_GET["error_description"] : "";
+            return false;
 
         } elseif (isset($_GET["code"])) {
             return $this->getToken($_GET["code"]);
 
         } else {
-            $this->f3->reroute("/?vk_error=1");
+            return false;
         }
     }
 

@@ -25,17 +25,17 @@
         </div>
 
         <ul class="tabs">
-            <li><a data-toggle="tab" href="#loginTab" class="active">Авторизация</a></li>
-            <li><a data-toggle="tab" href="#registerTab">Регистрация</a></li>
+            <li><a data-toggle="tab" href="#loginTab" {{ @pageTab == 'login' ? 'class="active"' : '' }}>Авторизация</a></li>
+            <li><a data-toggle="tab" href="#registerTab" {{ @pageTab == 'register' ? 'class="active"' : '' }}>Регистрация</a></li>
         </ul>
 
         <div class="body">
-            <div class="tabs-inner active" id="loginTab">
+            <div class="tabs-inner {{ @pageTab == 'login' ? 'active' : '' }}" id="loginTab">
                 <check if="{{ isset(@login_error) }}">
                     <div class="error-msg">{{ @login_error }}</div>
                 </check>
 
-                <form method="POST">
+                <form method="POST" action"/">
                     <div class="gomeniuk_group">
                         <input name="email" type="text" required="required" />
                         <label>Email</label>
@@ -55,7 +55,7 @@
                     <p class="info">Войдите при помощи аккаунта Вконтакте:</p>
                 </form>
 
-                <form method="POST">
+                <form method="POST" action="/">
                     <div class="gomeniuk_group">
                         <button name="action" value="loginVK" id="loginVKBtn" class="btn btn-primary">
                             <i class="fa fa-vk"></i>
@@ -68,47 +68,66 @@
                 </p>
             </div>
 
-            <div class="tabs-inner" id="registerTab">
-                <form>
-                    <div class="registration-step step-1">
+            <div class="tabs-inner {{ @pageTab == 'register' ? 'active' : '' }}" id="registerTab">
+                <form method="POST" action="/registration">
+                    <div class="registration-step">
                         <p class="info">1. Авторизуйтесь при помощи аккаунта ВК.</p>
 
                         <div class="gomeniuk_group">
-                            <button type="button" class="btn btn-primary">
+                            <button type="submit" name="action" value="connectVk" class="btn btn-primary">
                                 <i class="fa fa-vk"></i>
                             </button>
                         </div>
                     </div>
+
+                    <check if="{{ isset(@registration_error) }}">
+                        <div class="error-msg">{{ htmlspecialchars_decode(@registration_error) }}</div>
+                    </check>
                         
-                    <div class="registration-step step-1">
-                        <p class="info">2. Укажите личные данные.</p>
+                    <check if="{{ @showRegistrationFields }}">
+                        <check if="{{ @vk_logged }}">
+                            <input type="hidden" name="vk_logged" value="1" />
+                            <input type="hidden" name="userId" value="{{ @userId }}" />
+                            <input type="hidden" name="access_token" value="{{ @access_token }}" />
+                            <input type="hidden" name="expires" value="{{ @expires }}" />
+                        </check> 
 
-                        <div class="gomeniuk_group">
-                            <input type="text" required="required" />
-                            <label>ФИО</label>
-                        </div>
+                        <div class="registration-step">
+                            <p class="info">2. Укажите личные данные.</p>
 
-                        <div class="gomeniuk_group">
-                            <input type="text" required="required" />
-                            <label>Email</label>
-                        </div>
+                            <div class="gomeniuk_group">
+                                <input type="text" name="name" value="{{ @name }}" required="required" />
+                                <label>Имя</label>
+                            </div>
 
-                        <div class="gomeniuk_group">
-                            <input type="text" required="required" />
-                            <label>Логин</label>
-                        </div>
+                            <div class="gomeniuk_group">
+                                <input type="text" name="surname" value="{{ @surname }}" required="required" />
+                                <label>Фамилия</label>
+                            </div>
 
-                        <div class="gomeniuk_group">
-                            <input type="password" required="required" />
-                            <label>Пароль</label>
-                        </div>
+                            <div class="gomeniuk_group">
+                                <input type="text" name="email" value="{{ @email }}" required="required" />
+                                <label>Email</label>
+                            </div>
 
-                        <div class="gomeniuk_group">
-                            <button type="button" class="btn btn-success">
-                                Зарегистрироваться
-                            </button>
+                            <div class="gomeniuk_group">
+                                <input type="password" name="pwd" required="required" />
+                                <label>Пароль</label>
+                            </div>
+
+                            <div class="gomeniuk_group">
+                                <input type="password" name="pwdRepeat" required="required" />
+                                <label>Повтор пароля</label>
+                            </div>
+
+                            <div class="gomeniuk_group">
+                                <button type="submit" name="action" value="register" class="btn btn-success">
+                                    Зарегистрироваться
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </check>
+
                 </form>
             </div>
         </div>
