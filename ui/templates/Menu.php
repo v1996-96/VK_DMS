@@ -55,7 +55,7 @@ defined('_EXECUTED') or die('Restricted access');
             </li>
 
 
-            <li {{ (isset(@_page_type) && @_page_type == 'project_list') ? 'class="active"' : '' }}>
+            <li {{ (isset(@_page_type) && in_array(@_page_type, array('project_list', 'project_dashboard'))) ? 'class="active"' : '' }}>
                 <a href="/styleru/projects">
                     <i class="fa fa-briefcase"></i> 
                     <span class="nav-label">Проекты</span>

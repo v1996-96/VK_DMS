@@ -31,6 +31,10 @@
 
         <div class="body">
             <div class="tabs-inner active" id="loginTab">
+                <check if="{{ isset(@login_error) }}">
+                    <div class="error-msg">{{ @login_error }}</div>
+                </check>
+
                 <form method="POST">
                     <div class="gomeniuk_group">
                         <input name="email" type="text" required="required" />
@@ -111,6 +115,8 @@
 
     <!-- Mainly scripts -->
     <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js" type="text/javascript"></script>
+
+    <script src="//vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
     
     <script type="text/javascript">
         var App = (function($){
@@ -159,8 +165,20 @@
                 }
             }
 
+            this.vk = {
+                init : function () {
+                    
+                }
+            };
+
             this.init = function(){
                 tabs.setHandlers();
+
+                VK.init(function() { 
+                    parent.vk.init();
+                }, function() {
+                    alert("error");
+                }, '5.52');
             }
 
             return {

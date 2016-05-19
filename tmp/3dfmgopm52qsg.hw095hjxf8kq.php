@@ -10,6 +10,11 @@
     <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
 
+    <!-- Data Tables -->
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+
     <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
     <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
 
@@ -44,10 +49,10 @@
                 <div class="col-lg-3">
                     <div class="title-action">
                         <a href="#addEmployeeModal" data-toggle="modal" class="btn btn-success pull-right">Добавить</a>
-                        <div class="btn-group pull-right" style="margin-right: 10px;">
+                        <!-- <div class="btn-group pull-right" style="margin-right: 10px;">
                             <button type="button" class="btn btn-white"><i class="fa fa-th-large"></i></button>
                             <button type="button" class="btn btn-white"><i class="fa fa-th-list"></i></button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -55,7 +60,7 @@
 
             <div class="wrapper wrapper-content">
                 
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-3 col-sm-4 col-xs-6">
                         <div class="contact-box text-center" style="padding-bottom: 10px;">
                             <a href="/styleru/employee/4">
@@ -95,6 +100,89 @@
                                 <p style="margin-top: 10px;"><i class="fa fa-cubes"></i> Отдел разработки</p>
                             </a>
                         </div>
+                    </div>
+                </div> -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        
+                        <div class="ibox">
+                            <div class="ibox-content">
+
+                                <div class="row m-b">
+                                    <div class="col-md-6">
+                                        <h2 class="no-margins">Количество: 201</h2>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Поиск...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-white" type="button"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table class="table table-hover no-margins">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <img alt="image" width="40" height="40" class="img-circle" src="<?php echo $BASE; ?>/ui/img/a1.jpg" />
+                                            </td>
+                                            <td>
+                                                <a href="project_detail.html">Трушин Виктор</a>
+                                                <br/>
+                                                <small>Добавлен 12.12.2015</small>
+                                            </td>
+                                            <td>
+                                                <small>Тип:</small><br>
+                                                <h5 class="no-margins">Администратор</h5>
+                                            </td> 
+                                            <td>
+                                                <small>Отдел:</small><br>
+                                                <h5 class="no-margins">-</h5>
+                                            </td> 
+                                            <td>
+                                                <small>Должность:</small><br>
+                                                <h5 class="no-margins">-</h5>
+                                            </td> 
+                                            <td class="text-right">
+                                                <a href="#" class="btn btn-white btn-sm"><i class="fa fa-external-link"></i> &nbsp; VK </a>
+                                                <a href="/styleru/employee/5" class="btn btn-primary btn-sm"> Профиль </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img alt="image" width="40" height="40" class="img-circle" src="<?php echo $BASE; ?>/ui/img/a1.jpg" />
+                                            </td>
+                                            <td>
+                                                <a href="project_detail.html">Смелов Леонид</a>
+                                                <br/>
+                                                <small>Добавлен 12.12.2015</small>
+                                            </td>
+                                            <td>
+                                                <small>Тип:</small><br>
+                                                <h5 class="no-margins">Руководитель</h5>
+                                            </td> 
+                                            <td>
+                                                <small>Отдел:</small><br>
+                                                <h5 class="no-margins">Web разработка</h5>
+                                            </td> 
+                                            <td>
+                                                <small>Должность:</small><br>
+                                                <h5 class="no-margins">Специалист</h5>
+                                            </td> 
+                                            <td class="text-right">
+                                                <a href="#" class="btn btn-white btn-sm"><i class="fa fa-external-link"></i> &nbsp; VK </a>
+                                                <a href="#" class="btn btn-primary btn-sm"> Профиль </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -151,9 +239,24 @@
     <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
+    <!-- Data Tables -->
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+
     <!-- Custom and plugin javascript -->
     <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
     <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#employeeTable').DataTable({
+                lengthChange: false,
+                searching: false
+            });
+        });
+    </script>
 
 </body>
 

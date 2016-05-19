@@ -46,7 +46,86 @@
 
             <div class="wrapper wrapper-content">
                 
-                
+                <div class="row">
+                    <div class="col-xs-12">
+                        
+                        <div class="ibox">
+                            <div class="ibox-content">
+
+                                <div class="row m-b">
+                                    <div class="col-md-6">
+                                        <h2 class="no-margins">Количество: 201</h2>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Поиск...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-white" type="button"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table class="table table-hover no-margins">
+                                    <tbody>
+                                        <tr>
+                                            <td class="project-status">
+                                                <span class="label label-primary">Active</span>
+                                            </td>
+                                            <td class="project-title">
+                                                <a href="project_detail.html">Contract with Zender Company</a>
+                                                <br/>
+                                                <small>Created 14.08.2014</small>
+                                            </td>
+                                            <td class="project-completion">
+                                                <small>Отдел:</small><br>
+                                                <h5 class="no-margins">Web разработка</h5>
+                                            </td>
+                                            <td class="project-completion">
+                                                <small>Задач:</small><br>
+                                                <h5 class="no-margins">12</h5>
+                                            </td>
+                                            <td class="project-completion">
+                                                <small>Сотрудников:</small><br>
+                                                <h5 class="no-margins">15</h5>
+                                            </td>
+                                            <td class="project-actions">
+                                                <a href="/styleru/projects/5" class="btn btn-success btn-sm">Перейти</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="project-status">
+                                                <span class="label label-warning">Closed</span>
+                                            </td>
+                                            <td class="project-title">
+                                                <a href="project_detail.html">Contract with Zender Company</a>
+                                                <br/>
+                                                <small>Created 14.08.2014</small>
+                                            </td>
+                                            <td class="project-completion">
+                                                <small>Отдел:</small><br>
+                                                <h5 class="no-margins">Web разработка</h5>
+                                            </td>
+                                            <td class="project-completion">
+                                                <small>Задач:</small><br>
+                                                <h5 class="no-margins">12</h5>
+                                            </td>
+                                            <td class="project-completion">
+                                                <small>Сотрудников:</small><br>
+                                                <h5 class="no-margins">15</h5>
+                                            </td>
+                                            <td class="project-actions">
+                                                <a href="#" class="btn btn-success btn-sm">Перейти</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
 

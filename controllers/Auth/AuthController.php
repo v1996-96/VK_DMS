@@ -15,8 +15,12 @@ class AuthController
 	// View instance
 	private $view = null;
 
+	// FatFree instance
+	private $f3 = null;
+
 	// Class constructor
 	function __construct($f3) {
+		$this->f3 = $f3;
 		$this->auth = $f3->get('auth');
 		$this->db   = $f3->get('db');
 		$this->view = new View;
@@ -59,7 +63,7 @@ class AuthController
 		}
 
 		if ( $this->auth->hasError() )
-			$f3->set('login_error', $this->auth->getStatus());
+			$this->f3->set('login_error', $this->auth->getStatus());
 	}
 
 
@@ -67,7 +71,15 @@ class AuthController
 	 * Login through VKontakte account
 	 */
 	private function LoginVK() {
+		\OAuthVK::goToAuth( "http://trush.prodans.ru" );
+	}
 
+
+	/**
+	 * That method catches redirect from VK
+	 */
+	public function VKCallback() {
+		echo "string";
 	}
 
 
@@ -82,7 +94,7 @@ class AuthController
 		}
 
 		if ( $this->auth->hasError() )
-			$f3->set('login_error', $this->auth->getStatus());
+			$this->f3->set('login_error', $this->auth->getStatus());
 
 		$this->view->showLockscreen($f3);
 	}
