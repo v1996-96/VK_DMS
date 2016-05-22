@@ -22,50 +22,6 @@
             <div class="row border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <ul class="nav navbar-top-links navbar-right">
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-alerts">
-                                <li>
-                                    <a href="mailbox.html">
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="profile.html">
-                                        <div>
-                                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                            <span class="pull-right text-muted small">12 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="grid_options.html">
-                                        <div>
-                                            <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="notifications.html">
-                                            <strong>See All Alerts</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-
-
                         <li>
                             <a href="/logOut">
                                 <i class="fa fa-sign-out"></i> Выйти
@@ -91,26 +47,30 @@
             <div class="wrapper wrapper-content">
                 
                 <div class="row">
-                    <div class="col-md-3">
-                        <a href="/styleru/dashboard">
-                            <div class="ibox">
-                                <div class="ibox-content product-box">
-                                    <div class="product-imitation">
-                                        [ Картинка ]
-                                    </div>
-                                    <div class="product-desc">
-                                        <span class="product-price blue-bg">
-                                            Директор
-                                        </span>
-                                        <span class="product-name">Styleru</span>
-                                        <div class="small m-t-xs">
-                                            Many desktop publishing packages and web page editors now.
+
+                    <?php foreach (($CompanyList?:array()) as $Company): ?>
+                        <div class="col-md-3">
+                            <a href="/<?php echo $Company['Url']; ?>/dashboard">
+                                <div class="ibox">
+                                    <div class="ibox-content product-box">
+                                        <div class="company-logo" <?php echo $Company['Logo'] != '' ? 'style="background-image: url(../'.$Company['Logo'].')"' : ''; ?>>
+                                            <?php echo $Company['Logo'] == '' ? '[ Логотип ]' : ''; ?>
+                                        </div>
+                                        <div class="product-desc">
+                                            <span class="product-price blue-bg">
+                                                <?php echo $Company['CompanyRole']; ?>
+                                            </span>
+                                            <span class="product-name"><?php echo $Company['Title']; ?></span>
+                                            <div class="small m-t-xs">
+                                                <?php echo $Company['Slogan']; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+
                 </div>
 
             </div>
@@ -128,27 +88,40 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <i class="fa fa-building-o modal-icon"></i>
                     <h4 class="modal-title">Создание компании</h4>
-                    <small>Это не займет много времени :)</small>
                 </div>
                 <div class="modal-body">
                     
                     <div class="row">
                         <div class="col-md-9 block-center">
-                            <form>
+                            <form method="POST" id="companyAddForm">
                                 <div class="form-group">
-                                    <div class="companyLogo" data-toggle="tooltip" data-placement="bottom" title="Нажмите, чтобы добавить логотип">
-                                        <a href="#"></a>
+                                    <div id="companyLogo" <?php echo isset($FieldLogo) ? 'style="background-image: url('.$FieldLogo.')"' : ''; ?> 
+                                        class="companyLogo" data-toggle="tooltip" data-placement="bottom" 
+                                        title="Нажмите, чтобы добавить логотип">
+                                        <a href="#" id="imageUpload"></a>
                                     </div>
                                 </div>
 
+                                <input type="hidden" name="Logo" value="<?php echo isset($FieldLogo) ? $FieldLogo : ''; ?>" id="companyLogoInput" />
+
+                                <?php if (isset($companyAddError)): ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <?php echo $companyAddError; ?>
+                                    </div>
+                                <?php endif; ?>
+
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Название">
+                                    <input type="text" id="titleField" name="Title" value="<?php echo isset($FieldTitle) ? $FieldTitle : ''; ?>" class="form-control" placeholder="Название">
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="3" placeholder="Слоган"></textarea>
+                                    <input type="text" id="urlField" name="Url" value="<?php echo isset($FieldUrl) ? $FieldUrl : ''; ?>" class="form-control" placeholder="Ссылка">
+                                </div>
+
+                                <div class="form-group">
+                                    <textarea class="form-control" name="Slogan" rows="3" placeholder="Слоган"><?php echo isset($FieldSlogan) ? $FieldSlogan : ''; ?></textarea>
                                 </div>
                             </form>
                         </div>
@@ -157,26 +130,55 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary">Создать</button>
+                    <button type="submit" form="companyAddForm" name="action" value="create" class="btn btn-primary">Создать</button>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <!-- Mainly scripts -->
-    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/bootstrap.min.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Scripts -->
+    <?php echo $this->render('templates/Scripts.php',$this->mime,get_defined_vars(),0); ?>
 
-    <!-- Custom and plugin javascript -->
-    <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/ajax_upload.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/jquery.liTranslit.js"></script>
+
+    <?php if (isset($companyAddError)): ?>
+        <script type="text/javascript">
+            $(function() {
+                $("#addCompanyModal").modal('show');
+            });
+        </script>
+    <?php endif; ?>
+
 
     <script type="text/javascript">
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $("#titleField").liTranslit({
+                elAlias : $("#urlField")
+            });
+
+            $.ajax_upload($("#imageUpload"), {
+                action: "",
+                name: "image",
+                data: {
+                    action: "imageUpload"
+                },
+                onSubmit: function(file, ext){
+                    this.disable();
+                },
+                onComplete: function(file, response){
+                    this.enable();
+                    
+                    if (response !== "error") {
+                        $("#companyLogo").css("background-image", "url(http://<?php echo $_SERVER['HTTP_HOST']; ?>/"+response+")");
+                        $("#companyLogoInput").val( response );
+                    }
+                }
+            });
+
         })
     </script>
 

@@ -29,31 +29,5 @@ abstract class BaseView
 		$this->f3->set("_page_title", $page);
 		$this->f3->set("_page_type", $pageType);
 		$this->f3->set("_topLineColor", "white-bg");
-
-		// Get current user token
-		// $auth = $this->f3->get('auth');
-		// $token = $auth->_getToken();
-
-		// if (!$token) {
-		// 	// Set default values
-		// 	$this->f3->set('userInfo', array(
-		// 		'name' => 'undefined name',
-		// 		'avatar' => 'avatar/avatar.png'
-		// 		));
-		// 	return true;
-		// }
-
-		// // Get user info
-		// $resp = $this->db->exec('SELECT * FROM admin 
-		// 						 LEFT JOIN admin_token ON admin.id = admin_token.id_user
-		// 						 WHERE admin_token.token = ?', $token);
-		// if ($resp) {
-		// 	$this->f3->set('userInfo', array(
-		// 		'name' => $resp[0]['name'],
-		// 		'avatar' => $resp[0]['avatar']
-		// 		));
-		// 	$this->f3->set('user', $resp[0]);
-		// 	return true;
-		// }
 	}
 }

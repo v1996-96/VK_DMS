@@ -24,6 +24,35 @@ class DashboardView extends \BaseView
 
 
 	private function SetVars() {
+		try {
+			$company = new \CompanyModel($this->f3);
 
+			$companyUrl = $this->f3->get("PARAMS")["CompanyUrl"];
+
+			$companyData = $company->getData(array("type" => "byUrl", "url" => $companyUrl));
+			if (is_null($companyData))
+				throw new \Exception("Ошибка получения информации о компании");
+
+			$summary = $company->getData(array("type" => "summary", "id" => $companyData["CompanyId"]));
+
+			$this->f3->mset(array(
+				"DepartmentsCount" => $summary["DepartmentsCount"],
+				"ProjectsCount" => $summary["ProjectsCount"],
+				"Activity" => $summary["Activity"],
+				"EmployeeCount" => $summary["EmployeeCount"]
+				));
+
+			$userRights = $company->getData(array(
+				"type" => "getUserRights", 
+				"userId" => $this->f3->get("UserInfo")["id"],
+				"companyId" => $companyData["CompanyId"]));
+
+			$this->f3->mset(array(
+				"CanEditCompany" => $userRights == USER_OWNER
+				));
+
+		} catch (\Exception $e) {
+			$this->f3->set("company_error", "Произошла непредвиденная ошибка.<br>".$e->getMessage());
+		}
 	}
 }

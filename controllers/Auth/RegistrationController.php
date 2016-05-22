@@ -162,14 +162,14 @@ class RegistrationController
 
 
 		// Check name
-		// if (!preg_match("/^[а-яА-Яa-z]{1,}$/i", $_POST["name"])) {
-			// $errors[] = "Неверное имя";
-		// }
+		if (!preg_match("/^[а-яА-Яa-z]{1,}$/iu", $_POST["name"])) {
+			$errors[] = "Неверное имя";
+		}
 
 		// Check surname
-		// if (!preg_match("/^[а-яА-Яa-z]{1,}$/i", $_POST["surname"])) {
-			// $errors[] = "Неверная фамилия";
-		// }
+		if (!preg_match("/^[а-яА-Яa-z]{1,}$/iu", $_POST["surname"])) {
+			$errors[] = "Неверная фамилия";
+		}
 
 		// Check email
 		if (!preg_match("/^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i", $_POST["email"])) {

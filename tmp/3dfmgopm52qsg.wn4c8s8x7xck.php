@@ -37,7 +37,7 @@
                         <div class="ibox">
                             <div class="ibox-content">
                                 <h5>Отделы</h5>
-                                <h1 class="no-margins text-success">4</h1>
+                                <h1 class="no-margins text-success"><?php echo $DepartmentsCount; ?></h1>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                         <div class="ibox">
                             <div class="ibox-content">
                                 <h5>Проекты</h5>
-                                <h1 class="no-margins text-success">21</h1>
+                                <h1 class="no-margins text-success"><?php echo $ProjectsCount; ?></h1>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                         <div class="ibox">
                             <div class="ibox-content">
                                 <h5>Активность</h5>
-                                <h1 class="no-margins text-warning">+23,5%</h1>
+                                <h1 class="no-margins text-warning"><?php echo $Activity; ?></h1>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <div class="ibox">
                             <div class="ibox-content">
                                 <h5>Сотрудники</h5>
-                                <h1 class="no-margins text-success">81</h1>
+                                <h1 class="no-margins text-success"><?php echo $EmployeeCount; ?></h1>
                             </div>
                         </div>
                     </div>

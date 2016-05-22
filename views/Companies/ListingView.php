@@ -24,6 +24,13 @@ class ListingView extends \BaseView
 
 
 	private function SetVars() {
+		$company = new \CompanyModel($this->f3);
 
+		$userInfo = $this->f3->get("UserInfo");
+		if (is_null($userInfo["id"])) 
+			throw new \Exception("Ошибка отображения компаний. Неверный id пользователя.");
+
+		$list = $company->getData(array("type" => "byUserId", "id" => $userInfo["id"]));
+		$this->f3->set("CompanyList", $list);
 	}
 }
