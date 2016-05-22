@@ -5,18 +5,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
+    <title><?php echo SITE_TITLE; ?> - <?php echo $_page_title; ?></title>
 
-    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <!-- Data Tables -->
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
 
-    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -25,13 +25,13 @@
     <div id="wrapper">
 
         <!-- Menu -->
-        <include href="templates/Menu.php" />
+        <?php echo $this->render('templates/Menu.php',$this->mime,get_defined_vars(),0); ?>
 
 
         <div id="page-wrapper" class="gray-bg">
 
             <!-- TopLine -->
-            <include href="templates/TopLine.php" />
+            <?php echo $this->render('templates/TopLine.php',$this->mime,get_defined_vars(),0); ?>
 
 
             <div class="row wrapper border-bottom white-bg page-heading">
@@ -50,7 +50,7 @@
                     <div class="title-action pull-right">
                         <a href="#addEmployeeModal" data-toggle="modal" class="btn btn-success">
                             Пригласить 
-                            {{ count(@InviteList) > 0 ? '<span class="badge">'.count(@InviteList).'</span>' : '' }}
+                            <?php echo count($InviteList) > 0 ? '<span class="badge">'.count($InviteList).'</span>' : ''; ?>
                         </a>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
 
                                 <div class="row m-b">
                                     <div class="col-md-6">
-                                        <h2 class="no-margins">Количество: {{ count(@UserList) }}</h2>
+                                        <h2 class="no-margins">Количество: <?php echo count($UserList); ?></h2>
                                     </div>
 
                                     <div class="col-md-6">
@@ -82,34 +82,34 @@
 
                                 <table class="table table-hover no-margins">
                                     <tbody>
-                                        <repeat group="{{ @UserList }}" value="{{ @user }}">
+                                        <?php foreach (($UserList?:array()) as $user): ?>
                                             <tr>
                                                 <td>
-                                                    <img alt="image" width="40" height="40" class="img-circle" src="{{ @user.VK_Avatar }}" />
+                                                    <img alt="image" width="40" height="40" class="img-circle" src="<?php echo $user['VK_Avatar']; ?>" />
                                                 </td>
                                                 <td>
-                                                    <a href="/styleru/employee/{{ @user.id }}">{{ @user.Name }} {{ @user.Surname }}</a>
+                                                    <a href="/styleru/employee/<?php echo $user['id']; ?>"><?php echo $user['Name']; ?> <?php echo $user['Surname']; ?></a>
                                                     <br/>
-                                                    <small>Добавлен {{ @user.DateRegistered }}</small>
+                                                    <small>Добавлен <?php echo $user['DateRegistered']; ?></small>
                                                 </td>
                                                 <td>
                                                     <small>Тип:</small><br>
-                                                    <h5 class="no-margins">{{ @user.Position }}</h5>
+                                                    <h5 class="no-margins"><?php echo $user['Position']; ?></h5>
                                                 </td> 
                                                 <td>
                                                     <small>Отдел:</small><br>
-                                                    <h5 class="no-margins">{{ @user.DepartmentTitle }}</h5>
+                                                    <h5 class="no-margins"><?php echo $user['DepartmentTitle']; ?></h5>
                                                 </td> 
                                                 <td>
                                                     <small>Должность:</small><br>
-                                                    <h5 class="no-margins">{{ @user.DepartmentRole }}</h5>
+                                                    <h5 class="no-margins"><?php echo $user['DepartmentRole']; ?></h5>
                                                 </td> 
                                                 <td class="text-right">
-                                                    <a href="http://vk.com/id{{ @user.VK }}" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-external-link"></i> &nbsp; VK </a>
-                                                    <a href="/styleru/employee/{{ @user.id }}" class="btn btn-primary btn-sm"> Профиль </a>
+                                                    <a href="http://vk.com/id<?php echo $user['VK']; ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-external-link"></i> &nbsp; VK </a>
+                                                    <a href="/styleru/employee/<?php echo $user['id']; ?>" class="btn btn-primary btn-sm"> Профиль </a>
                                                 </td>
                                             </tr>
-                                        </repeat>
+                                        <?php endforeach; ?>
 
                                     </tbody>
                                 </table>
@@ -124,12 +124,12 @@
 
 
             <!-- Footer -->
-            <include href="templates/Footer.php" />
+            <?php echo $this->render('templates/Footer.php',$this->mime,get_defined_vars(),0); ?>
         </div>
 
 
         <!-- RightSidebar -->
-        <include href="templates/RightSidebar.php" />
+        <?php echo $this->render('templates/RightSidebar.php',$this->mime,get_defined_vars(),0); ?>
 
 
     </div>
@@ -148,11 +148,11 @@
                     
                     <div class="row">
                         <div class="col-md-9 block-center">
-                            <check if="{{ isset(@invite_error) }}">
+                            <?php if (isset($invite_error)): ?>
                                 <div class="alert alert-danger">
-                                    {{ @invite_error }}
+                                    <?php echo $invite_error; ?>
                                 </div>
-                            </check>
+                            <?php endif; ?>
 
                             <form method="POST">
                                 <div class="input-group">
@@ -179,22 +179,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <repeat group="{{ @InviteList }}" value="{{ @invite }}">
+                            <?php foreach (($InviteList?:array()) as $invite): ?>
                                 <tr>
                                     <td>
-                                        <a href="http://vk.com/id{{ @invite.VK }}" target="_blank">id{{ @invite.VK }} <i class="fa fa-external-link"></i></a>
+                                        <a href="http://vk.com/id<?php echo $invite['VK']; ?>" target="_blank">id<?php echo $invite['VK']; ?> <i class="fa fa-external-link"></i></a>
                                     </td>
-                                    <td>{{ date("H:i:s d-m-Y", strtotime(@invite.DateAdd)) }}</td>
+                                    <td><?php echo date("H:i:s d-m-Y", strtotime($invite['DateAdd'])); ?></td>
                                     <td>
                                         <form method="POST">
-                                            <input type="hidden" name="id" value="{{ @invite.id }}" />
+                                            <input type="hidden" name="id" value="<?php echo $invite['id']; ?>" />
 
-                                            <a href="http://{{ $_SERVER['HTTP_HOST'] }}/invite/{{ @invite.RegistrationToken }}" target="_blank" class="btn btn-warning btn-xs">Перейти</a>
+                                            <a href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/invite/<?php echo $invite['RegistrationToken']; ?>" target="_blank" class="btn btn-warning btn-xs">Перейти</a>
                                             <button name="action" value="deleteInvite" class="btn btn-danger btn-xs">Удалить</button>
                                         </form>
                                     </td>
                                 </tr>
-                            </repeat>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
 
@@ -206,28 +206,28 @@
 
 
     <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/bootstrap.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Data Tables -->
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.responsive.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
 
-    <check if="{{ isset(@invite_error) }}">
+    <?php if (isset($invite_error)): ?>
         <script type="text/javascript">
             $(function(){
                 $("#addEmployeeModal").modal();
             });
         </script>
-    </check>
+    <?php endif; ?>
 
     <script type="text/javascript">
         $(document).ready(function(){

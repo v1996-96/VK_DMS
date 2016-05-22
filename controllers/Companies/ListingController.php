@@ -15,8 +15,6 @@ class ListingController extends \BaseController
 		$this->auth = $f3->get('auth');
 		$this->db   = $f3->get('db');
 
-		$this->f3->set("UserInfo", $this->GetUserInfo() );
-
 		$this->view = new ListingView($f3);
 
 		$this->CheckAuthStatus();
@@ -71,7 +69,7 @@ class ListingController extends \BaseController
 					
 			} else throw new \Exception("Получены не все поля");
 
-			$userInfo = $this->f3->get("UserInfo");
+			$userInfo = $this->GetUserInfo();
 			if (is_null($userInfo["id"])) 
 				throw new \Exception("Ошибка создания компании. Неверный id пользователя.");
 				

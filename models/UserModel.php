@@ -10,7 +10,7 @@ class UserModel extends \BaseModel implements \IModel
 		$this->db = $f3->get('db');
 		
 		$this->entity = "User";
-		$this->required = array("Name", "Surname", "Email", "Password", "Role", "VK");
+		$this->required = array("Name", "Surname", "Email", "Password", "Role", "VK", "VK_Avatar", "DateRegistered");
 		$this->optional = array();
 	}
 
@@ -29,6 +29,49 @@ class UserModel extends \BaseModel implements \IModel
 	}
 
 
+	/* Get user list by company url */
+	private function ByCompanyUrl($url) {
+		$query = "SELECT
+					U.id, U.Name, U.Surname, U.VK_Avatar, U.VK, U.DateRegistered,
+					'Генеральный директор' as Position,
+					'-' as DepartmentTitle,
+					'-' as DepartmentRole
+				FROM User as U
+				LEFT JOIN Company as C ON U.id = C.CreatorId
+				WHERE C.Url = :url";
+		$query.=" union ";
+		$query.="SELECT 
+					U.id, U.Name, U.Surname, U.VK_Avatar, U.VK, U.DateRegistered,
+					CASE CE.IsAdmin
+						WHEN CE.IsAdmin THEN 'Администратор'
+						ELSE 
+							CASE
+								WHEN EXISTS(SELECT * FROM DepartmentEmployee as DE
+												LEFT JOIN Department as D ON DE.DepartmentId = D.DepartmentId
+												WHERE D.CompanyId = CE.CompanyId) THEN 'Руководитель'
+								WHEN EXISTS(SELECT * FROM ProjectEmployee as PE
+												LEFT JOIN Project as P ON PE.ProjectId = P.ProjectId
+												LEFT JOIN Department as Dep ON P.DepartmentId = Dep.DepartmentId
+												WHERE Dep.CompanyId = CE.CompanyId) THEN 'Менеджер'
+								ELSE 'Сотрудник'
+				 			END
+					END as Position,
+					ifnull((SELECT De.Title FROM DepartmentEmployee as DEm
+					LEFT JOIN Department as De on DEm.DepartmentID = De.DepartmentId
+					WHERE DEm.UserId = U.id GROUP BY UserId), '-') as DepartmentTitle,
+					
+					ifnull((SELECT DEm.RoleDescription FROM DepartmentEmployee as DEm
+					WHERE DEm.UserId = U.id GROUP BY UserId), '-') as DepartmentRole
+					
+				FROM User as U
+				LEFT JOIN CompanyEmployee as CE ON U.id = CE.UserId
+				LEFT JOIN Company as C ON C.CompanyId = CE.CompanyId
+				WHERE C.Url = :url";
+
+		return $this->db->exec( $query, array("url" => $url) );
+	}
+
+
 	/* Read */
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
@@ -41,6 +84,11 @@ class UserModel extends \BaseModel implements \IModel
 				case 'isVkIdUnique':
 					if (isset($search["id"])) {
 						return $this->IsVkIdUnique($search["id"]);
+					} else return null;
+
+				case 'byCompanyUrl':
+					if (isset($search["url"])) {
+						return $this->ByCompanyUrl($search["url"]);
 					} else return null;
 				
 				default: return null;

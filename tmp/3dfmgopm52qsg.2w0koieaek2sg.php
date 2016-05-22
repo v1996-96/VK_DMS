@@ -94,6 +94,8 @@
 
                         <div class="registration-step">
                             <p class="info">2. Укажите личные данные.</p>
+ 
+                            <input type="hidden" name="VK_Avatar" value="<?php echo $VK_Avatar; ?>" />
 
                             <div class="gomeniuk_group">
                                 <input type="text" name="name" value="<?php echo $name; ?>" required="required" />

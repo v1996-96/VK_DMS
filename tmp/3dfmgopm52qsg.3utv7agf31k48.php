@@ -10,6 +10,9 @@
                     <li>
                         <a href="/companies">Сменить компанию</a>
                     </li>
+                    <?php if ($CompanyRight_Edit): ?>
+                        <li><a href="/<?php echo $CompanyUrl; ?>/edit">Редактировать</a></li>
+                    <?php endif; ?>
                 </ul>
             </h3>
         </div>

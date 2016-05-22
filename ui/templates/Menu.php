@@ -10,13 +10,12 @@ defined('_EXECUTED') or die('Restricted access');
 
             <li class="nav-header">
                 <div class="dropdown profile-element"> 
-                    <span><img alt="image" class="img-circle" src="{{ @BASE }}/ui/img/profile_small.jpg" /></span>
+                    <span><img alt="image" class="img-circle" src="{{ @UserInfo.VK_Avatar }}" /></span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
                             <span class="block m-t-xs"> 
-                                <strong class="font-bold">Трушин Виктор</strong>
+                                <strong class="font-bold">{{ @UserInfo.Name }} {{ @UserInfo.Surname }} <b class="caret"></b></strong>
                             </span>
-                            <span class="text-muted text-xs block">Менеджер <b class="caret"></b></span> 
                         </span>
                     </a>
                     <ul class="dropdown-menu animated pulse m-t-xs">

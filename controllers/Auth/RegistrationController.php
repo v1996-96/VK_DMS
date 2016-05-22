@@ -113,6 +113,7 @@ class RegistrationController
 	private function GetUserDataFromVK() {
 		$uri =  "https://api.vk.com/method/users.get?" . 
 				"user_ids=" . $this->f3->get("userId") .
+				"&fields=photo_50" .
 				"&access_token=" . $this->f3->get("access_token");
 
 		if ($res = @file_get_contents($uri)) { 
@@ -121,6 +122,7 @@ class RegistrationController
             $this->f3->set("name", (isset($data["response"][0]["first_name"]) ? $data["response"][0]["first_name"] : "") );
             $this->f3->set("surname", (isset($data["response"][0]["first_name"]) ? $data["response"][0]["last_name"] : "") );
             $this->f3->set("email", "");
+            $this->f3->set("VK_Avatar", (isset($data["response"][0]["photo_50"]) ? $data["response"][0]["photo_50"] : ""));
         }
 	}
 
@@ -129,7 +131,7 @@ class RegistrationController
 	 * There we save data from fields between pages
 	 */
 	private function RestoreFieldsData() {
-		$fields = array("name", "surname", "email");
+		$fields = array("name", "surname", "email", "VK_Avatar");
 
 		foreach ($fields as $fName) {
 			if (isset($_POST[ $fName ])) {
@@ -209,11 +211,13 @@ class RegistrationController
 		$data = array();
 		$fieldComparison = array(
 			'name' => 'Name', 'surname' => 'Surname',
-			'email' => 'Email', 'pwd' => 'Password'
+			'email' => 'Email', 'pwd' => 'Password',
+			'VK_Avatar' => 'VK_Avatar'
 			);
 		$additionalData = array(
 			'Role' => 0,
-			'VK' => (int)$_POST["userId"]
+			'VK' => (int)$_POST["userId"],
+			"DateRegistered" => date("Y-m-d H:i:s")
 			);
 
 		foreach ($fieldComparison as $key => $value) {

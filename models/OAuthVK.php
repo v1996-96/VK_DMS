@@ -43,7 +43,6 @@ class OAuthVK
 
 
     public function getToken($code) { 
-        header("Charset: UTF-8");
         $url = self::URL_ACCESS_TOKEN . 
             '?client_id=' . self::APP_ID . 
             '&client_secret=' . self::APP_SECRET . 

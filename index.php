@@ -54,6 +54,7 @@ $f3->route("GET|POST /logOut", "Auth\AuthController->LogOut");
 $f3->route("GET|POST /lockscreen", "Auth\AuthController->Lockscreen");
 $f3->route("GET|POST /checkStatus", "Auth\AuthController->CheckStatus");
 $f3->route('GET|POST /registration', 'Auth\RegistrationController->Gateway');
+$f3->route('GET|POST /invite/@InviteToken', 'Auth\InviteController->Gateway');
 
 // Companies page
 $f3->route('GET|POST /companies', 'Companies\ListingController->Gateway');

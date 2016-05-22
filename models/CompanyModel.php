@@ -15,6 +15,19 @@ class CompanyModel extends \BaseModel implements \IModel
 	}
 
 
+	private function IsVkNew($vk, $id) {
+		$companyEmployee = $this->db->exec("SELECT * FROM User as U
+											LEFT JOIN CompanyEmployee as CE ON CE.UserId = U.id
+											WHERE CE.CompanyId = :id AND U.VK = :vk",
+											array("id" => $id, "vk" => $vk));
+		$companyOwner = $this->db->exec("SELECT * FROM User as U
+											LEFT JOIN Company as C ON C.CreatorId = U.id
+											WHERE C.CompanyId = :id AND U.VK = :vk",
+											array("id" => $id, "vk" => $vk));
+		return !(bool)$companyOwner && !(bool)$companyEmployee;
+	}
+
+
 	private function ByUrl($url) {
 		$resp = $this->db->exec("SELECT * FROM Company WHERE Url = ?", $url);
 		return $resp ? $resp[0] : null;
@@ -163,6 +176,11 @@ class CompanyModel extends \BaseModel implements \IModel
 				case 'isUrlUnique':
 					if (isset($search["url"])) {
 						return $this->IsUrlUnique($search["url"]);
+					} else return null;
+
+				case 'isVkNew':
+					if (isset($search["vk"]) && isset($search["id"])) {
+						return $this->IsVkNew($search["vk"], $search["id"]);
 					} else return null;
 
 				case 'getUserRights':
