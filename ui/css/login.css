@@ -257,3 +257,14 @@ input[type="password"]:valid + label{
 .btn.btn-primary:active{
 	background: #2980B9;
 }
+
+.btn.btn-danger{
+	background: #e53935;
+	color: #fff !important;
+}
+.btn.btn-danger:hover{
+	background: #ef5350;
+}
+.btn.btn-danger:active{
+	background: #ef5350;
+}

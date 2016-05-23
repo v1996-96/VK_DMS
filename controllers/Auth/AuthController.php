@@ -50,7 +50,7 @@ class AuthController
 			}
 		}
 
-		$this->view->showLogin($f3);
+		$this->view->showLogin($this->f3);
 	}
 
 

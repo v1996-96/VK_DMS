@@ -22,6 +22,11 @@ class UserModel extends \BaseModel implements \IModel
 	}
 
 
+	private function ByVkId($vkId) {
+		return $this->db->exec("SELECT id FROM ".$this->entity." WHERE VK = ?", $vkId);
+	}
+
+
 	/* Check vk id */
 	private function IsVkIdUnique($vkId) {
 		$response = $this->db->exec("SELECT id FROM ".$this->entity." WHERE VK = ?", $vkId);
@@ -43,7 +48,7 @@ class UserModel extends \BaseModel implements \IModel
 		$query.="SELECT 
 					U.id, U.Name, U.Surname, U.VK_Avatar, U.VK, U.DateRegistered,
 					CASE CE.IsAdmin
-						WHEN CE.IsAdmin THEN 'Администратор'
+						WHEN 1 THEN 'Администратор'
 						ELSE 
 							CASE
 								WHEN EXISTS(SELECT * FROM DepartmentEmployee as DE
@@ -56,6 +61,7 @@ class UserModel extends \BaseModel implements \IModel
 								ELSE 'Сотрудник'
 				 			END
 					END as Position,
+
 					ifnull((SELECT De.Title FROM DepartmentEmployee as DEm
 					LEFT JOIN Department as De on DEm.DepartmentID = De.DepartmentId
 					WHERE DEm.UserId = U.id GROUP BY UserId), '-') as DepartmentTitle,
@@ -89,6 +95,11 @@ class UserModel extends \BaseModel implements \IModel
 				case 'byCompanyUrl':
 					if (isset($search["url"])) {
 						return $this->ByCompanyUrl($search["url"]);
+					} else return null;
+
+				case 'byVkId':
+					if (isset($search["id"])) {
+						return $this->ByVkId($search["id"]);
 					} else return null;
 				
 				default: return null;

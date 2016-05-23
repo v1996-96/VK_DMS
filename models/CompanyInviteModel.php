@@ -15,6 +15,11 @@ class CompanyInviteModel extends \BaseModel implements \IModel
 	}
 
 
+	private function ByToken($token) {
+		return $this->db->exec("SELECT * FROM CompanyInvite WHERE RegistrationToken = ?", $token);
+	}
+
+
 	private function ByCompanyUrl($url) {
 		return $this->db->exec("SELECT CI.* FROM CompanyInvite as CI
 								LEFT JOIN Company as C ON CI.CompanyId = C.CompanyId
@@ -31,6 +36,11 @@ class CompanyInviteModel extends \BaseModel implements \IModel
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
 			switch ($search["type"]) {
+				case 'byToken':
+					if (isset($search["token"])) {
+						return $this->ByToken($search["token"]);
+					} else return null;
+
 				case 'byCompanyUrl':
 					if (isset($search["url"])) {
 						return $this->ByCompanyUrl($search["url"]);

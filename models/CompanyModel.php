@@ -170,6 +170,11 @@ class CompanyModel extends \BaseModel implements \IModel
 	}
 
 
+	private function ById($id) {
+		return $this->db->exec("SELECT * FROM Company WHERE CompanyId = ?", $id);		
+	}
+
+
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
 			switch ($search["type"]) {
@@ -201,6 +206,11 @@ class CompanyModel extends \BaseModel implements \IModel
 				case 'summary':
 					if (isset($search["id"])) {
 						return $this->CompanySummary($search["id"]);
+					} else return null;
+
+				case 'byId':
+					if (isset($search["id"])) {
+						return $this->ById($search["id"]);
 					} else return null;
 				
 				default: return null;
