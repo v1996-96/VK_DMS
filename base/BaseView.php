@@ -47,6 +47,7 @@ abstract class BaseView
 				"type" => "getUserRights", 
 				"userId" => $this->GetUserInfo()["id"],
 				"companyId" => $companyData["CompanyId"]));
+			
 			$this->f3->set("UserCompanyRights", $userCompanyRights);
 
 			// Set common view locks

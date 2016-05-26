@@ -5,19 +5,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
+    <title><?php echo SITE_TITLE; ?> - <?php echo $_page_title; ?></title>
 
-    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <!-- Data Tables -->
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
 
-    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -26,18 +26,18 @@
     <div id="wrapper">
 
         <!-- Menu -->
-        <include href="templates/Menu.php" />
+        <?php echo $this->render('templates/Menu.php',$this->mime,get_defined_vars(),0); ?>
 
 
         <div id="page-wrapper" class="gray-bg">
 
             <!-- TopLine -->
-            <include href="templates/TopLine.php" />
+            <?php echo $this->render('templates/TopLine.php',$this->mime,get_defined_vars(),0); ?>
 
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-8">
-                    <h2>{{ @DepartmentSummary.Title }}</h2>
+                    <h2><?php echo $DepartmentSummary['Title']; ?></h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="/styleru/dashboard">Главная</a>
@@ -46,13 +46,13 @@
                             <a href="/styleru/departments">Отделы</a>
                         </li>
                         <li class="active">
-                            <strong>{{ @DepartmentSummary.Title }}</strong>
+                            <strong><?php echo $DepartmentSummary['Title']; ?></strong>
                         </li>
                     </ol>
                 </div>
                 <div class="col-lg-4">
                     <div class="title-action text-right">
-                        <a href="/{{ @PARAMS.CompanyUrl }}/departments/{{ @PARAMS.DepartmentId }}/documents" class="btn btn-primary"><i class="fa fa-folder-open"></i> Документы &nbsp; <span class="badge">5</span></a>
+                        <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/<?php echo $PARAMS['DepartmentId']; ?>/documents" class="btn btn-primary"><i class="fa fa-folder-open"></i> Документы &nbsp; <span class="badge">5</span></a>
                         <a href="#editDepartmentModal" data-toggle="modal" class="btn btn-white"><i class="fa fa-cog"></i> Настройки</a>
                     </div>
                 </div>
@@ -61,12 +61,12 @@
 
             <div class="wrapper wrapper-content">
 
-                <check if="{{ isset(@department_error) }}">
+                <?php if (isset($department_error)): ?>
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        {{ @department_error }}
+                        <?php echo $department_error; ?>
                     </div>
-                </check>
+                <?php endif; ?>
                 
                 <div class="row">
                     <div class="col-md-3">
@@ -78,14 +78,14 @@
                                     <div class="col-sm-6">
                                         <h1 class="no-margins text-success">
                                             <i class="ion ion-ios-arrow-thin-down"></i> 
-                                            {{ @DepartmentSummary.IncomingPackageCount }}
+                                            <?php echo $DepartmentSummary['IncomingPackageCount']; ?>
                                         </h1>
                                         <small>Входящие</small>
                                     </div>
                                     <div class="col-sm-6">
                                         <h1 class="no-margins text-success">
                                             <i class="ion ion-ios-arrow-thin-up"></i> 
-                                            {{ @DepartmentSummary.OutcomingPackageCount }}
+                                            <?php echo $DepartmentSummary['OutcomingPackageCount']; ?>
                                         </h1>
                                         <small>Исходящие</small>
                                     </div>
@@ -107,7 +107,7 @@
                         <div class="ibox">
                             <div class="ibox-content">
                                 <h5>Проекты</h5>
-                                <h1 class="no-margins text-success">{{ @DepartmentSummary.ProjectCount }}</h1>
+                                <h1 class="no-margins text-success"><?php echo $DepartmentSummary['ProjectCount']; ?></h1>
                                 <br>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                         <div class="ibox">
                             <div class="ibox-content">
                                 <h5>Сотрудники</h5>
-                                <h1 class="no-margins text-success">{{ @DepartmentSummary.TaskCount }}</h1>
+                                <h1 class="no-margins text-success"><?php echo $DepartmentSummary['TaskCount']; ?></h1>
                                 <br>
                             </div>
                         </div>
@@ -274,12 +274,12 @@
 
 
             <!-- Footer -->
-            <include href="templates/Footer.php" />
+            <?php echo $this->render('templates/Footer.php',$this->mime,get_defined_vars(),0); ?>
         </div>
 
 
         <!-- RightSidebar -->
-        <include href="templates/RightSidebar.php" />
+        <?php echo $this->render('templates/RightSidebar.php',$this->mime,get_defined_vars(),0); ?>
 
 
     </div>
@@ -300,7 +300,7 @@
                             <form method="POST">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" name="Title" class="form-control" placeholder="Название" value="{{ @DepartmentSummary.Title }}">
+                                        <input type="text" name="Title" class="form-control" placeholder="Название" value="<?php echo $DepartmentSummary['Title']; ?>">
                                         <span class="input-group-btn">
                                             <button class="btn btn-primary" type="submit" name="action" value="edit">Изменить</button>
                                         </span>
@@ -330,23 +330,23 @@
 
 
     <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/bootstrap.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
 
     <!-- Data Tables -->
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.responsive.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
     <!-- Sparkline -->
-    <script src="{{ @BASE }}/ui/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/sparkline/jquery.sparkline.min.js"></script>
 
     <script>
         $(document).ready(function() {

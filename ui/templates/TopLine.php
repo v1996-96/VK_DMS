@@ -9,7 +9,7 @@ defined('_EXECUTED') or die('Restricted access');
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
             <h3 class="company-nav-title dropdown">
-                <a href="#" data-toggle="dropdown">Styleru <span class="caret"></span></a>
+                <a href="#" data-toggle="dropdown">{{ @CompanyData.Title }} <span class="caret"></span></a>
                 <ul class="dropdown-menu animated pulse">
                     <li>
                         <a href="/companies">Сменить компанию</a>

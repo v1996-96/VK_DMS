@@ -6,6 +6,10 @@ defined('_EXECUTED') or die('Restricted access');
 
 class ProfileView extends \BaseView
 {
+
+	public $EmployeeId = null;
+	public $CompanyUrl = null;
+
 	// Class constructor
 	function __construct($f3){
 		$this->f3 = $f3;
@@ -25,5 +29,14 @@ class ProfileView extends \BaseView
 
 	private function SetVars() {
 		$this->f3->set("_topLineColor", "");
+
+		$employee = new \UserModel($this->f3);
+
+		$employeeData = $employee->getData(array(
+			"type" => "summary", 
+			"id" => $this->EmployeeId,
+			"url" => $this->CompanyUrl
+			));
+		$this->f3->set("EmployeeData", $employeeData ? $employeeData[0] : null);
 	}
 }

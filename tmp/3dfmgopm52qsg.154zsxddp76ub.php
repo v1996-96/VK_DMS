@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
+    <title><?php echo SITE_TITLE; ?> - <?php echo $_page_title; ?></title>
 
-    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -20,13 +20,13 @@
     <div id="wrapper">
 
         <!-- Menu -->
-        <include href="templates/Menu.php" />
+        <?php echo $this->render('templates/Menu.php',$this->mime,get_defined_vars(),0); ?>
 
 
         <div id="page-wrapper" class="gray-bg">
 
             <!-- TopLine -->
-            <include href="templates/TopLine.php" />
+            <?php echo $this->render('templates/TopLine.php',$this->mime,get_defined_vars(),0); ?>
 
 
             <div class="row wrapper border-bottom white-bg page-heading">
@@ -55,31 +55,31 @@
 
             <div class="wrapper wrapper-content">
 
-                <check if="{{ isset(@department_error) }}">
+                <?php if (isset($department_error)): ?>
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        {{ @department_error }}
+                        <?php echo $department_error; ?>
                     </div>
-                </check>
+                <?php endif; ?>
                 
                 <div class="row">
-                    <repeat group="{{ @DepartmentList }}" value="{{ @department }}">
+                    <?php foreach (($DepartmentList?:array()) as $department): ?>
                         <div class="col-lg-4 col-md-4 col-sm-6">
-                            <a href="/{{ @PARAMS.CompanyUrl }}/departments/{{ @department.DepartmentId }}">
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/<?php echo $department['DepartmentId']; ?>">
                                 <div class="ibox">
                                     <div class="ibox-content">
-                                        <h3 class="text-center" style="margin-bottom: 20px;">{{ @department.Title }}</h3>
+                                        <h3 class="text-center" style="margin-bottom: 20px;"><?php echo $department['Title']; ?></h3>
                                         <div class="row">
                                             <div class="col-xs-4 text-center">
-                                                <h2>{{ @department.EmployeeCount }}</h2>
+                                                <h2><?php echo $department['EmployeeCount']; ?></h2>
                                                 <small>сотрудников</small>
                                             </div>
                                             <div class="col-xs-4 text-center">
-                                                <h2>{{ @department.ProjectCount }}</h2>
+                                                <h2><?php echo $department['ProjectCount']; ?></h2>
                                                 <small>проектов</small>
                                             </div>
                                             <div class="col-xs-4 text-center">
-                                                <h2>{{ @department.TaskCount }}</h2>
+                                                <h2><?php echo $department['TaskCount']; ?></h2>
                                                 <small>задач</small>
                                             </div>
                                         </div>
@@ -87,19 +87,19 @@
                                 </div>
                             </a>
                         </div>
-                    </repeat>
+                    <?php endforeach; ?>
                 </div>
 
             </div>
 
 
             <!-- Footer -->
-            <include href="templates/Footer.php" />
+            <?php echo $this->render('templates/Footer.php',$this->mime,get_defined_vars(),0); ?>
         </div>
 
 
         <!-- RightSidebar -->
-        <include href="templates/RightSidebar.php" />
+        <?php echo $this->render('templates/RightSidebar.php',$this->mime,get_defined_vars(),0); ?>
 
 
     </div>
@@ -138,14 +138,14 @@
 
 
     <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/bootstrap.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
 
 </body>
 

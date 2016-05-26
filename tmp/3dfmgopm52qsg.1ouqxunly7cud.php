@@ -31,7 +31,7 @@
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-9">
-                    <h2>Трушин Виктор</h2>
+                    <h2><?php echo $EmployeeData['Name']; ?> <?php echo $EmployeeData['Surname']; ?></h2>
                     <ol class="breadcrumb">
                         <li>
                             <a href="/styleru/dashboard">Главная</a>
@@ -40,7 +40,7 @@
                             <a href="/styleru/employee">Сотрудники</a>
                         </li>
                         <li class="active">
-                            <strong>Трушин Виктор</strong>
+                            <strong><?php echo $EmployeeData['Name']; ?> <?php echo $EmployeeData['Surname']; ?></strong>
                         </li>
                     </ol>
                 </div>
@@ -49,27 +49,28 @@
 
             <div class="wrapper wrapper-content">
                 
-                <div class="row m-b-lg m-t-lg"><!-- m-b-lg m-t-lg -->
+                <div class="row m-b-lg m-t-lg">
                     <div class="col-md-4">
 
                         <div class="profile-image">
-                            <img src="<?php echo $BASE; ?>/ui/img/a4.jpg" class="img-circle circle-border m-b-md" alt="profile">
+                            <img src="<?php echo $EmployeeData['VK_Avatar']; ?>" class="img-circle circle-border m-b-md" alt="profile">
                         </div>
                         <div class="profile-info">
                             <h2 class="no-margins">
-                                Трушин Виктор
+                                <?php echo $EmployeeData['Name']; ?> <?php echo $EmployeeData['Surname']; ?>
                             </h2>
-                            <h4>Добавлен: 12.12.2012</h4>
-                            <a href="#"><i class="fa fa-external-link"></i> Аккаунт Вконтакте</a>
+                            <h5 class="m-b-xs"><?php echo $EmployeeData['EmployeeType']; ?></h5>
+                            <div class="m-b-xs"><small>Добавлен: <?php echo date("m.d.Y", strtotime($EmployeeData['DateRegistered'])); ?></small></div>
+                            <a href="http://vk.com/id<?php echo $EmployeeData['VK']; ?>" target="_blank"><i class="fa fa-external-link"></i> Аккаунт Вконтакте</a>
                             <span class="clearfix"></span>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <small>Отдел:</small>
-                        <h3 class="no-margins">Web - разработка</h3>
+                        <h3 class="no-margins"><?php echo $EmployeeData['DepartmentTitle']; ?></h3>
                         <br>
                         <small>Должность:</small>
-                        <h3 class="no-margins">Frontend разработчик</h3>
+                        <h3 class="no-margins"><?php echo $EmployeeData['DepartmentRole']; ?></h3>
                     </div>
                     <div class="col-md-3">
                         <small>Активность за последний месяц</small>

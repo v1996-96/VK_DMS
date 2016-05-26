@@ -12,6 +12,11 @@ define("USER_DEP_MANAGER", 3);
 define("USER_PROJ_MANAGER", 4);
 define("USER_EMPLOYEE", 5);
 
+// Package type
+define("PACKAGE_INCOMING", 1);
+define("PACKAGE_OUTCOMING", 2);
+define("PACKAGE_MANAGING", 3);
+
 // Framework instance
 $f3 = require('lib/base.php');
 

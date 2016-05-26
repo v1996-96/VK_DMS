@@ -71,20 +71,22 @@ abstract class BaseModel
 	protected function update($data, $conditionFields, $additionalFields = array()){
 		$dataNeeded = array();
 		$givenOptional = array();
+		$givenRequired = array();
 
-		$required = $this->checkForExistance($this->required, $data);
-		$additional = $this->checkForExistance($additionalFields, $data);
+		$required = $this->getExisting($this->required, $data, $givenRequired);
 		$optional = $this->getExisting($this->optional, $data, $givenOptional);
+		$additional = $this->checkForExistance($additionalFields, $data);
+		$conditional = $this->checkForExistance($conditionFields, $data);
 
-		$dataNeeded = array_merge($required, $optional, $additional);
-		$fields = array_merge($this->required, $givenOptional, $additionalFields);
+		$dataNeeded = array_merge($required, $optional, $additional, $conditional);
+		$fields = array_merge($givenRequired, $givenOptional, $additionalFields);
 
 		$this->clearArray($fields, $conditionFields);
 
 		$fieldsList = $this->getQueryString($fields);
 		$conditionFieldsList = $this->getQueryString($conditionFields);
 
-		return $this->db->exec('UPDATE '.$this->entity.' SET '.$fieldsList.' WHERE '.$conditionFieldsList, $data);
+		return $this->db->exec('UPDATE '.$this->entity.' SET '.$fieldsList.' WHERE '.$conditionFieldsList, $dataNeeded);
 	}
 
 

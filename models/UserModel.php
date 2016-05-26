@@ -15,7 +15,6 @@ class UserModel extends \BaseModel implements \IModel
 	}
 
 
-	/* Check email */
 	private function IsEmailUnique($email) {
 		$response = $this->db->exec("SELECT id FROM ".$this->entity." WHERE Email = ?", $email);
 		return !(bool)$response;
@@ -27,14 +26,17 @@ class UserModel extends \BaseModel implements \IModel
 	}
 
 
-	/* Check vk id */
+	private function ById($vkId) {
+		return $this->db->exec("SELECT * FROM ".$this->entity." WHERE id = ?", $vkId);
+	}
+
+
 	private function IsVkIdUnique($vkId) {
 		$response = $this->db->exec("SELECT id FROM ".$this->entity." WHERE VK = ?", $vkId);
 		return !(bool)$response;
 	}
 
 
-	/* Get user list by company url */
 	private function ByCompanyUrl($url) {
 		$query = "SELECT
 					U.id, U.Name, U.Surname, U.VK_Avatar, U.VK, U.DateRegistered,
@@ -53,11 +55,11 @@ class UserModel extends \BaseModel implements \IModel
 							CASE
 								WHEN EXISTS(SELECT * FROM DepartmentEmployee as DE
 												LEFT JOIN Department as D ON DE.DepartmentId = D.DepartmentId
-												WHERE D.CompanyId = CE.CompanyId) THEN 'Руководитель'
+												WHERE D.CompanyId = CE.CompanyId AND DE.IsManager = 1) THEN 'Руководитель'
 								WHEN EXISTS(SELECT * FROM ProjectEmployee as PE
 												LEFT JOIN Project as P ON PE.ProjectId = P.ProjectId
 												LEFT JOIN Department as Dep ON P.DepartmentId = Dep.DepartmentId
-												WHERE Dep.CompanyId = CE.CompanyId) THEN 'Менеджер'
+												WHERE Dep.CompanyId = CE.CompanyId AND PE.IsManager = 1) THEN 'Менеджер'
 								ELSE 'Сотрудник'
 				 			END
 					END as Position,
@@ -75,6 +77,39 @@ class UserModel extends \BaseModel implements \IModel
 				WHERE C.Url = :url";
 
 		return $this->db->exec( $query, array("url" => $url) );
+	}
+
+
+	private function Summary($id, $url) {
+		$query =   "SELECT 
+					u.*,
+					case 
+						when c.CompanyId is not null then 'Генеральный директор'
+						else 
+							case
+								when ce.CompanyId is not null and ce.IsAdmin = 1 then 'Администратор'
+								else
+									case 
+										when de.DepartmentId is not null and de.IsManager = 1 then 'Руководитель'
+										when pe.ProjectId is not null and pe.IsManager = 1 then 'Менеджер'
+										else 'Сотрудник'
+									end
+							end
+					end as EmployeeType,
+					ifnull(d.Title, '-') as DepartmentTitle,
+					ifnull(de.RoleDescription, '-') as DepartmentRole
+
+					FROM User as u
+					LEFT JOIN Company as c ON c.CreatorId = u.id
+					LEFT JOIN CompanyEmployee as ce ON u.id = ce.UserId
+					LEFT JOIN Company as cc on cc.CompanyId = ce.CompanyId
+					LEFT JOIN Department as d ON d.CompanyId = cc.CompanyId
+					LEFT JOIN DepartmentEmployee as de ON ((u.id = de.UserId) and (de.DepartmentId = d.DepartmentId))
+					LEFT JOIN Project as p ON p.DepartmentId = d.DepartmentId
+					LEFT JOIN ProjectEmployee as pe ON ((pe.UserId = u.id) and (pe.ProjectId = p.ProjectId))
+					WHERE u.id = :EmployeeId AND (cc.Url = :CompanyUrl or c.Url = :CompanyUrl)
+					GROUP BY u.id";
+		return $this->db->exec($query, array("EmployeeId" => (int)$id, "CompanyUrl" => $url));
 	}
 
 
@@ -100,6 +135,16 @@ class UserModel extends \BaseModel implements \IModel
 				case 'byVkId':
 					if (isset($search["id"])) {
 						return $this->ByVkId($search["id"]);
+					} else return null;
+
+				case 'byId':
+					if (isset($search["id"])) {
+						return $this->ById($search["id"]);
+					} else return null;
+
+				case 'summary':
+					if (isset($search["id"]) && isset($search["url"])) {
+						return $this->Summary($search["id"], $search["url"]);
 					} else return null;
 				
 				default: return null;
