@@ -90,30 +90,29 @@
                             <div class="ibox-content">
                                 <h3 style="margin-bottom: 20px;">Проекты</h3>
                                 
-                                <table class="table table-hover">
-                                    <tbody>
-                                        <tr>
-                                            <td class="project-title">
-                                                <a href="#">Contract with Zender Company</a>
-                                                <br/>
-                                                <small>Created 14.08.2014</small>
-                                            </td>
-                                            <td class="project-actions">
-                                                <a href="#" class="btn btn-white btn-sm"> View </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="project-title">
-                                                <a href="#">Contract with Zender Company</a>
-                                                <br/>
-                                                <small>Created 14.08.2014</small>
-                                            </td>
-                                            <td class="project-actions">
-                                                <a href="#" class="btn btn-white btn-sm"> View </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <?php if ($ProjectList): ?>
+                                    
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <?php foreach (($ProjectList?:array()) as $project): ?>
+                                                    <tr>
+                                                        <td class="project-title">
+                                                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects/<?php echo $project['ProjectId']; ?>"><?php echo $project['Title']; ?></a>
+                                                            <br/>
+                                                            <small>Дата создания: <?php echo $project['DateAdd']; ?></small>
+                                                        </td>
+                                                        <td class="project-actions">
+                                                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects/<?php echo $project['ProjectId']; ?>" class="btn btn-white btn-sm"> Перейти</a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    
+                                    <?php else: ?>
+                                        <h4 class="text-center">Проекты отсутствуют</h4>
+                                    
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -123,31 +122,27 @@
                             <div class="ibox-content">
                                 <h3 style="margin-bottom: 20px;">Задачи</h3>
                                 
-                                <ul class="todo-list m-t small-list">
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-check-square"></i> </a>
-                                        <span class="m-l-xs todo-completed">Buy a milk</span>
-
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-check-square"></i> </a>
-                                        <span class="m-l-xs  todo-completed">Go to shop and find some products.</span>
-
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Send documents to Mike</span>
-                                        <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 mins</small>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Go to the doctor dr Smith</span>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Plan vacation</span>
-                                    </li>
-                                </ul>
+                                <?php if ($TaskList): ?>
+                                    
+                                        <ul class="todo-list m-t small-list">
+                                            <?php foreach (($TaskList?:array()) as $task): ?>
+                                                <li>
+                                                    <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
+                                                    <span class="m-l-xs"><?php echo $task['Title']; ?></span>
+                                                    <?php if ($task['Deadline']): ?>
+                                                        <span class="pull-right m-r-xs text-danger"><?php echo $task['Deadline']; ?></span>
+                                                    <?php endif; ?>
+                                                    <div class="m-t-xs">
+                                                        Проект: <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects/<?php echo $task['ProjectId']; ?>"><?php echo $task['ProjectTitle']; ?></a>
+                                                    </div>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    
+                                    <?php else: ?>
+                                        <h4 class="text-center">Задачи отсутствуют</h4>
+                                    
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

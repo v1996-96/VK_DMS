@@ -34,7 +34,7 @@
                     <h2>Отделы</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/styleru/dashboard">Главная</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/dashboard">Главная</a>
                         </li>
                         <li class="active">
                             <strong>Отделы</strong>

@@ -66,6 +66,7 @@ $f3->route('GET|POST /invite/@InviteToken', 'Auth\InviteController->Gateway');
 // Companies page
 $f3->route('GET|POST /companies', 'Companies\ListingController->Gateway');
 $f3->route('GET|POST /@CompanyUrl/dashboard', 'Companies\DashboardController->Gateway');
+$f3->route('GET|POST /@CompanyUrl/edit', 'Companies\EditController->Gateway');
 
 // Employee
 $f3->route('GET|POST /@CompanyUrl/employee', 'Employee\ListController->Gateway');

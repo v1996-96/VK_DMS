@@ -5,15 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
+    <title><?php echo SITE_TITLE; ?> - <?php echo $_page_title; ?></title>
 
-    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="{{ @BASE }}/ui/css/plugins/jsTree/style.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/jsTree/style.min.css" rel="stylesheet">
 
-    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -22,13 +22,13 @@
     <div id="wrapper">
 
         <!-- Menu -->
-        <include href="templates/Menu.php" />
+        <?php echo $this->render('templates/Menu.php',$this->mime,get_defined_vars(),0); ?>
 
 
         <div id="page-wrapper" class="gray-bg">
 
             <!-- TopLine -->
-            <include href="templates/TopLine.php" />
+            <?php echo $this->render('templates/TopLine.php',$this->mime,get_defined_vars(),0); ?>
 
 
             <div class="row wrapper border-bottom white-bg page-heading">
@@ -36,7 +36,7 @@
                     <h2>Документы</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/{{ @PARAMS.CompanyUrl }}/dashboard">Главная</a>
+                            <a href="/styleru/dashboard">Главная</a>
                         </li>
                         <li class="active">
                             <strong>Документы</strong>
@@ -76,28 +76,28 @@
 
 
             <!-- Footer -->
-            <include href="templates/Footer.php" />
+            <?php echo $this->render('templates/Footer.php',$this->mime,get_defined_vars(),0); ?>
         </div>
 
 
         <!-- RightSidebar -->
-        <include href="templates/RightSidebar.php" />
+        <?php echo $this->render('templates/RightSidebar.php',$this->mime,get_defined_vars(),0); ?>
 
 
     </div>
 
 
     <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/bootstrap.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
 
-    <script src="{{ @BASE }}/ui/js/plugins/jsTree/jstree.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/jsTree/jstree.min.js"></script>
 
     <script type="text/javascript">
         $(function(){

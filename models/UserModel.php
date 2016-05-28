@@ -113,6 +113,44 @@ class UserModel extends \BaseModel implements \IModel
 	}
 
 
+	private function Activity($id) {
+		$intervals = array();
+		$startDate = strtotime("-1 month");
+		$endDate = time();
+
+		while ($startDate < $endDate) {
+			$intervals[] = array(
+				"from" => $startDate,
+				"to" => strtotime("+1 day", $startDate)
+				);
+			$startDate = strtotime("+1 day", $startDate);
+		}
+
+		$activity = array();
+
+		foreach ($intervals as $period) {
+			$response = $this->db->exec("SELECT 
+											d.DepartmentId,
+											COUNT(t.IsClosed = 1) as ClosedCount
+										FROM Department as d
+										LEFT JOIN Project as p ON d.DepartmentId = p.DepartmentId
+										LEFT JOIN Task as t ON p.ProjectId = t.ProjectId
+										WHERE 
+											d.DepartmentId = :id AND
+											t.DateClosed BETWEEN :startDate AND :endDate
+										GROUP BY d.DepartmentId",
+										array(
+											"id" => (int)$id, 
+											"startDate" => date("Y-m-d H:i:s", $period["from"]),
+											"endDate" => date("Y-m-d H:i:s", $period["to"])
+											));
+			$activity[] = $response ? $response[0]["ClosedCount"] : 0;
+		}
+
+		return $activity;
+	}
+
+
 	/* Read */
 	public function getData($search = array()) {
 		if (isset($search["type"])) {

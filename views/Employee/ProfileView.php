@@ -31,6 +31,8 @@ class ProfileView extends \BaseView
 		$this->f3->set("_topLineColor", "");
 
 		$employee = new \UserModel($this->f3);
+		$project = new \ProjectModel($this->f3);
+		$task = new \TaskModel($this->f3);
 
 		$employeeData = $employee->getData(array(
 			"type" => "summary", 
@@ -38,5 +40,19 @@ class ProfileView extends \BaseView
 			"url" => $this->CompanyUrl
 			));
 		$this->f3->set("EmployeeData", $employeeData ? $employeeData[0] : null);
+
+		$projectList = $project->getData(array(
+			"type" => "forEmployee", 
+			"id" => $this->EmployeeId, 
+			"url" => $this->CompanyUrl));
+		$taskList = $task->getData(array(
+			"type" => "forEmployee", 
+			"id" => $this->EmployeeId, 
+			"url" => $this->CompanyUrl));
+
+		$this->f3->mset(array(
+			"ProjectList" => $projectList,
+			"TaskList" => $taskList
+			));
 	}
 }

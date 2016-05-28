@@ -37,6 +37,7 @@ class ListController extends \BaseController
 		try {
 			$invite = new \CompanyInviteModel($this->f3);
 			$company = new \CompanyModel($this->f3);
+			$employee = new \CompanyEmployeeModel($this->f3);
 
 			$url = $this->f3->get("PARAMS")["CompanyUrl"];
 			if (is_null($url)) 
@@ -52,7 +53,7 @@ class ListController extends \BaseController
 			if (!$this->CheckVkId($_POST["VK"])) 
 				throw new \Exception("Неверный vk id");
 
-			if (!$company->getData(array("type" => "isVkNew", "id" => $companyInfo["CompanyId"], "vk" => $_POST["VK"]))) 
+			if (!$employee->getData(array("type" => "isVkNew", "id" => $companyInfo["CompanyId"], "vk" => $_POST["VK"]))) 
 				throw new \Exception("Пользователь уже является сотрудником компании");
 				
 			$tries = 0;

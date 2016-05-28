@@ -11,7 +11,7 @@
                         <a href="/companies">Сменить компанию</a>
                     </li>
                     <?php if ($CompanyRight_Edit): ?>
-                        <li><a href="/<?php echo $CompanyUrl; ?>/edit">Редактировать</a></li>
+                        <li><a href="/<?php echo $PARAMS['CompanyUrl']; ?>/edit">Редактировать</a></li>
                     <?php endif; ?>
                 </ul>
             </h3>

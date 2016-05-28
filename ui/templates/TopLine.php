@@ -15,7 +15,7 @@ defined('_EXECUTED') or die('Restricted access');
                         <a href="/companies">Сменить компанию</a>
                     </li>
                     <check if="{{ @CompanyRight_Edit }}">
-                        <li><a href="/{{ @CompanyUrl }}/edit">Редактировать</a></li>
+                        <li><a href="/{{ @PARAMS.CompanyUrl }}/edit">Редактировать</a></li>
                     </check>
                 </ul>
             </h3>

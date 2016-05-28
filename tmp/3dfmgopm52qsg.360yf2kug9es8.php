@@ -5,14 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
+    <title><?php echo SITE_TITLE; ?> - <?php echo $_page_title; ?></title>
 
-    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/plugins/iCheck/custom.css" rel="stylesheet">
 
-    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
+    <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
 
     <style type="text/css">
     .sort-toggle{
@@ -36,27 +36,27 @@
     <div id="wrapper">
 
         <!-- Menu -->
-        <include href="templates/Menu.php" />
+        <?php echo $this->render('templates/Menu.php',$this->mime,get_defined_vars(),0); ?>
 
 
         <div id="page-wrapper" class="gray-bg">
 
             <!-- TopLine -->
-            <include href="templates/TopLine.php" />
+            <?php echo $this->render('templates/TopLine.php',$this->mime,get_defined_vars(),0); ?>
 
 
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-9">
-                    <h2>{{ @ProjectInfo.Title }}</h2>
+                    <h2><?php echo $ProjectInfo['Title']; ?></h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/{{ @PARAMS.CompanyUrl }}/dashboard">Главная</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/dashboard">Главная</a>
                         </li>
                         <li>
-                            <a href="/{{ @PARAMS.CompanyUrl }}/projects">Проекты</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects">Проекты</a>
                         </li>
                         <li class="active">
-                            <strong>{{ @ProjectInfo.Title }}</strong>
+                            <strong><?php echo $ProjectInfo['Title']; ?></strong>
                         </li>
                     </ol>
                 </div>
@@ -69,46 +69,46 @@
                     <div class="col-md-4">
                         <div class="ibox">
                             <div class="ibox-content">
-                                <h2 class="m-t-none m-b">{{ @ProjectInfo.Title }}</h2>
+                                <h2 class="m-t-none m-b"><?php echo $ProjectInfo['Title']; ?></h2>
                                 <p>
                                     Статус: 
-                                    <check if="{{ @ProjectInfo.Status == 1 }}">
-                                        <true><span class="label label-primary">Активный</span></true>
-                                        <false><span class="label label-default">Закрытый</span></false>
-                                    </check>
+                                    <?php if ($ProjectInfo['Status'] == 1): ?>
+                                        <span class="label label-primary">Активный</span>
+                                        <?php else: ?><span class="label label-default">Закрытый</span>
+                                    <?php endif; ?>
                                 </p>
-                                <p>Отдел: {{ @ProjectInfo.DepartmentTitle }}</p>
-                                <p>Дата создания: {{ @ProjectInfo.DateAdd }}</p>
+                                <p>Отдел: <?php echo $ProjectInfo['DepartmentTitle']; ?></p>
+                                <p>Дата создания: <?php echo $ProjectInfo['DateAdd']; ?></p>
 
-                                <check if="{{ @ProjectInfo.Description }}">
-                                    <p>{{ @ProjectInfo.Description }}</p>
-                                </check>
+                                <?php if ($ProjectInfo['Description']): ?>
+                                    <p><?php echo $ProjectInfo['Description']; ?></p>
+                                <?php endif; ?>
 
-                                <check if="{{ @ManagerList }}">
+                                <?php if ($ManagerList): ?>
                                     <h4 style="margin: 20px 0 10px 0; border-bottom: 1px solid #787878; padding-bottom: 5px;">Менеджеры</h4>
                                     <div class="project_employee clearfix">
-                                        <repeat group="{{ @ManagerList }}" value="{{ @manager }}">
-                                            <a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @manager.UserId }}" 
+                                        <?php foreach (($ManagerList?:array()) as $manager): ?>
+                                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $manager['UserId']; ?>" 
                                                 style="display: block; margin: 5px; float: left;"
-                                                title="{{ @manager.Name }} {{ @manager.Surname }}">
-                                                <img width="50" height="50" src="{{ @manager.VK_Avatar }}" class="img-circle" />
+                                                title="<?php echo $manager['Name']; ?> <?php echo $manager['Surname']; ?>">
+                                                <img width="50" height="50" src="<?php echo $manager['VK_Avatar']; ?>" class="img-circle" />
                                             </a>
-                                        </repeat>
+                                        <?php endforeach; ?>
                                     </div>
-                                </check>
+                                <?php endif; ?>
 
-                                <check if="{{ @EmployeeList }}">
+                                <?php if ($EmployeeList): ?>
                                     <h4 style="margin: 20px 0 10px 0; border-bottom: 1px solid #787878; padding-bottom: 5px;">Сотрудники</h4>
                                     <div class="project_employee clearfix">
-                                        <repeat group="{{ @EmployeeList }}" value="{{ @employee }}">
-                                            <a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @employee.UserId }}" 
+                                        <?php foreach (($EmployeeList?:array()) as $employee): ?>
+                                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $employee['UserId']; ?>" 
                                                 style="display: block; margin: 5px; float: left;"
-                                                title="{{ @employee.Name }} {{ @employee.Surname }}">
-                                                <img width="50" height="50" src="{{ @employee.VK_Avatar }}" class="img-circle" />
+                                                title="<?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?>">
+                                                <img width="50" height="50" src="<?php echo $employee['VK_Avatar']; ?>" class="img-circle" />
                                             </a>
-                                        </repeat>
+                                        <?php endforeach; ?>
                                     </div>
-                                </check>
+                                <?php endif; ?>
 
                                 
                             </div>
@@ -266,12 +266,12 @@
 
 
             <!-- Footer -->
-            <include href="templates/Footer.php" />
+            <?php echo $this->render('templates/Footer.php',$this->mime,get_defined_vars(),0); ?>
         </div>
 
 
         <!-- RightSidebar -->
-        <include href="templates/RightSidebar.php" />
+        <?php echo $this->render('templates/RightSidebar.php',$this->mime,get_defined_vars(),0); ?>
 
 
     </div>
@@ -321,15 +321,15 @@
 
 
     <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/bootstrap.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
+    <script src="<?php echo $BASE; ?>/ui/js/plugins/iCheck/icheck.min.js"></script>
 
 
     <script type="text/javascript">

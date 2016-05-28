@@ -5192,11 +5192,16 @@ del {
 /* E-commerce */
 .product-box {
   padding: 0;
-  border: 1px solid #e7eaec;
+  /*border: 1px solid #e7eaec;*/
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -ms-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
 }
 .product-box:hover,
 .product-box.active {
-  border: 1px solid transparent;
+  /*border: 1px solid transparent;*/
   -webkit-box-shadow: 0px 3px 7px 0px #a8a8a8;
   -moz-box-shadow: 0px 3px 7px 0px #a8a8a8;
   box-shadow: 0px 3px 7px 0px #a8a8a8;

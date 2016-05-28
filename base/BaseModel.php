@@ -84,7 +84,7 @@ abstract class BaseModel
 		$this->clearArray($fields, $conditionFields);
 
 		$fieldsList = $this->getQueryString($fields);
-		$conditionFieldsList = $this->getQueryString($conditionFields);
+		$conditionFieldsList = $this->getWhereString($conditionFields);
 
 		return $this->db->exec('UPDATE '.$this->entity.' SET '.$fieldsList.' WHERE '.$conditionFieldsList, $dataNeeded);
 	}
@@ -100,7 +100,7 @@ abstract class BaseModel
 	protected function delete($data, $conditionFields){
 		$dataNeeded = $this->checkForExistance($conditionFields, $data);
 
-		$conditionFieldsList = $this->getQueryString($conditionFields);
+		$conditionFieldsList = $this->getWhereString($conditionFields);
 
 		return $this->db->exec('DELETE FROM '.$this->entity.' WHERE '.$conditionFieldsList, $dataNeeded);
 	}
@@ -144,5 +144,12 @@ abstract class BaseModel
 			return $el . " = :" . $el;
 		}, $array);
 		return implode(", ", $array);
+	}
+
+	protected function getWhereString($array){
+		$array = array_map(function($el){
+			return $el . " = :" . $el;
+		}, $array);
+		return implode(" AND ", $array);
 	}
 }

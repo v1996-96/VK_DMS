@@ -16,6 +16,8 @@
     <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
     <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
 
+    <link href="{{ @BASE }}/ui/css/plugins/iCheck/custom.css" rel="stylesheet">
+
     <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
     <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
 
@@ -40,10 +42,10 @@
                     <h2>{{ @DepartmentSummary.Title }}</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/styleru/dashboard">Главная</a>
+                            <a href="/{{ @PARAMS.CompanyUrl }}/dashboard">Главная</a>
                         </li>
                         <li>
-                            <a href="/styleru/departments">Отделы</a>
+                            <a href="/{{ @PARAMS.CompanyUrl }}/departments">Отделы</a>
                         </li>
                         <li class="active">
                             <strong>{{ @DepartmentSummary.Title }}</strong>
@@ -124,7 +126,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row m-b">
                     <div class="col-lg-12">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
@@ -135,87 +137,56 @@
                                 <div id="projectsTab" class="tab-pane active">
                                     <div class="panel-body">
 
-                                        <a href="#" class="btn btn-primary">Создать проект</a>
+                                        <a href="#addProjectModal" data-toggle="modal" class="btn btn-primary">Создать проект</a>
 
-                                        <hr>
+                                        <br><br>
 
-                                        <table class="table table-hover no-margins">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="project-status">
-                                                        <span class="label label-primary">Active</span>
-                                                    </td>
-                                                    <td class="project-title">
-                                                        <a href="project_detail.html">Contract with Zender Company</a>
-                                                        <br/>
-                                                        <small>Created 14.08.2014</small>
-                                                    </td>
-                                                    <td class="project-completion">
-                                                        <small>Задач:</small><br>
-                                                        <h5 class="no-margins">12</h5>
-                                                    </td>
-                                                    <td class="project-completion">
-                                                        <small>Сотрудников:</small><br>
-                                                        <h5 class="no-margins">15</h5>
-                                                    </td>
-                                                    <td class="project-actions">
-                                                        <a href="#" class="btn btn-success btn-sm">Перейти</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="project-status">
-                                                        <span class="label label-warning">Closed</span>
-                                                    </td>
-                                                    <td class="project-title">
-                                                        <a href="project_detail.html">Contract with Zender Company</a>
-                                                        <br/>
-                                                        <small>Created 14.08.2014</small>
-                                                    </td>
-                                                    <td class="project-completion">
-                                                        <small>Задач:</small><br>
-                                                        <h5 class="no-margins">12</h5>
-                                                    </td>
-                                                    <td class="project-completion">
-                                                        <small>Сотрудников:</small><br>
-                                                        <h5 class="no-margins">15</h5>
-                                                    </td>
-                                                    <td class="project-actions">
-                                                        <a href="#" class="btn btn-success btn-sm">Перейти</a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <check if="{{ @ProjectList }}">
+                                            <true>
+                                                <table class="table table-hover no-margins">
+                                                    <tbody>
+                                                        <repeat group="{{ @ProjectList }}" value="{{ @project }}">
+                                                            <tr>
+                                                                <td class="project-status">
+                                                                    <check if="{{ @project.Status == 1 }}">
+                                                                        <true><span class="label label-primary">Активный</span></true>
+                                                                        <false><span class="label label-default">Завершен</span></false>
+                                                                    </check>
+                                                                </td>
+                                                                <td class="project-title">
+                                                                    <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}">{{ @project.Title }}</a>
+                                                                    <br/>
+                                                                    <small>Дата создания: {{ @project.DateAdd }}</small>
+                                                                </td>
+                                                                <td class="project-completion">
+                                                                    <small>Задач:</small><br>
+                                                                    <h5 class="no-margins">{{ @project.TaskCount }}</h5>
+                                                                </td>
+                                                                <td class="project-completion">
+                                                                    <small>Сотрудников:</small><br>
+                                                                    <h5 class="no-margins">{{ @project.EmployeeCount }}</h5>
+                                                                </td>
+                                                                <td class="project-actions">
+                                                                    <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}" class="btn btn-success btn-sm">Перейти</a>
+                                                                </td>
+                                                            </tr>
+                                                        </repeat>
+                                                    </tbody>
+                                                </table>
+                                            </true>
+                                            <false>
+                                                <h4 class="text-center">Проекты отсутствуют</h4>
+                                            </false>
+                                        </check>
 
-                                        <table id="projectList" class="hidden table table-striped table-bordered table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Название</th>
-                                                    <th>Дата создания</th>
-                                                    <th>Сотрудники</th>
-                                                    <th>Задачи</th>
-                                                    <th>Действия</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Курсовая работа</td>
-                                                    <td>12/12/2012 20:15:00</td>
-                                                    <td>25</td>
-                                                    <td>12</td>
-                                                    <td>
-                                                        <a href="#" class="btn btn-success btn-xs">Перейти</a>
-                                                    </td>
-                                                </tr>                                                    
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
 
                                 <div id="employeeTab" class="tab-pane">
                                     <div class="panel-body">
 
-                                        <a href="#" class="btn btn-primary">Добавить сотрудника</a>
-                                        <a href="#" class="btn btn-warning">Добавить руководителя</a>
+                                        <a href="#addManagerModal" data-toggle="modal" class="btn btn-warning">Добавить руководителя</a>
+                                        <a href="#addEmployeeModal" data-toggle="modal" class="btn btn-primary">Добавить сотрудника</a>
 
                                         <hr>
 
@@ -230,13 +201,18 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>Трушин Виктор</td>
-                                                            <td>
-                                                                <a href="#" class="btn btn-xs btn-primary">Профиль</a>
-                                                                <a href="#" class="btn btn-xs btn-danger">Удалить</a>
-                                                            </td>
-                                                        </tr>                                      
+                                                        <repeat group="{{ @ManagerList }}" value="{{ @manager }}">
+                                                            <tr>
+                                                                <td>{{ @manager.Name }} {{ @manager.Surname }}</td>
+                                                                <td>
+                                                                    <form method="POST">
+                                                                        <input type="hidden" name="EmployeeId" value="{{ @manager.UserId }}" />
+                                                                        <a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @manager.UserId }}" class="btn btn-xs btn-primary">Профиль</a>
+                                                                        <button type="submit" name="action" value="deleteEmployee" class="btn btn-xs btn-danger">Удалить</button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr> 
+                                                        </repeat>                                     
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -251,13 +227,18 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>Трушин Виктор</td>
-                                                            <td>
-                                                                <a href="#" class="btn btn-xs btn-primary">Профиль</a>
-                                                                <a href="#" class="btn btn-xs btn-danger">Удалить</a>
-                                                            </td>
-                                                        </tr>                                      
+                                                        <repeat group="{{ @EmployeeList }}" value="{{ @employee }}">
+                                                            <tr>
+                                                                <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
+                                                                <td>
+                                                                    <form method="POST">
+                                                                        <input type="hidden" name="EmployeeId" value="{{ @employee.UserId }}" />
+                                                                        <a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @employee.UserId }}" class="btn btn-xs btn-primary">Профиль</a>
+                                                                        <button type="submit" name="action" value="deleteEmployee" class="btn btn-xs btn-danger">Удалить</button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr> 
+                                                        </repeat>                                     
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -326,6 +307,157 @@
     </div>
 
 
+    <div class="modal inmodal" id="addProjectModal" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <!-- <i class="fa fa-building-o modal-icon"></i> -->
+                    <h4 class="modal-title">Создание проекта</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-md-9 block-center">
+
+                            <form method="POST">
+                                <div class="form-group">
+                                    <label>Название</label>
+                                    <input type="text" name="Title" class="form-control" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Описание</label>
+                                    <textarea name="Description" class="form-control"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <table id="newProjectEmployeeList" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Менеджер</th>
+                                                <th>Сотрудник</th>
+                                                <th>Имя</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <repeat group="{{ @EmployeeFullList }}" value="{{ @employee }}">
+                                                <tr class="projectEmployeeRow">
+                                                    <td><input data-type="manager" type="checkbox" name="managerList[]" value="{{ @employee.UserId }}" /></td>
+                                                    <td><input data-type="employee" type="checkbox" name="employeeList[]" value="{{ @employee.UserId }}" /></td>
+                                                    <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
+                                                </tr>
+                                            </repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <button type="submit" name="action" value="createProject" class="btn btn-primary">Создать проект</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal inmodal" id="addEmployeeModal" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <!-- <i class="fa fa-building-o modal-icon"></i> -->
+                    <h4 class="modal-title">Добавление сотрудника</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-md-9 block-center">
+
+                            <form method="POST">
+                                <div class="form-group">
+                                    <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Выбрать</th>
+                                                <th>Имя</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <repeat group="{{ @FreeCompanyEmployeeList }}" value="{{ @employee }}">
+                                                <tr>
+                                                    <td><input class="i-checks" type="checkbox" name="employeeList[]" value="{{ @employee.UserId }}" /></td>
+                                                    <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
+                                                </tr>
+                                            </repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary" name="action" value="addEmployees">Добавить сотрудников</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal inmodal" id="addManagerModal" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <!-- <i class="fa fa-building-o modal-icon"></i> -->
+                    <h4 class="modal-title">Добавление руководителя</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-md-9 block-center">
+
+                            <form method="POST">
+                                <div class="form-group">
+                                    <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Выбрать</th>
+                                                <th>Имя</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <repeat group="{{ @FreeCompanyEmployeeList }}" value="{{ @employee }}">
+                                                <tr>
+                                                    <td><input type="checkbox" class="i-checks" name="employeeList[]" value="{{ @employee.UserId }}" /></td>
+                                                    <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
+                                                </tr>
+                                            </repeat>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary" name="action" value="addManagers">Добавить руководителей</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 
 
@@ -344,6 +476,7 @@
     <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.bootstrap.js"></script>
     <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <script src="{{ @BASE }}/ui/js/plugins/iCheck/icheck.min.js"></script>
 
     <!-- Sparkline -->
     <script src="{{ @BASE }}/ui/js/plugins/sparkline/jquery.sparkline.min.js"></script>
@@ -352,7 +485,7 @@
         $(document).ready(function() {
 
 
-            $("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 48], {
+            $("#sparkline1").sparkline({{ json_encode(@DepartmentActivity) }}, {
                 type: 'line',
                 width: '100%',
                 height: '50',
@@ -361,19 +494,35 @@
             });
 
 
-            $('#projectList').DataTable({
+            $('#projectList, #departmentEmployeeList, #departmentManagerList').DataTable({
                 lengthChange: false,
                 searching: false
             });
 
-            $('#departmentEmployeeList').DataTable({
-                lengthChange: false,
-                searching: false
+            $("#newProjectEmployeeList, #freeCompanyEmployeeList").DataTable({
+                lengthChange : false,
+                searching : false,
+                info : false
             });
 
-            $('#departmentManagerList').DataTable({
-                lengthChange: false,
-                searching: false
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $("#newProjectEmployeeList").on("click", ".projectEmployeeRow input[type='checkbox']", function(e){
+                var current = $(this).attr("data-type");
+
+                if (current == "manager" &&
+                    $(this).parents("tr").find("[data-type='employee']").is(":checked")) {
+                    e.preventDefault();
+                    return false;
+                }
+                if (current == "employee" &&
+                    $(this).parents("tr").find("[data-type='manager']").is(":checked")) {
+                    e.preventDefault();
+                    return false;
+                }
             });
 
 

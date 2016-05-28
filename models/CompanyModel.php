@@ -15,19 +15,6 @@ class CompanyModel extends \BaseModel implements \IModel
 	}
 
 
-	private function IsVkNew($vk, $id) {
-		$companyEmployee = $this->db->exec("SELECT * FROM User as U
-											LEFT JOIN CompanyEmployee as CE ON CE.UserId = U.id
-											WHERE CE.CompanyId = :id AND U.VK = :vk",
-											array("id" => $id, "vk" => $vk));
-		$companyOwner = $this->db->exec("SELECT * FROM User as U
-											LEFT JOIN Company as C ON C.CreatorId = U.id
-											WHERE C.CompanyId = :id AND U.VK = :vk",
-											array("id" => $id, "vk" => $vk));
-		return !(bool)$companyOwner && !(bool)$companyEmployee;
-	}
-
-
 	private function ByUrl($url) {
 		$resp = $this->db->exec("SELECT * FROM Company WHERE Url = ?", $url);
 		return $resp ? $resp[0] : null;
@@ -170,6 +157,18 @@ class CompanyModel extends \BaseModel implements \IModel
 	}
 
 
+	private function FreeEmployee($companyUrl) {
+		return $this->db->exec("SELECT * FROM User as u
+								LEFT JOIN CompanyEmployee as ce ON u.id = ce.UserId
+								LEFT JOIN Company as c ON c.CompanyId = ce.CompanyId
+								WHERE NOT Exists(
+									SELECT * FROM DepartmentEmployee as de
+									LEFT JOIN Department as d ON d.DepartmentID = de.DepartmentId
+									WHERE d.CompanyId = c.CompanyId AND de.UserId = u.id
+								) AND c.Url = ?", $companyUrl);
+	}
+
+
 	private function ById($id) {
 		return $this->db->exec("SELECT * FROM Company WHERE CompanyId = ?", $id);		
 	}
@@ -181,11 +180,6 @@ class CompanyModel extends \BaseModel implements \IModel
 				case 'isUrlUnique':
 					if (isset($search["url"])) {
 						return $this->IsUrlUnique($search["url"]);
-					} else return null;
-
-				case 'isVkNew':
-					if (isset($search["vk"]) && isset($search["id"])) {
-						return $this->IsVkNew($search["vk"], $search["id"]);
 					} else return null;
 
 				case 'getUserRights':
@@ -211,6 +205,11 @@ class CompanyModel extends \BaseModel implements \IModel
 				case 'byId':
 					if (isset($search["id"])) {
 						return $this->ById($search["id"]);
+					} else return null;
+
+				case 'freeEmployee':
+					if (isset($search["url"])) {
+						return $this->FreeEmployee($search["url"]);
 					} else return null;
 				
 				default: return null;

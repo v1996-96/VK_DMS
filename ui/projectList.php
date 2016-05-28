@@ -34,7 +34,7 @@
                     <h2>Проекты</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/styleru/dashboard">Главная</a>
+                            <a href="/{{ @PARAMS.CompanyUrl }}/dashboard">Главная</a>
                         </li>
                         <li class="active">
                             <strong>Проекты</strong>
@@ -54,7 +54,7 @@
 
                                 <div class="row m-b">
                                     <div class="col-md-6">
-                                        <h2 class="no-margins">Количество: 201</h2>
+                                        <h2 class="no-margins">Количество: {{ count(@ProjectList) }}</h2>
                                     </div>
 
                                     <div class="col-md-6">
@@ -69,56 +69,40 @@
 
                                 <table class="table table-hover no-margins">
                                     <tbody>
-                                        <tr>
-                                            <td class="project-status">
-                                                <span class="label label-primary">Active</span>
-                                            </td>
-                                            <td class="project-title">
-                                                <a href="project_detail.html">Contract with Zender Company</a>
-                                                <br/>
-                                                <small>Created 14.08.2014</small>
-                                            </td>
-                                            <td class="project-completion">
-                                                <small>Отдел:</small><br>
-                                                <h5 class="no-margins">Web разработка</h5>
-                                            </td>
-                                            <td class="project-completion">
-                                                <small>Задач:</small><br>
-                                                <h5 class="no-margins">12</h5>
-                                            </td>
-                                            <td class="project-completion">
-                                                <small>Сотрудников:</small><br>
-                                                <h5 class="no-margins">15</h5>
-                                            </td>
-                                            <td class="project-actions">
-                                                <a href="/styleru/projects/5" class="btn btn-success btn-sm">Перейти</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="project-status">
-                                                <span class="label label-warning">Closed</span>
-                                            </td>
-                                            <td class="project-title">
-                                                <a href="project_detail.html">Contract with Zender Company</a>
-                                                <br/>
-                                                <small>Created 14.08.2014</small>
-                                            </td>
-                                            <td class="project-completion">
-                                                <small>Отдел:</small><br>
-                                                <h5 class="no-margins">Web разработка</h5>
-                                            </td>
-                                            <td class="project-completion">
-                                                <small>Задач:</small><br>
-                                                <h5 class="no-margins">12</h5>
-                                            </td>
-                                            <td class="project-completion">
-                                                <small>Сотрудников:</small><br>
-                                                <h5 class="no-margins">15</h5>
-                                            </td>
-                                            <td class="project-actions">
-                                                <a href="#" class="btn btn-success btn-sm">Перейти</a>
-                                            </td>
-                                        </tr>
+                                        <repeat group="{{ @ProjectList }}" value="{{ @project }}">
+                                            <tr>
+                                                <td class="project-status">
+                                                    <check if="{{ @project.Status == 1 }}">
+                                                        <true>
+                                                            <span class="label label-primary">Активный</span>
+                                                        </true>
+                                                        <false>
+                                                            <span class="label label-default">Закрытый</span>
+                                                        </false>
+                                                    </check>
+                                                </td>
+                                                <td class="project-title">
+                                                    <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}">{{ @project.Title }}</a>
+                                                    <br/>
+                                                    <small>Дата создания: {{ @project.DateAdd }}</small>
+                                                </td>
+                                                <td class="project-completion">
+                                                    <small>Отдел:</small><br>
+                                                    <h5 class="no-margins">{{ @project.DepartmentTitle }}</h5>
+                                                </td>
+                                                <td class="project-completion">
+                                                    <small>Задач:</small><br>
+                                                    <h5 class="no-margins">{{ @project.TaskCount }}</h5>
+                                                </td>
+                                                <td class="project-completion">
+                                                    <small>Сотрудников:</small><br>
+                                                    <h5 class="no-margins">{{ @project.EmployeeCount }}</h5>
+                                                </td>
+                                                <td class="project-actions">
+                                                    <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}" class="btn btn-success btn-sm">Перейти</a>
+                                                </td>
+                                            </tr>
+                                        </repeat>
                                     </tbody>
                                 </table>
                             </div>

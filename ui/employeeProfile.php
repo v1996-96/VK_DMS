@@ -34,10 +34,10 @@
                     <h2>{{ @EmployeeData.Name }} {{ @EmployeeData.Surname }}</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/styleru/dashboard">Главная</a>
+                            <a href="/{{ @PARAMS.CompanyUrl }}/dashboard">Главная</a>
                         </li>
                         <li>
-                            <a href="/styleru/employee">Сотрудники</a>
+                            <a href="/{{ @PARAMS.CompanyUrl }}/employee">Сотрудники</a>
                         </li>
                         <li class="active">
                             <strong>{{ @EmployeeData.Name }} {{ @EmployeeData.Surname }}</strong>
@@ -90,30 +90,29 @@
                             <div class="ibox-content">
                                 <h3 style="margin-bottom: 20px;">Проекты</h3>
                                 
-                                <table class="table table-hover">
-                                    <tbody>
-                                        <tr>
-                                            <td class="project-title">
-                                                <a href="#">Contract with Zender Company</a>
-                                                <br/>
-                                                <small>Created 14.08.2014</small>
-                                            </td>
-                                            <td class="project-actions">
-                                                <a href="#" class="btn btn-white btn-sm"> View </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="project-title">
-                                                <a href="#">Contract with Zender Company</a>
-                                                <br/>
-                                                <small>Created 14.08.2014</small>
-                                            </td>
-                                            <td class="project-actions">
-                                                <a href="#" class="btn btn-white btn-sm"> View </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <check if="{{ @ProjectList }}">
+                                    <true>
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <repeat group="{{ @ProjectList }}" value="{{ @project }}">
+                                                    <tr>
+                                                        <td class="project-title">
+                                                            <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}">{{ @project.Title }}</a>
+                                                            <br/>
+                                                            <small>Дата создания: {{ @project.DateAdd }}</small>
+                                                        </td>
+                                                        <td class="project-actions">
+                                                            <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}" class="btn btn-white btn-sm"> Перейти</a>
+                                                        </td>
+                                                    </tr>
+                                                </repeat>
+                                            </tbody>
+                                        </table>
+                                    </true>
+                                    <false>
+                                        <h4 class="text-center">Проекты отсутствуют</h4>
+                                    </false>
+                                </check>
                             </div>
                         </div>
                     </div>
@@ -123,31 +122,27 @@
                             <div class="ibox-content">
                                 <h3 style="margin-bottom: 20px;">Задачи</h3>
                                 
-                                <ul class="todo-list m-t small-list">
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-check-square"></i> </a>
-                                        <span class="m-l-xs todo-completed">Buy a milk</span>
-
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-check-square"></i> </a>
-                                        <span class="m-l-xs  todo-completed">Go to shop and find some products.</span>
-
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Send documents to Mike</span>
-                                        <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 mins</small>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Go to the doctor dr Smith</span>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Plan vacation</span>
-                                    </li>
-                                </ul>
+                                <check if="{{ @TaskList }}">
+                                    <true>
+                                        <ul class="todo-list m-t small-list">
+                                            <repeat group="{{ @TaskList }}" value="{{ @task }}">
+                                                <li>
+                                                    <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
+                                                    <span class="m-l-xs">{{ @task.Title }}</span>
+                                                    <check if="{{ @task.Deadline }}">
+                                                        <span class="pull-right m-r-xs text-danger">{{ @task.Deadline }}</span>
+                                                    </check>
+                                                    <div class="m-t-xs">
+                                                        Проект: <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @task.ProjectId }}">{{ @task.ProjectTitle }}</a>
+                                                    </div>
+                                                </li>
+                                            </repeat>
+                                        </ul>
+                                    </true>
+                                    <false>
+                                        <h4 class="text-center">Задачи отсутствуют</h4>
+                                    </false>
+                                </check>
                             </div>
                         </div>
                     </div>

@@ -6,6 +6,10 @@ defined('_EXECUTED') or die('Restricted access');
 
 class DashboardView extends \BaseView
 {
+
+	public $CompanyUrl = null;
+	public $ProjectId = null;
+
 	// Class constructor
 	function __construct($f3){
 		$this->f3 = $f3;
@@ -25,5 +29,27 @@ class DashboardView extends \BaseView
 
 	private function SetVars() {
 		$this->f3->set("_topLineColor", "");
+
+		$project = new \ProjectModel($this->f3);
+		$projectEmployee = new \ProjectEmployeeModel($this->f3);
+
+		$projectInfo = $project->getData(array(
+			"type" => "byId",
+			"id" => $this->ProjectId
+			));
+		$this->f3->set("ProjectInfo", $projectInfo);
+
+		$managerList = $projectEmployee->getData(array(
+			"type" => "getManagers",
+			"id" => $this->ProjectId
+			));
+		$employeeList = $projectEmployee->getData(array(
+			"type" => "getEmployee",
+			"id" => $this->ProjectId
+			));
+		$this->f3->mset(array(
+			"ManagerList" => $managerList,
+			"EmployeeList" => $employeeList
+			));
 	}
 }
