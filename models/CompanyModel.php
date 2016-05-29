@@ -44,8 +44,14 @@ class CompanyModel extends \BaseModel implements \IModel
 	}
 
 
-	private function IsUrlUnique($url) {
-		$response = $this->db->exec("SELECT CompanyId FROM ".$this->entity." WHERE Url = ?", $url);
+	private function IsUrlUnique($url, $companyId = null) {
+		if (is_null($companyId)) {
+			$response = $this->db->exec("SELECT CompanyId FROM ".$this->entity." WHERE Url = ?", $url);
+		} else {
+			$response = $this->db->exec("SELECT CompanyId FROM ".$this->entity." 
+											WHERE Url = :url AND CompanyId <> :id",
+											array("url" => $url, "id" => $companyId));
+		}
 		return !(bool)$response;
 	}
 
@@ -179,7 +185,11 @@ class CompanyModel extends \BaseModel implements \IModel
 			switch ($search["type"]) {
 				case 'isUrlUnique':
 					if (isset($search["url"])) {
-						return $this->IsUrlUnique($search["url"]);
+						if (isset($search["id"])) {
+							return $this->IsUrlUnique($search["url"], $search["id"]);
+						} else {
+							return $this->IsUrlUnique($search["url"]);
+						}
 					} else return null;
 
 				case 'getUserRights':
@@ -224,11 +234,11 @@ class CompanyModel extends \BaseModel implements \IModel
 
 
 	public function edit($data = array()) {
-		return null;
+		return $this->update($data, array("CompanyId"));
 	}
 
 
 	public function remove($find = null) {
-		return null;
+		return $this->delete($find, array("CompanyId"));
 	}
 }

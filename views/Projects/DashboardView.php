@@ -32,6 +32,7 @@ class DashboardView extends \BaseView
 
 		$project = new \ProjectModel($this->f3);
 		$projectEmployee = new \ProjectEmployeeModel($this->f3);
+		$departmentEmployee = new \DepartmentEmployeeModel($this->f3);
 
 		$projectInfo = $project->getData(array(
 			"type" => "byId",
@@ -51,5 +52,14 @@ class DashboardView extends \BaseView
 			"ManagerList" => $managerList,
 			"EmployeeList" => $employeeList
 			));
+
+		if ($projectInfo) {
+			$departmentEmployeeList = $departmentEmployee->getData(array(
+				"type" => "freeEmployeeForProject",
+				"departmentId" => $projectInfo["DepartmentId"],
+				"projectId" => $this->ProjectId
+				));
+			$this->f3->set("DepartmentEmployeeList", $departmentEmployeeList);
+		}
 	}
 }

@@ -61,7 +61,7 @@ class ListingController extends \BaseController
 			$company = new \CompanyModel($this->f3);
 
 			if (isset($_POST["Url"])){
-				if(!preg_match("/^[a-z_]{1,}$/", $_POST["Url"]))
+				if(!preg_match("/^[a-z\d_]{1,}$/", $_POST["Url"]))
 					throw new \Exception("Неверный url");
 
 				if(!$company->getData(array("type" => "isUrlUnique", "url" => $_POST["Url"]))) 

@@ -4,6 +4,14 @@ namespace Department;
 
 defined('_EXECUTED') or die('Restricted access');
 
+// For PDO errors
+set_error_handler(function ($errno, $errstr, $errfile, $errline ) {
+    if (!(error_reporting() & $errno)) {
+        return;
+    }
+    throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
 class DashboardController extends \BaseController
 {
 	const PAGE_TYPE = "department_dashboard";
@@ -85,15 +93,21 @@ class DashboardController extends \BaseController
 			if (!$companyData) return;
 			
 			if (count($_POST["employeeList"]) > 0) {
-				foreach ($_POST["employeeList"] as $UserId) {
+				foreach ($_POST["employeeList"] as $index => $UserId) {
 					$departmentEmployee->add(array(
 						"UserId" => (int)$UserId,
 						"CompanyId" => (int)$companyData["CompanyId"],
 						"DepartmentId" => (int)$this->DepartmentId,
-						"IsManager" => (int)$isManager
+						"IsManager" => (int)$isManager,
+						"RoleDescription" => 
+							isset($_POST["roleDescription"][$index]) ? 
+								$_POST["roleDescription"][$index] : 
+								null
 						));
 				}
 			}
+		} catch(\ErrorException $e) {
+			$this->f3->set("department_error", "Произошла непредвиденная ошибка");
 		} catch (\Exception $e) {
 			$this->f3->set("department_error", $e->getMessage());
 		}
@@ -102,7 +116,10 @@ class DashboardController extends \BaseController
 
 	private function DeleteEmployee() {
 		$departmentEmployee = new \DepartmentEmployeeModel($this->f3);
+		$projectEmployee = new \ProjectEmployeeModel($this->f3);
 		$company = new \CompanyModel($this->f3);
+
+		// TODO: Restrict deletion when there are open tasks or give supporting information
 
 		try {
 			if (!isset($_POST["EmployeeId"])) 
@@ -111,6 +128,27 @@ class DashboardController extends \BaseController
 			$companyData = $company->getData(array("type" => "byUrl", "url" => $this->CompanyUrl));
 			if (!$companyData) return;
 
+			$emplyeesProject = $projectEmployee->getData(array(
+				"type" => "getProjects", 
+				"employeeId" => (int)$_POST["EmployeeId"],
+				"departmentId" => (int)$this->DepartmentId
+				));
+			if ($emplyeesProject) {
+				foreach ($emplyeesProject as $project) {
+					if ($project["IsManager"]) {
+						$managerList = $projectEmployee->getData(array(
+							"type" => "getManagers", "id" => $project["ProjectId"]
+							));
+
+						if ($managerList && count($managerList) <= 1) 
+							throw new \Exception("Вы не можете удалить сотрудника, 
+								поскольку он является единственным менеджером на проекте: " . $project["Title"]);
+					}
+				}
+			}
+
+			// There are triggers deleting records from 
+			// ProjectEmployee and TaskEmployee
 			$departmentEmployee->remove(array(
 				"UserId" => (int)$_POST["EmployeeId"],
 				"CompanyId" => (int)$companyData["CompanyId"]
@@ -187,9 +225,8 @@ class DashboardController extends \BaseController
 
 		try {
 			$success = $department->remove(array("DepartmentId" => $this->DepartmentId));
-			if ($success) {
+			if ($success)
 				$this->f3->reroute("/" . $this->CompanyUrl . "/departments");
-			}
 		} catch (\Exception $e) {
 			$this->f3->set("department_error", $e->getMessage());
 		}

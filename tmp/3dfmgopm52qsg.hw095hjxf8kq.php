@@ -88,7 +88,7 @@
                                                     <img alt="image" width="40" height="40" class="img-circle" src="<?php echo $user['VK_Avatar']; ?>" />
                                                 </td>
                                                 <td>
-                                                    <a href="/styleru/employee/<?php echo $user['id']; ?>"><?php echo $user['Name']; ?> <?php echo $user['Surname']; ?></a>
+                                                    <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $user['id']; ?>"><?php echo $user['Name']; ?> <?php echo $user['Surname']; ?></a>
                                                     <br/>
                                                     <small>Добавлен <?php echo $user['DateRegistered']; ?></small>
                                                 </td>
@@ -106,7 +106,7 @@
                                                 </td> 
                                                 <td class="text-right">
                                                     <a href="http://vk.com/id<?php echo $user['VK']; ?>" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-external-link"></i> &nbsp; VK </a>
-                                                    <a href="/styleru/employee/<?php echo $user['id']; ?>" class="btn btn-primary btn-sm"> Профиль </a>
+                                                    <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $user['id']; ?>" class="btn btn-primary btn-sm"> Профиль </a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

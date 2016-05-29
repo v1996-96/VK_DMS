@@ -107,11 +107,11 @@ class ProjectModel extends \BaseModel implements \IModel
 
 
 	public function edit($data = array()) {
-		return null;
+		return $this->update($data, array("ProjectId"));
 	}
 
 
 	public function remove($find = null) {
-		return null;
+		return $this->delete($find, array("ProjectId"));
 	}
 }

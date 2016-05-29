@@ -67,44 +67,51 @@
                                     </div>
                                 </div>
 
-                                <table class="table table-hover no-margins">
-                                    <tbody>
-                                        <?php foreach (($ProjectList?:array()) as $project): ?>
-                                            <tr>
-                                                <td class="project-status">
-                                                    <?php if ($project['Status'] == 1): ?>
-                                                        
-                                                            <span class="label label-primary">Активный</span>
-                                                        
-                                                        <?php else: ?>
-                                                            <span class="label label-default">Закрытый</span>
-                                                        
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td class="project-title">
-                                                    <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects/<?php echo $project['ProjectId']; ?>"><?php echo $project['Title']; ?></a>
-                                                    <br/>
-                                                    <small>Дата создания: <?php echo $project['DateAdd']; ?></small>
-                                                </td>
-                                                <td class="project-completion">
-                                                    <small>Отдел:</small><br>
-                                                    <h5 class="no-margins"><?php echo $project['DepartmentTitle']; ?></h5>
-                                                </td>
-                                                <td class="project-completion">
-                                                    <small>Задач:</small><br>
-                                                    <h5 class="no-margins"><?php echo $project['TaskCount']; ?></h5>
-                                                </td>
-                                                <td class="project-completion">
-                                                    <small>Сотрудников:</small><br>
-                                                    <h5 class="no-margins"><?php echo $project['EmployeeCount']; ?></h5>
-                                                </td>
-                                                <td class="project-actions">
-                                                    <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects/<?php echo $project['ProjectId']; ?>" class="btn btn-success btn-sm">Перейти</a>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
+                                <?php if ($ProjectList): ?>
+                                    
+                                        <table class="table table-hover no-margins">
+                                            <tbody>
+                                                <?php foreach (($ProjectList?:array()) as $project): ?>
+                                                    <tr>
+                                                        <td class="project-status">
+                                                            <?php if ($project['Status'] == 1): ?>
+                                                                
+                                                                    <span class="label label-primary">Активный</span>
+                                                                
+                                                                <?php else: ?>
+                                                                    <span class="label label-default">Закрытый</span>
+                                                                
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td class="project-title">
+                                                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects/<?php echo $project['ProjectId']; ?>"><?php echo $project['Title']; ?></a>
+                                                            <br/>
+                                                            <small>Дата создания: <?php echo $project['DateAdd']; ?></small>
+                                                        </td>
+                                                        <td class="project-completion">
+                                                            <small>Отдел:</small><br>
+                                                            <h5 class="no-margins"><?php echo $project['DepartmentTitle']; ?></h5>
+                                                        </td>
+                                                        <td class="project-completion">
+                                                            <small>Задач:</small><br>
+                                                            <h5 class="no-margins"><?php echo $project['TaskCount']; ?></h5>
+                                                        </td>
+                                                        <td class="project-completion">
+                                                            <small>Сотрудников:</small><br>
+                                                            <h5 class="no-margins"><?php echo $project['EmployeeCount']; ?></h5>
+                                                        </td>
+                                                        <td class="project-actions">
+                                                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects/<?php echo $project['ProjectId']; ?>" class="btn btn-success btn-sm">Перейти</a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    
+                                    <?php else: ?>
+                                        <h4 class="text-center" style="padding-top: 10px;">Проекты отсутствуют</h4>
+                                    
+                                <?php endif; ?>
                             </div>
                         </div>
 

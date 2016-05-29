@@ -88,7 +88,7 @@
                                                     <img alt="image" width="40" height="40" class="img-circle" src="{{ @user.VK_Avatar }}" />
                                                 </td>
                                                 <td>
-                                                    <a href="/styleru/employee/{{ @user.id }}">{{ @user.Name }} {{ @user.Surname }}</a>
+                                                    <a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @user.id }}">{{ @user.Name }} {{ @user.Surname }}</a>
                                                     <br/>
                                                     <small>Добавлен {{ @user.DateRegistered }}</small>
                                                 </td>
@@ -106,7 +106,7 @@
                                                 </td> 
                                                 <td class="text-right">
                                                     <a href="http://vk.com/id{{ @user.VK }}" target="_blank" class="btn btn-white btn-sm"><i class="fa fa-external-link"></i> &nbsp; VK </a>
-                                                    <a href="/styleru/employee/{{ @user.id }}" class="btn btn-primary btn-sm"> Профиль </a>
+                                                    <a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @user.id }}" class="btn btn-primary btn-sm"> Профиль </a>
                                                 </td>
                                             </tr>
                                         </repeat>

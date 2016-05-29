@@ -103,8 +103,8 @@ class UserModel extends \BaseModel implements \IModel
 					LEFT JOIN Company as c ON c.CreatorId = u.id
 					LEFT JOIN CompanyEmployee as ce ON u.id = ce.UserId
 					LEFT JOIN Company as cc on cc.CompanyId = ce.CompanyId
-					LEFT JOIN Department as d ON d.CompanyId = cc.CompanyId
-					LEFT JOIN DepartmentEmployee as de ON ((u.id = de.UserId) and (de.DepartmentId = d.DepartmentId))
+					LEFT JOIN DepartmentEmployee as de ON ((u.id = de.UserId) and (de.CompanyId = ce.CompanyId))
+					LEFT JOIN Department as d ON d.DepartmentId = de.DepartmentId
 					LEFT JOIN Project as p ON p.DepartmentId = d.DepartmentId
 					LEFT JOIN ProjectEmployee as pe ON ((pe.UserId = u.id) and (pe.ProjectId = p.ProjectId))
 					WHERE u.id = :EmployeeId AND (cc.Url = :CompanyUrl or c.Url = :CompanyUrl)

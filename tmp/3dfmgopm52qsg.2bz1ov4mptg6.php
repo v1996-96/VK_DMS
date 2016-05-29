@@ -27,7 +27,7 @@
 
 
             <li <?php echo (isset($_page_type) && $_page_type == 'company_dashboard') ? 'class="active"' : ''; ?>>
-                <a href="/styleru/dashboard">
+                <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/dashboard">
                     <i class="fa fa-dashboard"></i> 
                     <span class="nav-label">Компания</span>
                 </a>
@@ -35,7 +35,7 @@
 
 
             <li <?php echo (isset($_page_type) && in_array($_page_type, array('employee_list', 'employee_profile'))) ? 'class="active"' : ''; ?>>
-                <a href="/styleru/employee">
+                <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee">
                     <i class="fa fa-users"></i> 
                     <span class="nav-label">Сотрудники</span>
                 </a>
@@ -43,7 +43,7 @@
 
 
             <li <?php echo (isset($_page_type) && in_array($_page_type, array('department_list', 'department_dashboard', 'department_documents'))) ? 'class="active"' : ''; ?>>
-                <a href="/styleru/departments">
+                <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments">
                     <i class="fa fa-cubes"></i> 
                     <span class="nav-label">Отделы</span>
                 </a>
@@ -51,7 +51,7 @@
 
 
             <li <?php echo (isset($_page_type) && in_array($_page_type, array('project_list', 'project_dashboard'))) ? 'class="active"' : ''; ?>>
-                <a href="/styleru/projects">
+                <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/projects">
                     <i class="fa fa-briefcase"></i> 
                     <span class="nav-label">Проекты</span>
                 </a>
@@ -59,7 +59,7 @@
 
 
             <li <?php echo (isset($_page_type) && $_page_type == 'documents') ? 'class="active"' : ''; ?>>
-                <a href="/styleru/documents">
+                <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/documents">
                     <i class="fa fa-folder-open"></i> 
                     <span class="nav-label">Документы</span>
                 </a>

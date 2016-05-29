@@ -67,44 +67,51 @@
                                     </div>
                                 </div>
 
-                                <table class="table table-hover no-margins">
-                                    <tbody>
-                                        <repeat group="{{ @ProjectList }}" value="{{ @project }}">
-                                            <tr>
-                                                <td class="project-status">
-                                                    <check if="{{ @project.Status == 1 }}">
-                                                        <true>
-                                                            <span class="label label-primary">Активный</span>
-                                                        </true>
-                                                        <false>
-                                                            <span class="label label-default">Закрытый</span>
-                                                        </false>
-                                                    </check>
-                                                </td>
-                                                <td class="project-title">
-                                                    <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}">{{ @project.Title }}</a>
-                                                    <br/>
-                                                    <small>Дата создания: {{ @project.DateAdd }}</small>
-                                                </td>
-                                                <td class="project-completion">
-                                                    <small>Отдел:</small><br>
-                                                    <h5 class="no-margins">{{ @project.DepartmentTitle }}</h5>
-                                                </td>
-                                                <td class="project-completion">
-                                                    <small>Задач:</small><br>
-                                                    <h5 class="no-margins">{{ @project.TaskCount }}</h5>
-                                                </td>
-                                                <td class="project-completion">
-                                                    <small>Сотрудников:</small><br>
-                                                    <h5 class="no-margins">{{ @project.EmployeeCount }}</h5>
-                                                </td>
-                                                <td class="project-actions">
-                                                    <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}" class="btn btn-success btn-sm">Перейти</a>
-                                                </td>
-                                            </tr>
-                                        </repeat>
-                                    </tbody>
-                                </table>
+                                <check if="{{ @ProjectList }}">
+                                    <true>
+                                        <table class="table table-hover no-margins">
+                                            <tbody>
+                                                <repeat group="{{ @ProjectList }}" value="{{ @project }}">
+                                                    <tr>
+                                                        <td class="project-status">
+                                                            <check if="{{ @project.Status == 1 }}">
+                                                                <true>
+                                                                    <span class="label label-primary">Активный</span>
+                                                                </true>
+                                                                <false>
+                                                                    <span class="label label-default">Закрытый</span>
+                                                                </false>
+                                                            </check>
+                                                        </td>
+                                                        <td class="project-title">
+                                                            <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}">{{ @project.Title }}</a>
+                                                            <br/>
+                                                            <small>Дата создания: {{ @project.DateAdd }}</small>
+                                                        </td>
+                                                        <td class="project-completion">
+                                                            <small>Отдел:</small><br>
+                                                            <h5 class="no-margins">{{ @project.DepartmentTitle }}</h5>
+                                                        </td>
+                                                        <td class="project-completion">
+                                                            <small>Задач:</small><br>
+                                                            <h5 class="no-margins">{{ @project.TaskCount }}</h5>
+                                                        </td>
+                                                        <td class="project-completion">
+                                                            <small>Сотрудников:</small><br>
+                                                            <h5 class="no-margins">{{ @project.EmployeeCount }}</h5>
+                                                        </td>
+                                                        <td class="project-actions">
+                                                            <a href="/{{ @PARAMS.CompanyUrl }}/projects/{{ @project.ProjectId }}" class="btn btn-success btn-sm">Перейти</a>
+                                                        </td>
+                                                    </tr>
+                                                </repeat>
+                                            </tbody>
+                                        </table>
+                                    </true>
+                                    <false>
+                                        <h4 class="text-center" style="padding-top: 10px;">Проекты отсутствуют</h4>
+                                    </false>
+                                </check>
                             </div>
                         </div>
 

@@ -24,9 +24,9 @@ class DepartmentModel extends \BaseModel implements \IModel
 	private function ByCompanyUrl($url) {
 		return $this->db->exec("SELECT 
 									d.*,
-									COUNT(de.UserId) as EmployeeCount,
-									COUNT(p.ProjectId) as ProjectCount,
-									COUNT(t.TaskId) as TaskCount
+									COUNT(DISTINCT de.UserId) as EmployeeCount,
+									COUNT(DISTINCT p.ProjectId) as ProjectCount,
+									COUNT(DISTINCT t.TaskId) as TaskCount
 								FROM Department as d
 								LEFT JOIN Company as c ON d.CompanyId = c.CompanyId
 								LEFT JOIN DepartmentEmployee as de ON de.DepartmentId = d.DepartmentID

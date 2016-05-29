@@ -45,6 +45,13 @@
 
 
             <div class="wrapper wrapper-content">
+
+                <check if="{{ @company_error }}"> 
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ @company_error }}
+                    </div>
+                </check>
                 
                 <div class="row m-t m-b">
                     <div class="col-md-6 block-center">
@@ -53,30 +60,32 @@
                                 
                                 <form method="POST">
                                     <div class="form-group">
-                                        <div id="companyLogo" {{ isset(@FieldLogo) ? 'style="background-image: url('.@FieldLogo.')"' : '' }} 
+                                        <div id="companyLogo" {{ isset(@FieldLogo) ? 'style="background-image: url(../'.@FieldLogo.')"' : '' }} 
                                             class="companyLogo" data-toggle="tooltip" data-placement="bottom" 
                                             title="Нажмите, чтобы добавить логотип">
                                             <a href="#" id="imageUpload"></a>
                                         </div>
                                     </div>
 
+                                    <input type="hidden" name="Logo" id="companyLogoInput" value="{{ @FieldLogo }}" />
+
                                     <div class="form-group">
                                         <label>Название</label>
-                                        <input id="titleField" type="text" class="form-control">
+                                        <input id="titleField" name="Title" value="{{ @FieldTitle }}" type="text" class="form-control">
                                     </div> 
 
                                     <div class="form-group">
                                         <label>Ссылка</label>
-                                        <input id="urlField" type="text" class="form-control">
+                                        <input id="urlField" name="Url" value="{{ @FieldUrl }}" type="text" class="form-control">
                                     </div> 
 
                                     <div class="form-group">
                                         <label>Слоган</label>
-                                        <textarea class="form-control"></textarea>
+                                        <textarea name="Slogan" class="form-control">{{ @FieldSlogan }}</textarea>
                                     </div>
 
                                     <div class="form-group text-center">
-                                        <a href="#" class="btn btn-primary">Сохранить изменения</a>
+                                        <button type="submit" name="action" value="edit" class="btn btn-primary">Сохранить изменения</button>
                                     </div>
                                 </form>
 
@@ -86,7 +95,9 @@
                         <div class="ibox">
                             <div class="ibox-content" style="background-color: rgba(255, 0, 0, 0.25);">
                                 <div class="text-center">
-                                    <a href="#" class="btn btn-danger">Удалить компанию</a>
+                                    <form method="POST">
+                                        <button name="action" value="remove" class="btn btn-danger">Удалить компанию</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

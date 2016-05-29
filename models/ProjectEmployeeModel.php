@@ -15,6 +15,14 @@ class ProjectEmployeeModel extends \BaseModel implements \IModel
 	}
 
 
+	private function GetProjects($employeeId, $departmentId) {
+		return $this->db->exec("SELECT p.*, pe.IsManager FROM Project as p
+								LEFT JOIN ProjectEmployee as pe ON pe.ProjectId = p.ProjectId
+								WHERE pe.UserId = :id AND p.DepartmentId = :departmentId",
+								array("id" => $employeeId, "departmentId" => $departmentId));
+	}
+
+
 	private function GetEmployee($projectId, $isManager = false) {
 		return $this->db->exec("SELECT pe.*, u.Name, u.Surname, u.VK_Avatar FROM ProjectEmployee as pe
 								LEFT JOIN User as u ON pe.UserId = u.id
@@ -35,6 +43,11 @@ class ProjectEmployeeModel extends \BaseModel implements \IModel
 					if (isset($search["id"])) {
 						return $this->GetEmployee($search["id"], false);
 					} else return null;
+
+				case 'getProjects':
+					if (isset($search["employeeId"]) && isset($search["departmentId"])) {
+						return $this->GetProjects($search["employeeId"], $search["departmentId"]);
+					} else return null;
 				
 				default: return null;
 			}
@@ -53,6 +66,6 @@ class ProjectEmployeeModel extends \BaseModel implements \IModel
 
 
 	public function remove($find = null) {
-		return null;
+		return $this->delete($find, array("UserId", "ProjectId"));
 	}
 }

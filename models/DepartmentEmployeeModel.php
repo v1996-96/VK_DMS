@@ -36,6 +36,16 @@ class DepartmentEmployeeModel extends \BaseModel implements \IModel
 	}
 
 
+	private function FreeEmployeeForProject($departmentId, $projectId) {
+		return $this->db->exec("SELECT * FROM DepartmentEmployee as de
+								LEFT JOIN User as u ON u.id = de.UserId
+								WHERE de.DepartmentId = :departmentId AND 
+									de.UserId NOT IN (SELECT pe.UserId FROM ProjectEmployee as pe
+													  WHERE pe.ProjectId = :projectId)",
+								array("departmentId" => $departmentId, "projectId" => $projectId));
+	}
+
+
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
 			switch ($search["type"]) {
@@ -52,6 +62,11 @@ class DepartmentEmployeeModel extends \BaseModel implements \IModel
 				case 'employeeFullList':
 					if (isset($search["id"])) {
 						return $this->EmployeeFullList($search["id"]);
+					} else return null;
+
+				case 'freeEmployeeForProject':
+					if (isset($search["departmentId"]) && isset($search["projectId"])) {
+						return $this->FreeEmployeeForProject($search["departmentId"], $search["projectId"]);
 					} else return null;
 				
 				default: return null;

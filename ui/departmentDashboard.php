@@ -197,6 +197,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ФИО</th>
+                                                            <th>Должность</th>
                                                             <th>Действия</th>
                                                         </tr>
                                                     </thead>
@@ -204,6 +205,7 @@
                                                         <repeat group="{{ @ManagerList }}" value="{{ @manager }}">
                                                             <tr>
                                                                 <td>{{ @manager.Name }} {{ @manager.Surname }}</td>
+                                                                <td>{{ @manager.RoleDescription }}</td>
                                                                 <td>
                                                                     <form method="POST">
                                                                         <input type="hidden" name="EmployeeId" value="{{ @manager.UserId }}" />
@@ -223,6 +225,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ФИО</th>
+                                                            <th>Должность</th>
                                                             <th>Действия</th>
                                                         </tr>
                                                     </thead>
@@ -230,6 +233,7 @@
                                                         <repeat group="{{ @EmployeeList }}" value="{{ @employee }}">
                                                             <tr>
                                                                 <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
+                                                                <td>{{ @employee.RoleDescription }}</td>
                                                                 <td>
                                                                     <form method="POST">
                                                                         <input type="hidden" name="EmployeeId" value="{{ @employee.UserId }}" />
@@ -376,35 +380,31 @@
                 </div>
                 <div class="modal-body">
                     
-                    <div class="row">
-                        <div class="col-md-9 block-center">
-
-                            <form method="POST">
-                                <div class="form-group">
-                                    <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Выбрать</th>
-                                                <th>Имя</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <repeat group="{{ @FreeCompanyEmployeeList }}" value="{{ @employee }}">
-                                                <tr>
-                                                    <td><input class="i-checks" type="checkbox" name="employeeList[]" value="{{ @employee.UserId }}" /></td>
-                                                    <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
-                                                </tr>
-                                            </repeat>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-primary" name="action" value="addEmployees">Добавить сотрудников</button>
-                                </div>
-                            </form>
-
+                    <form method="POST">
+                        <div class="form-group">
+                            <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Выбрать</th>
+                                        <th>Имя</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <repeat group="{{ @FreeCompanyEmployeeList }}" key="{{ @index }}" value="{{ @employee }}">
+                                        <tr>
+                                            <td><input class="i-checks" type="checkbox" name="employeeList[{{ @index }}]" value="{{ @employee.UserId }}" /></td>
+                                            <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
+                                            <td><input type="text" class="form-control input-sm" name="roleDescription[{{ @index }}]" /></td>
+                                        </tr>
+                                    </repeat>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary" name="action" value="addEmployees">Добавить сотрудников</button>
+                        </div>
+                    </form>
 
                 </div>
             </div>
@@ -422,35 +422,31 @@
                 </div>
                 <div class="modal-body">
                     
-                    <div class="row">
-                        <div class="col-md-9 block-center">
-
-                            <form method="POST">
-                                <div class="form-group">
-                                    <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Выбрать</th>
-                                                <th>Имя</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <repeat group="{{ @FreeCompanyEmployeeList }}" value="{{ @employee }}">
-                                                <tr>
-                                                    <td><input type="checkbox" class="i-checks" name="employeeList[]" value="{{ @employee.UserId }}" /></td>
-                                                    <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
-                                                </tr>
-                                            </repeat>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-primary" name="action" value="addManagers">Добавить руководителей</button>
-                                </div>
-                            </form>
-
+                    <form method="POST">
+                        <div class="form-group">
+                            <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Выбрать</th>
+                                        <th>Имя</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <repeat group="{{ @FreeCompanyEmployeeList }}" value="{{ @employee }}">
+                                        <tr>
+                                            <td><input class="i-checks" type="checkbox" name="employeeList[{{ @index }}]" value="{{ @employee.UserId }}" /></td>
+                                            <td>{{ @employee.Name }} {{ @employee.Surname }}</td>
+                                            <td><input type="text" class="form-control input-sm" name="roleDescription[{{ @index }}]" /></td>
+                                        </tr>
+                                    </repeat>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary" name="action" value="addManagers">Добавить руководителей</button>
+                        </div>
+                    </form>
 
                 </div>
             </div>

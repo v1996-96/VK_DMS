@@ -168,7 +168,7 @@ class InviteController
 		}
 
 		if ((int)$currentInvite[0]["VK"] !== (int)$userVkId) {
-			$this->f3->set("invite_error", "Ошибка! Приглашение адресовано не Вам. (( " . $currentInvite[0]["VK"] . " " . $userVkId);
+			$this->f3->set("invite_error", "Ошибка! Приглашение адресовано не Вам. (( ");
 			return;
 		}
 

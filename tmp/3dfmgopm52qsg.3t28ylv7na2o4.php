@@ -37,13 +37,13 @@
                     <h2>Документы отдела</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/styleru/dashboard">Главная</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/dashboard">Главная</a>
                         </li>
                         <li>
-                            <a href="/styleru/departments">Отделы</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments">Отделы</a>
                         </li>
                         <li>
-                            <a href="/styleru/departments/4">Web разработка</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/4">Web разработка</a>
                         </li>
                         <li class="active">
                             <strong>Документы отдела</strong>

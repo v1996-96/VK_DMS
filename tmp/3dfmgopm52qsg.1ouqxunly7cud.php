@@ -34,10 +34,10 @@
                     <h2><?php echo $EmployeeData['Name']; ?> <?php echo $EmployeeData['Surname']; ?></h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/styleru/dashboard">Главная</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/dashboard">Главная</a>
                         </li>
                         <li>
-                            <a href="/styleru/employee">Сотрудники</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee">Сотрудники</a>
                         </li>
                         <li class="active">
                             <strong><?php echo $EmployeeData['Name']; ?> <?php echo $EmployeeData['Surname']; ?></strong>

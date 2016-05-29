@@ -197,6 +197,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ФИО</th>
+                                                            <th>Должность</th>
                                                             <th>Действия</th>
                                                         </tr>
                                                     </thead>
@@ -204,6 +205,7 @@
                                                         <?php foreach (($ManagerList?:array()) as $manager): ?>
                                                             <tr>
                                                                 <td><?php echo $manager['Name']; ?> <?php echo $manager['Surname']; ?></td>
+                                                                <td><?php echo $manager['RoleDescription']; ?></td>
                                                                 <td>
                                                                     <form method="POST">
                                                                         <input type="hidden" name="EmployeeId" value="<?php echo $manager['UserId']; ?>" />
@@ -223,6 +225,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ФИО</th>
+                                                            <th>Должность</th>
                                                             <th>Действия</th>
                                                         </tr>
                                                     </thead>
@@ -230,6 +233,7 @@
                                                         <?php foreach (($EmployeeList?:array()) as $employee): ?>
                                                             <tr>
                                                                 <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
+                                                                <td><?php echo $employee['RoleDescription']; ?></td>
                                                                 <td>
                                                                     <form method="POST">
                                                                         <input type="hidden" name="EmployeeId" value="<?php echo $employee['UserId']; ?>" />
@@ -376,35 +380,31 @@
                 </div>
                 <div class="modal-body">
                     
-                    <div class="row">
-                        <div class="col-md-9 block-center">
-
-                            <form method="POST">
-                                <div class="form-group">
-                                    <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Выбрать</th>
-                                                <th>Имя</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach (($FreeCompanyEmployeeList?:array()) as $employee): ?>
-                                                <tr>
-                                                    <td><input class="i-checks" type="checkbox" name="employeeList[]" value="<?php echo $employee['UserId']; ?>" /></td>
-                                                    <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-primary" name="action" value="addEmployees">Добавить сотрудников</button>
-                                </div>
-                            </form>
-
+                    <form method="POST">
+                        <div class="form-group">
+                            <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Выбрать</th>
+                                        <th>Имя</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach (($FreeCompanyEmployeeList?:array()) as $index=>$employee): ?>
+                                        <tr>
+                                            <td><input class="i-checks" type="checkbox" name="employeeList[<?php echo $index; ?>]" value="<?php echo $employee['UserId']; ?>" /></td>
+                                            <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
+                                            <td><input type="text" class="form-control input-sm" name="roleDescription[<?php echo $index; ?>]" /></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary" name="action" value="addEmployees">Добавить сотрудников</button>
+                        </div>
+                    </form>
 
                 </div>
             </div>
@@ -422,35 +422,31 @@
                 </div>
                 <div class="modal-body">
                     
-                    <div class="row">
-                        <div class="col-md-9 block-center">
-
-                            <form method="POST">
-                                <div class="form-group">
-                                    <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Выбрать</th>
-                                                <th>Имя</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach (($FreeCompanyEmployeeList?:array()) as $employee): ?>
-                                                <tr>
-                                                    <td><input type="checkbox" class="i-checks" name="employeeList[]" value="<?php echo $employee['UserId']; ?>" /></td>
-                                                    <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-primary" name="action" value="addManagers">Добавить руководителей</button>
-                                </div>
-                            </form>
-
+                    <form method="POST">
+                        <div class="form-group">
+                            <table id="freeCompanyEmployeeList" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Выбрать</th>
+                                        <th>Имя</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach (($FreeCompanyEmployeeList?:array()) as $employee): ?>
+                                        <tr>
+                                            <td><input class="i-checks" type="checkbox" name="employeeList[<?php echo $index; ?>]" value="<?php echo $employee['UserId']; ?>" /></td>
+                                            <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
+                                            <td><input type="text" class="form-control input-sm" name="roleDescription[<?php echo $index; ?>]" /></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary" name="action" value="addManagers">Добавить руководителей</button>
+                        </div>
+                    </form>
 
                 </div>
             </div>
