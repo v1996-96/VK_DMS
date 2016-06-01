@@ -21,7 +21,7 @@ class OAuthVK
         $this->redirect(self::URL_AUTHORIZE . 
             '?client_id=' . self::APP_ID . 
             '&display=page' .
-            '&scope=offline' . 
+            '&scope=offline,docs,groups' . 
             '&redirect_uri=' . urlencode($this->URL_CALLBACK) . 
             '&response_type=code' . 
             '&v=' . self::VERSION); 

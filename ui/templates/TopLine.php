@@ -21,6 +21,14 @@ defined('_EXECUTED') or die('Restricted access');
             </h3>
         </div>
         <ul class="nav navbar-top-links navbar-right">
+            <check if="{{ !@UserInfo.VK_Authorized }}">
+                <li>
+                    <a href="#" id="authorize_vk" style="color: #e74c3c;">
+                        Авторизоваться в ВК
+                    </a>
+                </li>
+            </check>
+
             <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                     <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
@@ -63,7 +71,6 @@ defined('_EXECUTED') or die('Restricted access');
                     </li>
                 </ul>
             </li>
-
 
             <li>
                 <a class="right-sidebar-toggle">

@@ -9,6 +9,7 @@
 
     <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ @BASE }}/ui/css/plugins/iCheck/custom.css" rel="stylesheet">
 
     <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
     <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
@@ -41,15 +42,14 @@
                         </li>
                     </ol>
                 </div>
-                <div class="col-lg-3">
-                    <div class="title-action">
-                        <a href="#addDepartmentModal" data-toggle="modal" class="btn btn-success pull-right">Добавить</a>
-                        <!-- <div class="btn-group pull-right" style="margin-right: 10px;">
-                            <button type="button" class="btn btn-white"><i class="fa fa-th-large"></i></button>
-                            <button type="button" class="btn btn-white"><i class="fa fa-th-list"></i></button>
-                        </div> -->
+                <check if="{{ @DepartmentRight_Add }}">
+                    <div class="col-lg-3">
+                        <div class="title-action">
+                            <a href="#addDepartmentModal" data-toggle="modal" 
+                                class="btn btn-success pull-right {{ isset(@department_add_error) ? 'disabled' : '' }}">Добавить</a>
+                        </div>
                     </div>
-                </div>
+                </check>
             </div>
 
 
@@ -105,47 +105,70 @@
     </div>
 
 
-    <div class="modal inmodal" id="addDepartmentModal" tabindex="-1" role="dialog"  aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <!-- <i class="fa fa-building-o modal-icon"></i> -->
-                    <h4 class="modal-title">Создание отдела</h4>
-                </div>
-                <div class="modal-body">
-                    
-                    <div class="row">
-                        <div class="col-md-9 block-center">
-                            <form method="POST" id="createDepartmentForm">
-                                <div class="form-group">
-                                    <input type="text" name="Title" class="form-control" placeholder="Название">
-                                </div>
-
-                                <input type="hidden" name="action" value="create" />
-                            </form>
-                        </div>
+    <check if="{{ @DepartmentRight_Add }}">
+        <div class="modal inmodal" id="addDepartmentModal" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <!-- <i class="fa fa-building-o modal-icon"></i> -->
+                        <h4 class="modal-title">Создание отдела</h4>
                     </div>
+                    <div class="modal-body">
+                        
+                        <div class="row">
+                            <div class="col-md-9 block-center">
+                                <form method="POST" id="createDepartmentForm">
+                                    <div class="form-group">
+                                        <input type="text" name="Title" class="form-control" placeholder="Название">
+                                    </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
-                    <button type="submit" form="createDepartmentForm" name="action" value="create" class="btn btn-primary">Создать</button>
+                                    <label>Список администрируемых групп ВК</label>
+                                    <check if="{{ isset(@GroupList) && count(@GroupList) > 0 }}">
+                                        <true>
+                                            <ul class="list-group" style="background-color: #fff">
+                                                <repeat group="{{ @GroupList }}" value="{{ @group }}">
+                                                    <li class="list-group-item">
+                                                        <input type="radio" name="VKGroupId" class="i-checks" value="{{ @group.gid }}" />
+                                                        &nbsp; {{ @group.name }}
+                                                    </li>
+                                                </repeat>
+                                            </ul>
+                                        </true>
+                                        <false>
+                                            <h4 class="text-center">Для создания отдела необходима группа ВК с правами модератора или выше</h4>
+                                        </false>
+                                    </check>
+
+                                    <input type="hidden" name="action" value="create" />
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" form="createDepartmentForm" name="action" value="create" class="btn btn-primary">Создать</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </check>
 
 
-    <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <include href="templates/Scripts.php" />
 
-    <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
+    <script src="{{ @BASE }}/ui/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+        });
+    </script>
 
 </body>
 

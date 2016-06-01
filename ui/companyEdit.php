@@ -119,18 +119,12 @@
     </div>
 
 
-    <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
+    <include href="templates/Scripts.php" />
 
     <script src="{{ @BASE }}/ui/js/ajax_upload.js"></script>
     <script src="{{ @BASE }}/ui/js/jquery.liTranslit.js"></script>
+
+    <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function () {

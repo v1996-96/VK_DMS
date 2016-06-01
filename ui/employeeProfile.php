@@ -163,18 +163,11 @@
     </div>
 
 
-    <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <include href="templates/Scripts.php" />
 
-    <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
-
-    <!-- Sparkline -->
     <script src="{{ @BASE }}/ui/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function() {

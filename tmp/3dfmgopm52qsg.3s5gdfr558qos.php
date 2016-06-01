@@ -36,7 +36,7 @@
                     <h2>Документы</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/styleru/dashboard">Главная</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/dashboard">Главная</a>
                         </li>
                         <li class="active">
                             <strong>Документы</strong>
@@ -87,17 +87,11 @@
     </div>
 
 
-    <!-- Mainly scripts -->
-    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/bootstrap.min.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
+    <?php echo $this->render('templates/Scripts.php',$this->mime,get_defined_vars(),0); ?>
 
     <script src="<?php echo $BASE; ?>/ui/js/plugins/jsTree/jstree.min.js"></script>
+
+    <script src="<?php echo $BASE; ?>/ui/js/app/App.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function(){

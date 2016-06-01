@@ -150,7 +150,7 @@ class CompanyModel extends \BaseModel implements \IModel
 		$isAdmin = $this->db->exec("SELECT CompanyId FROM CompanyEmployee
 									WHERE CompanyId = :CompanyId AND UserId = :UserId AND IsAdmin = 1",
 									array("CompanyId" => $companyId, "UserId" => $userId));
-		if ($isCreator) 
+		if ($isAdmin) 
 			return USER_ADMIN;
 
 		$isEmployee = $this->db->exec("SELECT CompanyId FROM CompanyEmployee

@@ -17,6 +17,10 @@ define("PACKAGE_INCOMING", 1);
 define("PACKAGE_OUTCOMING", 2);
 define("PACKAGE_MANAGING", 3);
 
+// Get vk sdk
+require('base/vkPhpSdk/classes/VkApiException.php');
+require('base/vkPhpSdk/classes/VkPhpSdk.php');
+
 // Framework instance
 $f3 = require('lib/base.php');
 

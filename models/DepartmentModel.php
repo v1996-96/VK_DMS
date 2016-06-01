@@ -10,7 +10,7 @@ class DepartmentModel extends \BaseModel implements \IModel
 		$this->db = $f3->get('db');
 		
 		$this->entity = "Department";
-		$this->required = array("CompanyId", "Title", "DateAdd");
+		$this->required = array("CompanyId", "Title", "DateAdd", "VKGroupId");
 		$this->optional = array();
 	}
 
@@ -94,6 +94,17 @@ class DepartmentModel extends \BaseModel implements \IModel
 	}
 
 
+	private function GetUserRights($userId, $departmentId) {
+		$response = $this->db->exec("SELECT IsManager FROM DepartmentEmployee
+									 WHERE UserId = :userId AND DepartmentId = :departmentId",
+									 array("userId" => (int)$userId, "departmentId" => (int)$departmentId));
+		if ($response && count($response) == 1) {
+			return $response[0]["IsManager"] ? USER_DEP_MANAGER : USER_EMPLOYEE ;
+		} else 
+			return USER_UNKNOWN;
+	}
+
+
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
 			switch ($search["type"]) {
@@ -115,6 +126,11 @@ class DepartmentModel extends \BaseModel implements \IModel
 				case 'activity':
 					if (isset($search["id"])) {
 						return $this->Activity($search["id"]);
+					} else return null;
+
+				case 'getUserRights':
+					if (isset($search["userId"]) && isset($search["departmentId"])) {
+						return $this->GetUserRights($search["userId"], $search["departmentId"]);
 					} else return null;
 				
 				default: return null;

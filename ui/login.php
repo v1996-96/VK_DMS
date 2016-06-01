@@ -19,7 +19,7 @@
     
     <!-- Gomeniuk block -->
     <div class="gomeniuk animated bounceIn">
-        <div class="heading">
+        <div class="heading text-center">
             <h1>VK DMS</h1>
             <p>Система документооборота на основе Вконтакте</p> 
         </div>

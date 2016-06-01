@@ -55,7 +55,9 @@
                 <div class="col-lg-4">
                     <div class="title-action text-right">
                         <a href="/{{ @PARAMS.CompanyUrl }}/departments/{{ @PARAMS.DepartmentId }}/documents" class="btn btn-primary"><i class="fa fa-folder-open"></i> Документы &nbsp; <span class="badge">5</span></a>
-                        <a href="#editDepartmentModal" data-toggle="modal" class="btn btn-white"><i class="fa fa-cog"></i> Настройки</a>
+                        <check if="{{ @DepartmentRight_Edit }}">
+                            <a href="#editDepartmentModal" data-toggle="modal" class="btn btn-white"><i class="fa fa-cog"></i> Настройки</a>
+                        </check>
                     </div>
                 </div>
             </div>
@@ -137,9 +139,10 @@
                                 <div id="projectsTab" class="tab-pane active">
                                     <div class="panel-body">
 
-                                        <a href="#addProjectModal" data-toggle="modal" class="btn btn-primary">Создать проект</a>
-
-                                        <br><br>
+                                        <check if="{{ @DepartmentRight_AddProject }}">
+                                            <a href="#addProjectModal" data-toggle="modal" class="btn btn-primary">Создать проект</a>
+                                            <br><br>
+                                        </check>
 
                                         <check if="{{ @ProjectList }}">
                                             <true>
@@ -185,8 +188,12 @@
                                 <div id="employeeTab" class="tab-pane">
                                     <div class="panel-body">
 
-                                        <a href="#addManagerModal" data-toggle="modal" class="btn btn-warning">Добавить руководителя</a>
-                                        <a href="#addEmployeeModal" data-toggle="modal" class="btn btn-primary">Добавить сотрудника</a>
+                                        <check if="{{ @DepartmentRight_AddManager }}">
+                                            <a href="#addManagerModal" data-toggle="modal" class="btn btn-warning">Добавить руководителя</a>
+                                        </check>
+                                        <check if="{{ @DepartmentRight_AddEmployee }}">
+                                            <a href="#addEmployeeModal" data-toggle="modal" class="btn btn-primary">Добавить сотрудника</a>
+                                        </check>
 
                                         <hr>
 
@@ -210,7 +217,9 @@
                                                                     <form method="POST">
                                                                         <input type="hidden" name="EmployeeId" value="{{ @manager.UserId }}" />
                                                                         <a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @manager.UserId }}" class="btn btn-xs btn-primary">Профиль</a>
-                                                                        <button type="submit" name="action" value="deleteEmployee" class="btn btn-xs btn-danger">Удалить</button>
+                                                                        <check if="{{ @DepartmentRight_DeleteManager }}">
+                                                                            <button type="submit" name="action" value="deleteEmployee" class="btn btn-xs btn-danger">Удалить</button>
+                                                                        </check>
                                                                     </form>
                                                                 </td>
                                                             </tr> 
@@ -238,7 +247,9 @@
                                                                     <form method="POST">
                                                                         <input type="hidden" name="EmployeeId" value="{{ @employee.UserId }}" />
                                                                         <a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @employee.UserId }}" class="btn btn-xs btn-primary">Профиль</a>
-                                                                        <button type="submit" name="action" value="deleteEmployee" class="btn btn-xs btn-danger">Удалить</button>
+                                                                        <check if="{{ @DepartmentRight_DeleteEmployee }}">
+                                                                            <button type="submit" name="action" value="deleteEmployee" class="btn btn-xs btn-danger">Удалить</button>
+                                                                        </check>
                                                                     </form>
                                                                 </td>
                                                             </tr> 
@@ -270,46 +281,66 @@
     </div>
 
 
-    <div class="modal inmodal" id="editDepartmentModal" tabindex="-1" role="dialog"  aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <!-- <i class="fa fa-building-o modal-icon"></i> -->
-                    <h4 class="modal-title">Редактироваание отдела</h4>
-                </div>
-                <div class="modal-body">
-                    
-                    <div class="row">
-                        <div class="col-md-9 block-center">
-                            <form method="POST">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="text" name="Title" class="form-control" placeholder="Название" value="{{ @DepartmentSummary.Title }}">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="submit" name="action" value="edit">Изменить</button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        <hr>
-
-                        <div class="col-md-6 block-center">
-                            <form method="POST">
-                                <div class="form-group">
-                                    <button type="submit" name="action" value="remove" class="btn btn-danger btn-block">Удалить отдел</button>
-                                </div>
-                            </form>
-                        </div>
+    <check if="{{ @DepartmentRight_Edit }}">
+        <div class="modal inmodal" id="editDepartmentModal" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <!-- <i class="fa fa-building-o modal-icon"></i> -->
+                        <h4 class="modal-title">Редактироваание отдела</h4>
                     </div>
+                    <div class="modal-body">
+                        
+                        <div class="row">
+                            <div class="col-md-9 block-center">
+                                <form method="POST">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" name="Title" class="form-control" placeholder="Название" value="{{ @DepartmentSummary.Title }}">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary" type="submit" name="action" value="edit">Изменить</button>
+                                            </span>
+                                        </div>
+                                    </div>
 
+                                    <label>Список администрируемых групп ВК</label>
+                                        <check if="{{ isset(@GroupList) && count(@GroupList) > 0 }}">
+                                            <true>
+                                                <ul class="list-group" style="background-color: #fff">
+                                                    <repeat group="{{ @GroupList }}" value="{{ @group }}">
+                                                        <li class="list-group-item">
+                                                            <input type="radio" name="VKGroupId" class="i-checks" value="{{ @group.gid }}"
+                                                                    {{ @DepartmentSummary.VKGroupId == @group.gid ? 'checked="checked"' : '' }} />
+                                                            &nbsp; {{ @group.name }}
+                                                        </li>
+                                                    </repeat>
+                                                </ul>
+                                            </true>
+                                            <false>
+                                                <h4 class="text-center">Для создания отдела необходима группа ВК с правами модератора или выше</h4>
+                                            </false>
+                                        </check>
+                                </form>
+                            </div>
+
+                            <check if="{{ @DepartmentRight_Delete }}">
+                                <hr>
+                                <div class="col-md-6 block-center">
+                                    <form method="POST">
+                                        <div class="form-group">
+                                            <button type="submit" name="action" value="remove" class="btn btn-danger btn-block">Удалить отдел</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </check>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    </check>
 
     <div class="modal inmodal" id="addProjectModal" tabindex="-1" role="dialog"  aria-hidden="true">
         <div class="modal-dialog">
@@ -457,15 +488,7 @@
 
 
 
-    <!-- Mainly scripts -->
-    <script src="{{ @BASE }}/ui/js/jquery-2.1.1.js"></script>
-    <script src="{{ @BASE }}/ui/js/bootstrap.min.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="{{ @BASE }}/ui/js/inspinia.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/pace/pace.min.js"></script>
+    <include href="templates/Scripts.php" />
 
     <!-- Data Tables -->
     <script src="{{ @BASE }}/ui/js/plugins/dataTables/jquery.dataTables.js"></script>
@@ -476,6 +499,8 @@
 
     <!-- Sparkline -->
     <script src="{{ @BASE }}/ui/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function() {

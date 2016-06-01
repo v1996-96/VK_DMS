@@ -119,18 +119,12 @@
     </div>
 
 
-    <!-- Mainly scripts -->
-    <script src="<?php echo $BASE; ?>/ui/js/jquery-2.1.1.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/bootstrap.min.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="<?php echo $BASE; ?>/ui/js/inspinia.js"></script>
-    <script src="<?php echo $BASE; ?>/ui/js/plugins/pace/pace.min.js"></script>
+    <?php echo $this->render('templates/Scripts.php',$this->mime,get_defined_vars(),0); ?>
 
     <script src="<?php echo $BASE; ?>/ui/js/ajax_upload.js"></script>
     <script src="<?php echo $BASE; ?>/ui/js/jquery.liTranslit.js"></script>
+
+    <script src="<?php echo $BASE; ?>/ui/js/app/App.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function () {

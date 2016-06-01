@@ -18,6 +18,7 @@ class DashboardController extends \BaseController
 
 	private $CompanyUrl = null;
 	private $DepartmentId = null;
+	private $UserRights = USER_UNKNOWN;
 
 	function __construct($f3) {
 		$this->f3 = $f3;
@@ -26,6 +27,32 @@ class DashboardController extends \BaseController
 		$this->view = new DashboardView($f3);
 
 		$this->CheckAuthStatus();
+	}
+
+
+	private function GetUserRights() {
+		// On the list level we use company-level rights
+		$company = new \CompanyModel($this->f3);
+		$department = new \DepartmentModel($this->f3);
+
+		$companyData = $company->getData(array("type" => "byUrl", "url" => $this->CompanyUrl));
+		if (!$companyData) return;
+
+		$userRights = $company->getData(array(
+			"type" => "getUserRights", 
+			"userId" => $this->GetUserInfo()["id"],
+			"companyId" => $companyData["CompanyId"]));
+
+		if ($userRights == USER_EMPLOYEE) {
+			$userRights = $department->getData(array(
+				"type" => "getUserRights",
+				"userId" => $this->GetUserInfo()["id"],
+				"departmentId" => (int)$this->DepartmentId
+				));
+		}
+
+		$this->UserRights = $userRights;
+		$this->view->UserRights = $userRights;
 	}
 
 
@@ -48,6 +75,9 @@ class DashboardController extends \BaseController
 			$this->view->ShowPage( self::PAGE_TYPE );
 			return;
 		}
+
+		// Get user rights
+		$this->GetUserRights();
 
 		if (isset($_POST["action"])) {
 			switch ($_POST["action"]) {
@@ -86,6 +116,15 @@ class DashboardController extends \BaseController
 		$company = new \CompanyModel($this->f3);
 
 		try {
+
+			if ($isManager) {
+				if (!in_array($this->UserRights, array(USER_OWNER, USER_ADMIN))) 
+					throw new \Exception("Вы не имеете прав для добавления руководителей отдела");
+			} else {
+				if (!in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER))) 
+					throw new \Exception("Вы не имеете прав для добавления сотрудников отдела");
+			}
+
 			if (!isset($_POST["employeeList"])) 
 				throw new \Exception("Не был передан список сотрудников для добавления в отдел");
 
@@ -122,11 +161,30 @@ class DashboardController extends \BaseController
 		// TODO: Restrict deletion when there are open tasks or give supporting information
 
 		try {
+
 			if (!isset($_POST["EmployeeId"])) 
 				throw new \Exception("Не был передан id сотрудника");
 
 			$companyData = $company->getData(array("type" => "byUrl", "url" => $this->CompanyUrl));
 			if (!$companyData) return;
+
+			$current = $departmentEmployee->getData(array(
+				"type" => "byId", 
+				"userId" => (int)$_POST["EmployeeId"],
+				"companyId" => (int)$companyData["CompanyId"]
+				));
+			if (!$current)
+				throw new \Exception("Указанный сотрудник не привязан к выбранной компании");
+
+			if ($current[0]["IsManager"]) {
+				if (!in_array($this->UserRights, array(USER_OWNER, USER_ADMIN))) 
+					throw new \Exception("Вы не имеете прав для удаления руководителя отдела");
+					
+			} else {
+				if (!in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER))) 
+					throw new \Exception("Вы не иммеете прав для удаления сотрудника");
+			}
+				
 
 			$emplyeesProject = $projectEmployee->getData(array(
 				"type" => "getProjects", 
@@ -165,6 +223,9 @@ class DashboardController extends \BaseController
 		$projectEmployee = new \ProjectEmployeeModel($this->f3);
 
 		try {
+			if (!in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER))) 
+				throw new \Exception("Вы не имеете прав для добавления проекта");
+
 			if (!isset($_POST["Title"])) 
 				throw new \Exception("Не указано название проекта");
 
@@ -213,6 +274,9 @@ class DashboardController extends \BaseController
 		$company = new \CompanyModel($this->f3);
 
 		try {
+			if (!in_array($this->UserRights, array(USER_OWNER, USER_ADMIN))) 
+				throw new \Exception("Вы не имеете прав для изменения данных компании");
+
 			$department->edit(array_merge($_POST, array("DepartmentId" => $this->DepartmentId)));
 		} catch (\Exception $e) {
 			$this->f3->set("department_error", $e->getMessage());
@@ -224,6 +288,9 @@ class DashboardController extends \BaseController
 		$department = new \DepartmentModel($this->f3);
 
 		try {
+			if (!in_array($this->UserRights, array(USER_OWNER, USER_ADMIN))) 
+				throw new \Exception("Вы не имеете прав для удаления отдела");
+
 			$success = $department->remove(array("DepartmentId" => $this->DepartmentId));
 			if ($success)
 				$this->f3->reroute("/" . $this->CompanyUrl . "/departments");

@@ -15,7 +15,10 @@ trait CommonMethods
 			"Email" => "email@email.com",
 			"Role" => 0,
 			"VK" => 0,
-			"VK_Avatar" => ""
+			"VK_Avatar" => "",
+			"VK_Authorized" => false,
+			"VK_AccessToken" => null,
+			"VK_ExpiresIn" => null
 			);
 
 		if (!$token)
@@ -24,7 +27,10 @@ trait CommonMethods
 		$resp = $this->db->exec('SELECT 
 									User.id, User.Name, User.Surname, 
 									User.Email, User.Role, User.VK, 
-									User.VK_Avatar 
+									User.VK_Avatar,  
+									UserToken.VK_Authorized,
+									UserToken.VK_AccessToken,
+									UserToken.VK_ExpiresIn
 								 FROM User 
 								 LEFT JOIN UserToken ON User.id = UserToken.UserId
 								 WHERE UserToken.Token = ?', $token);

@@ -143,6 +143,8 @@
     <script src="{{ @BASE }}/ui/js/ajax_upload.js"></script>
     <script src="{{ @BASE }}/ui/js/jquery.liTranslit.js"></script>
 
+    <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
+
     <check if="{{ isset(@companyAddError) }}">
         <script type="text/javascript">
             $(function() {

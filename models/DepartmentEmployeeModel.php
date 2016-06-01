@@ -46,6 +46,13 @@ class DepartmentEmployeeModel extends \BaseModel implements \IModel
 	}
 
 
+	private function ById($userId, $companyId) {
+		return $this->db->exec("SELECT * FROM DepartmentEmployee 
+								WHERE UserId = :userId AND CompanyId = :companyId",
+								array("userId" => $userId, "companyId" => $companyId));
+	}
+
+
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
 			switch ($search["type"]) {
@@ -67,6 +74,11 @@ class DepartmentEmployeeModel extends \BaseModel implements \IModel
 				case 'freeEmployeeForProject':
 					if (isset($search["departmentId"]) && isset($search["projectId"])) {
 						return $this->FreeEmployeeForProject($search["departmentId"], $search["projectId"]);
+					} else return null;
+
+				case 'byId':
+					if (isset($search["userId"]) && isset($search["companyId"])) {
+						return $this->ById($search["userId"], $search["companyId"]);
 					} else return null;
 				
 				default: return null;
