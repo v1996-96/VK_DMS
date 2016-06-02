@@ -146,7 +146,7 @@ class DashboardController extends \BaseController
 				}
 			}
 		} catch(\ErrorException $e) {
-			$this->f3->set("department_error", "Произошла непредвиденная ошибка");
+			$this->f3->set("department_error", $e->getMessage());
 		} catch (\Exception $e) {
 			$this->f3->set("department_error", $e->getMessage());
 		}

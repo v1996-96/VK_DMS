@@ -7,14 +7,7 @@
 
     <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
 
-    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <!-- Toastr style -->
-    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
-
-    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
+    <include href="templates/Styles.php" />
 
 </head>
 
@@ -33,7 +26,7 @@
 
 
             <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-9">
+                <div class="col-lg-6">
                     <h2>Документы отдела</h2>
                     <ol class="breadcrumb">
                         <li>
@@ -49,6 +42,14 @@
                             <strong>Документы отдела</strong>
                         </li>
                     </ol>
+                </div>
+                <div class="col-lg-6">
+                    <div class="title-action">
+                        <a href="#" id="syncDocuments" data-group-id="{{ @DepartmentInfo.VKGroupId }}" class="btn btn-white">
+                            <i class="fa fa-refresh"></i>&nbsp;
+                            Синхронизировать
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -119,7 +120,7 @@
                             </div>
                         </div>
 
-                        <div class="ibox" id="packageDetail">
+                        <div class="ibox " id="packageDetail">
                             <div class="ibox-title">
                                 <h5><a href="#"><i class="fa fa-arrow-left"></i> Назад</a></h5>
                                 <div class="ibox-tools pull-right">
@@ -218,18 +219,15 @@
     <include href="templates/Scripts.php" />
 
     <script src="{{ @BASE }}/ui/js/jquery-ui-1.10.4.min.js"></script>
-
     <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
 
-    <script>
-        $(document).ready(function(){
+    <script src="{{ @BASE }}/ui/js/app/pages/DepartmentDocuments.js" type="text/javascript"></script>
 
-            $(".sortable-list").sortable({
-                connectWith: ".connectList"
-            }).disableSelection();
-
-        });
+    <check if="{{ isset(@documents_error) }}">
+    <script type="text/javascript">
+        App.message.show("Ошибка", "{{ @documents_error }}");
     </script>
+    </check>
 
 </body>
 

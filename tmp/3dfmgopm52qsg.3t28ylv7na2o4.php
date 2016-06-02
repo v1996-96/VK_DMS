@@ -7,14 +7,7 @@
 
     <title><?php echo SITE_TITLE; ?> - <?php echo $_page_title; ?></title>
 
-    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <!-- Toastr style -->
-    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
-
-    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
-    <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
+    <?php echo $this->render('templates/Styles.php',$this->mime,get_defined_vars(),0); ?>
 
 </head>
 
@@ -33,7 +26,7 @@
 
 
             <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-9">
+                <div class="col-lg-6">
                     <h2>Документы отдела</h2>
                     <ol class="breadcrumb">
                         <li>
@@ -49,6 +42,14 @@
                             <strong>Документы отдела</strong>
                         </li>
                     </ol>
+                </div>
+                <div class="col-lg-6">
+                    <div class="title-action">
+                        <a href="#" id="syncDocuments" data-group-id="<?php echo $DepartmentInfo['VKGroupId']; ?>" class="btn btn-white">
+                            <i class="fa fa-refresh"></i>&nbsp;
+                            Синхронизировать
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -119,7 +120,7 @@
                             </div>
                         </div>
 
-                        <div class="ibox" id="packageDetail">
+                        <div class="ibox " id="packageDetail">
                             <div class="ibox-title">
                                 <h5><a href="#"><i class="fa fa-arrow-left"></i> Назад</a></h5>
                                 <div class="ibox-tools pull-right">
@@ -218,18 +219,15 @@
     <?php echo $this->render('templates/Scripts.php',$this->mime,get_defined_vars(),0); ?>
 
     <script src="<?php echo $BASE; ?>/ui/js/jquery-ui-1.10.4.min.js"></script>
-
     <script src="<?php echo $BASE; ?>/ui/js/app/App.js" type="text/javascript"></script>
 
-    <script>
-        $(document).ready(function(){
+    <script src="<?php echo $BASE; ?>/ui/js/app/pages/DepartmentDocuments.js" type="text/javascript"></script>
 
-            $(".sortable-list").sortable({
-                connectWith: ".connectList"
-            }).disableSelection();
-
-        });
+    <?php if (isset($documents_error)): ?>
+    <script type="text/javascript">
+        App.message.show("Ошибка", "<?php echo $documents_error; ?>");
     </script>
+    <?php endif; ?>
 
 </body>
 

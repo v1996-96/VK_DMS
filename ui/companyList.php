@@ -7,11 +7,7 @@
 
     <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
 
-    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
+    <include href="templates/Styles.php" />
 
 </head>
 

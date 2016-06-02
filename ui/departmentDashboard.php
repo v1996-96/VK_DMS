@@ -7,19 +7,12 @@
 
     <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
 
-    <link href="{{ @BASE }}/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link href="{{ @BASE }}/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
-
+    <include href="templates/Styles.php" />
+    
     <!-- Data Tables -->
     <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
     <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
-
-    <link href="{{ @BASE }}/ui/css/plugins/iCheck/custom.css" rel="stylesheet">
-
-    <link href="{{ @BASE }}/ui/css/animate.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -120,7 +113,7 @@
                     <div class="col-md-3 col-sm-6 col-xs-12">
                         <div class="ibox">
                             <div class="ibox-content">
-                                <h5>Сотрудники</h5>
+                                <h5>Задачи</h5>
                                 <h1 class="no-margins text-success">{{ @DepartmentSummary.TaskCount }}</h1>
                                 <br>
                             </div>

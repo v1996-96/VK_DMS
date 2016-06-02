@@ -2,6 +2,29 @@ var App = (function($) {
 
 	var parent = this;
 
+	this.message = {
+		show : function (title, message, type) {
+			var title = title || "Default title";
+			var message = message || "Default message";
+			var type = type || "error";
+
+			if (typeof toastr == "undefined") {
+				alert( message );
+				return;
+			}
+
+			toastr.options.closeButton = true;
+
+			switch (type) {
+				case "info": toastr.info(message, title); break;
+				case "success": toastr.success(message, title); break;
+				case "warning": toastr.warning(message, title); break;
+				case "error": toastr.error(message, title); break;
+				default: toastr.error(message, title); break;
+			}
+		}
+	}
+
 
 	// Methods for working with vk
 	this.vkFactory = {
@@ -10,37 +33,15 @@ var App = (function($) {
 		init : function() {
 			var that = this;
 			
-
-
-			// Start vk 
 			VK.init({
 				apiId: that.appid
 			});
-
-			// Authorize user
-			VK.Auth.getLoginStatus(this.loginStatusHandler);
 		},
 
-		loginStatusHandler : function (response) {
-			if (response.session) {
-				console.log('user: '+response.session.mid);
-
-				this.getGroups();
-			} else {
-				console.log('not auth');
-
-				VK.Auth.login(this.loginHandler);
-			}
-		},
-
-		loginHandler : function (response) {
-			if (response.session) { 
-				console.log("vk login success");
-
-				this.getGroups();
-			} else { 
-				console.log("vk login error");
-			} 
+		getDocumentList : function (groupId, callback) {
+			VK.Api.call("docs.get", {
+				"owner_id" : -1*groupId
+			}, callback);
 		}
 
 	}
@@ -48,9 +49,7 @@ var App = (function($) {
 
 	// App start point
 	this.initialize = function () {
-		// this.vkFactory.init();
-
-		$('.tooltipToggle').tooltip();
+		this.vkFactory.init();
 	}
 
 
@@ -61,6 +60,16 @@ var App = (function($) {
 
 
 	// Public API
-	return {};
+	return {
+		message : {
+			show : function (title, message, type) {
+				parent.message.show(title, message, type);
+			}
+		},
+
+		getDocumentList : function (groupId, callback) {
+			parent.vkFactory.getDocumentList(groupId, callback);
+		}
+	};
 
 })(jQuery);

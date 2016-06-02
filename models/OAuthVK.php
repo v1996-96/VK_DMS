@@ -28,14 +28,52 @@ class OAuthVK
     }
 
 
-    public function catchResponse() {
+    public function getGroupRights($groupId) {
+        $this->redirect(self::URL_AUTHORIZE . 
+            '?client_id=' . self::APP_ID . 
+            '&display=page' .
+            '&group_ids=' . $groupId .
+            '&scope=docs' . 
+            '&redirect_uri=' . urlencode($this->URL_CALLBACK) . 
+            '&response_type=code' . 
+            '&v=' . self::VERSION);
+    }
+
+
+    public function catchResponse( $isGroup = false, $groupId = 0 ) {
         if (isset($_GET["error"])) {
             $this->errorText = isset($_GET["error_description"]) ? $_GET["error_description"] : "";
             return false;
 
         } elseif (isset($_GET["code"])) {
-            return $this->getToken($_GET["code"]);
 
+            if ($isGroup) {
+                return $this->getGroupToken($_GET["code"], $groupId);
+            } else {
+                return $this->getToken($_GET["code"]);
+            }           
+
+        } else {
+            return false;
+        }
+    }
+
+
+    public function getGroupToken($code, $groupId) {
+        $url = self::URL_ACCESS_TOKEN . 
+            '?client_id=' . self::APP_ID . 
+            '&client_secret=' . self::APP_SECRET . 
+            '&code=' . $code . 
+            '&redirect_uri=' . urlencode($this->URL_CALLBACK); 
+
+        if (!($res = @file_get_contents($url))) { 
+            return false; 
+        }
+
+        $data = json_decode($res, true);
+        if (isset($data["access_token_" . $groupId])) {
+            $this->token = $data["access_token_" . $groupId];
+            return true; 
         } else {
             return false;
         }
@@ -46,7 +84,7 @@ class OAuthVK
         $url = self::URL_ACCESS_TOKEN . 
             '?client_id=' . self::APP_ID . 
             '&client_secret=' . self::APP_SECRET . 
-            '&code=' . $_GET['code'] . 
+            '&code=' . $code . 
             '&redirect_uri=' . urlencode($this->URL_CALLBACK); 
 
         if (!($res = @file_get_contents($url))) { 

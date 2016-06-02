@@ -17,6 +17,12 @@ define("PACKAGE_INCOMING", 1);
 define("PACKAGE_OUTCOMING", 2);
 define("PACKAGE_MANAGING", 3);
 
+// File type
+define('FILE_UNMANAGED', 1);
+define('FILE_MANAGED', 2);
+define('FILE_DELETED', 3);
+
+
 // Get vk sdk
 require('base/vkPhpSdk/classes/VkApiException.php');
 require('base/vkPhpSdk/classes/VkPhpSdk.php');

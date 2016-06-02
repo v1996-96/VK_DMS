@@ -7,19 +7,12 @@
 
     <title><?php echo SITE_TITLE; ?> - <?php echo $_page_title; ?></title>
 
-    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
-
+    <?php echo $this->render('templates/Styles.php',$this->mime,get_defined_vars(),0); ?>
+    
     <!-- Data Tables -->
     <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
     <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
-
-    <link href="<?php echo $BASE; ?>/ui/css/plugins/iCheck/custom.css" rel="stylesheet">
-
-    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
-    <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -120,7 +113,7 @@
                     <div class="col-md-3 col-sm-6 col-xs-12">
                         <div class="ibox">
                             <div class="ibox-content">
-                                <h5>Сотрудники</h5>
+                                <h5>Задачи</h5>
                                 <h1 class="no-margins text-success"><?php echo $DepartmentSummary['TaskCount']; ?></h1>
                                 <br>
                             </div>
