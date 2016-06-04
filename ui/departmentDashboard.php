@@ -47,7 +47,13 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="title-action text-right">
-                        <a href="/{{ @PARAMS.CompanyUrl }}/departments/{{ @PARAMS.DepartmentId }}/documents" class="btn btn-primary"><i class="fa fa-folder-open"></i> Документы &nbsp; <span class="badge">5</span></a>
+                        <a href="/{{ @PARAMS.CompanyUrl }}/departments/{{ @PARAMS.DepartmentId }}/documents" class="btn btn-primary">
+                            <i class="fa fa-folder-open"></i> 
+                            Документы 
+                            <check if="{{ @DeletedDoucumentsCount > 0 }}">
+                                &nbsp;<span class="badge">{{ @DeletedDoucumentsCount }}</span>
+                            </check>
+                        </a>
                         <check if="{{ @DepartmentRight_Edit }}">
                             <a href="#editDepartmentModal" data-toggle="modal" class="btn btn-white"><i class="fa fa-cog"></i> Настройки</a>
                         </check>

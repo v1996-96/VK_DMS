@@ -7,17 +7,13 @@
 
     <title><?php echo SITE_TITLE; ?> - <?php echo $_page_title; ?></title>
 
-    <link href="<?php echo $BASE; ?>/ui/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo $BASE; ?>/ui/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link href="<?php echo $BASE; ?>/ui/css/plugins/iCheck/custom.css" rel="stylesheet">
-
+    <?php echo $this->render('templates/Styles.php',$this->mime,get_defined_vars(),0); ?>
+    
     <!-- Data Tables -->
     <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
     <link href="<?php echo $BASE; ?>/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
 
-    <link href="<?php echo $BASE; ?>/ui/css/animate.css" rel="stylesheet">
-    <link href="<?php echo $BASE; ?>/ui/css/style.css" rel="stylesheet">
 
     <style type="text/css">
     .sort-toggle{

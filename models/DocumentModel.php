@@ -40,6 +40,16 @@ class DocumentModel extends \BaseModel implements \IModel, \IDocumentModel
 	}
 
 
+	private function ByDepartmentDeleted($departmentId) {
+		return $this->db->exec("SELECT * FROM Document
+								WHERE DepartmentId = :id AND Status = :deleted",
+								array(
+									"id" => (int)$departmentId, 
+									"deleted" => FILE_DELETED
+									));
+	}
+
+
 	private function ByPackage($packageId) {
 		return $this->db->exec("SELECT * FROM Document WHERE PackageId = ?", (int)$packageId);
 	}
@@ -61,6 +71,11 @@ class DocumentModel extends \BaseModel implements \IModel, \IDocumentModel
 				case 'byDepartmentNotManaged':
 					if (isset($search["departmentId"])) {
 						return $this->ByDepartmentNotManaged($search["departmentId"]);
+					} else return null;
+
+				case 'byDepartmentDeleted':
+					if (isset($search["departmentId"])) {
+						return $this->ByDepartmentDeleted($search["departmentId"]);
 					} else return null;
 
 				case 'byPackage':

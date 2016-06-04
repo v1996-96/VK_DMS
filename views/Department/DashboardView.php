@@ -36,6 +36,7 @@ class DashboardView extends \BaseView
 		$department = new \DepartmentModel($this->f3);
 		$project = new \ProjectModel($this->f3);
 		$departmentEmployee = new \DepartmentEmployeeModel($this->f3);
+		$document = new \DocumentModel($this->f3);
 
 
 		// Summary
@@ -86,6 +87,14 @@ class DashboardView extends \BaseView
 			"EmployeeFullList" => $employeeFullList,
 			"FreeCompanyEmployeeList" => $freeEmployeeList
 			));
+
+
+		// Deleted documents
+		$deleted = $document->getData(array(
+			"type" => "byDepartmentDeleted",
+			"id" => $this->DepartmentId
+			));
+		$this->f3->set("DeletedDoucumentsCount", count($deleted));
 
 
 		try {

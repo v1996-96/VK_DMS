@@ -24,7 +24,7 @@ class DepartmentPackageModel extends \BaseModel implements \IModel
 
 
 	private function CurrentDepartmentPackages($departmentId) {
-		return $this->db->exec("SELECT p.* FROM DepartmentPackage as dp
+		return $this->db->exec("SELECT p.*, dp.PackageType FROM DepartmentPackage as dp
 								LEFT JOIN Package as p ON p.PackageId = dp.PackageId
 								WHERE (dp.PackageType = '".(int)PACKAGE_INCOMING."' OR dp.PackageType = '".(int)PACKAGE_MANAGING."')
 									AND dp.DepartmentId = ?", $departmentId);

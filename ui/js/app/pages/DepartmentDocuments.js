@@ -15,8 +15,6 @@ var Documents = {
 		this.handlers.setDocumentMoveHandler();
 		this.handlers.setDeleteHandler();
 		this.handlers.setDeleteNotmanagedHandler();
-		// this.handlers.setControlsShowHandlers();
-		// this.handlers.setControlsHandlers();
 
 		this.actions.getDocuments();
 		this.actions.getPackages();
@@ -76,7 +74,8 @@ var Documents = {
 
 				if (node !== null &&
 					node_parent !== null &&
-					node_parent.type == "package" &&
+					(node_parent.type == "package" || 
+					node_parent.type == "package_incoming") &&
 					node.id == obj.data.obj[0].id) {
 
 					$("#managedDocuments").jstree(true).set_type(node, "file");
@@ -93,7 +92,8 @@ var Documents = {
 
 			$("#managedDocuments").on("delete_node.jstree", function(e, obj) {
 				
-				if (obj.node.type == "package") {
+				if (obj.node.type == "package" || 
+					obj.node.type == "package_incoming") {
 					for (var i = 0; i < obj.node.children.length; i++) {
 						var node = $("#managedDocuments").jstree(true).get_node(obj.node.children[i]);
 						$("#notmanagedDocuments").jstree(true).create_node("#", node);
@@ -121,58 +121,6 @@ var Documents = {
 				if (obj.node.type == "deleted") {
 					that.parent.actions.clearDeletedDocument( obj.node );
 				} else return false;
-			});
-		},
-
-		setControlsShowHandlers : function () {
-			$("#managedDocuments").on("select_node.jstree", function(e, obj) {
-				if (obj.node.type == "package") {
-					$(".package_info").removeClass("hidden");
-				}
-
-				if (obj.node.type == 'file' ||
-					obj.node.type == 'new' ||
-					obj.node.type == 'deleted' ||
-					obj.node.type == 'unknown') {
-					$(".file_info").removeClass("hidden");
-				}
-
-			});
-
-			$("#managedDocuments").on("deselect_node.jstree", function(e, obj) {
-				if (obj.node.type == "package") {
-					$(".package_info").addClass("hidden");
-				}
-
-				if (obj.node.type == "package" ||
-					obj.node.type == 'file' ||
-					obj.node.type == 'new' ||
-					obj.node.type == 'deleted' ||
-					obj.node.type == 'unknown') {
-					$(".file_info").addClass("hidden");
-				}
-			});
-		},
-
-		setControlsHandlers : function () {
-			$("#deletePack").on("click", function(e){
-				e.preventDefault();
-
-				var target = $("#managedDocuments").jstree(true);
-				var node = target.get_selected();
-				console.log(node);
-
-				// $("#managedDocuments").jstree(true).delete_node(node);
-			});
-
-			$("#deleteDocFromPack").on("click", function(e){
-				e.preventDefault();
-
-				var target = $("#managedDocuments").jstree(true);
-				var node = target.get_selected();
-				console.log(node);
-
-				// $("#managedDocuments").jstree(true).delete_node(node);
 			});
 		},
 
@@ -465,6 +413,7 @@ var Documents = {
 			$.jstree.defaults.core.check_callback = function (operation, node, node_parent, node_position, more) {
 	            if (operation == "move_node") {
 	            	if (node.type == "package" ||
+	            		node.type == "package_incoming" ||
             			node.type == "department" ||
             			node.type == "unknown" ||
             			node.type == "deleted") 
@@ -487,6 +436,7 @@ var Documents = {
 			$.jstree.defaults.types = {
                 'department' : { 'icon' : 'fa fa-cubes' },
                 'package' : { 'icon' : 'fa fa-folder' },
+                'package_incoming' : { 'icon' : 'fa fa-download' },
                 'file' : { 'icon' : 'fa fa-file-o' },
                 'new' : { 'icon' : 'fa fa-plus' },
                 'deleted' : { 'icon' : 'fa fa-minus' },
@@ -498,6 +448,7 @@ var Documents = {
             $.jstree.defaults.dnd.is_draggable = function(e) {
             	for (var i = e.length - 1; i >= 0; i--) {
             		if (e[i].type == "package" ||
+            			e[i].type == "package_incoming" ||
             			e[i].type == "department" ||
             			e[i].type == "unknown") 
             			return false;

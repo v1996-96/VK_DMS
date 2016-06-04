@@ -43,8 +43,12 @@ class DepartmentModel extends \BaseModel implements \IModel
 									d.*,
 									COUNT(p.ProjectId) as ProjectCount,
 									COUNT(t.TaskId) as TaskCount,
-									COUNT(dp.PackageType = 1) as IncomingPackageCount,
-									COUNT(dp.PackageType = 2) as OutcomingPackageCount
+									COUNT(CASE dp.PackageType
+											WHEN 1 THEN 1
+											ELSE NULL END) as IncomingPackageCount,
+									COUNT(CASE dp.PackageType
+											WHEN 2 THEN 1
+											ELSE NULL END) as OutcomingPackageCount
 								FROM Department as d
 								LEFT JOIN Company as c ON c.CompanyId = d.CompanyId
 								LEFT JOIN Project as p ON p.DepartmentId = d.DepartmentId

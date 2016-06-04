@@ -38,7 +38,7 @@
                             <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments">Отделы</a>
                         </li>
                         <li>
-                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/4">Web разработка</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/<?php echo $DepartmentInfo['DepartmentId']; ?>">Web разработка</a>
                         </li>
                         <li class="active">
                             <strong>Документы отдела</strong>
@@ -68,15 +68,6 @@
                                         <a href="#" id="addPackageBtn" class="btn btn-primary btn-xs">Добавить</a>
                                     </div>
                                 </h3>
-
-                                <!-- <div class="m-t m-b package_info hidden">
-                                    <a href="#" id="showPackHistory" class="btn btn-primary btn-xs">История пакета</a>
-                                    <a href="#" id="deletePack" class="btn btn-danger btn-xs">Удалить пакет</a>
-                                </div>
-
-                                <div class="m-t m-b file_info hidden">
-                                    <a href="#" id="deleteDocFromPack" class="btn btn-warning btn-xs">Удалить из пакета</a>
-                                </div> -->
 
                                 <div id="managedDocuments"></div>
 

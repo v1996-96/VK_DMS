@@ -242,10 +242,16 @@ class DocumentsController extends \BaseController
 				"packageId" => (int)$item["PackageId"]
 				));
 
+			switch ($item["PackageType"]) {
+				case PACKAGE_INCOMING: $type = "package_incoming"; break;
+				case PACKAGE_MANAGING:
+				default: $type = "package"; break;
+			}
+
 			$data[] = array(
 				"id" => "pack_" . $item["PackageId"],
 				"text" => $item["Title"],
-				"type" => "package",
+				"type" => $type,
 				"children" => $this->RefactorDocumentList($documents)
 				);
 		}
