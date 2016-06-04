@@ -1817,6 +1817,15 @@ a.DTTT_button:hover:not(.DTTT_disabled) {
   margin-bottom: 2px;
   padding: 10px;
 }
+.todo-list > li.custom{
+  padding: 0;
+}
+.todo-list > li.custom > a {
+  display: block;
+  overflow: hidden;
+  padding: 10px;
+  outline: none;
+}
 .todo-list .handle {
   cursor: move;
   display: inline-block;

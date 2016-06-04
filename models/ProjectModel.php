@@ -29,8 +29,8 @@ class ProjectModel extends \BaseModel implements \IModel
 	private function ByDepartmentId($departmentId) {
 		return $this->db->exec("SELECT 
 									p.*, 
-									COUNT(t.TaskId) as TaskCount, 
-									COUNT(pe.UserId) as EmployeeCount
+									COUNT(DISTINCT t.TaskId) as TaskCount, 
+									COUNT(DISTINCT pe.UserId) as EmployeeCount
 								FROM Project as p
 								LEFT JOIN Task as t ON t.ProjectId = p.ProjectId
 								LEFT JOIN ProjectEmployee as pe ON pe.ProjectId = p.ProjectId
@@ -52,8 +52,8 @@ class ProjectModel extends \BaseModel implements \IModel
 		return $this->db->exec("SELECT 
 									p.*,
 									d.Title as DepartmentTitle,
-									COUNT(t.TaskId) as TaskCount,
-									COUNT(pe.UserId) as EmployeeCount
+									COUNT(DISTINCT t.TaskId) as TaskCount,
+									COUNT(DISTINCT pe.UserId) as EmployeeCount
 								FROM Project as p
 								LEFT JOIN Task as t ON t.ProjectId = p.ProjectId
 								LEFT JOIN ProjectEmployee as pe ON pe.ProjectId = p.ProjectId

@@ -33,6 +33,7 @@ class DashboardView extends \BaseView
 		$project = new \ProjectModel($this->f3);
 		$projectEmployee = new \ProjectEmployeeModel($this->f3);
 		$departmentEmployee = new \DepartmentEmployeeModel($this->f3);
+		$task = new \TaskModel($this->f3);
 
 		$projectInfo = $project->getData(array(
 			"type" => "byId",
@@ -52,6 +53,21 @@ class DashboardView extends \BaseView
 			"ManagerList" => $managerList,
 			"EmployeeList" => $employeeList
 			));
+
+
+		$taskListOpen = $task->getData(array(
+			"type" => "forProjectOpen",
+			"projectId" => (int)$this->ProjectId
+			));
+		$taskListClosed = $task->getData(array(
+			"type" => "forProjectClosed",
+			"projectId" => (int)$this->ProjectId
+			));
+		$this->f3->mset(array(
+			"TaskListOpen" => $taskListOpen,
+			"TaskListClosed" => $taskListClosed
+			));
+
 
 		if ($projectInfo) {
 			$departmentEmployeeList = $departmentEmployee->getData(array(

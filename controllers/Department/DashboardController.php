@@ -205,8 +205,6 @@ class DashboardController extends \BaseController
 				}
 			}
 
-			// There are triggers deleting records from 
-			// ProjectEmployee and TaskEmployee
 			$departmentEmployee->remove(array(
 				"UserId" => (int)$_POST["EmployeeId"],
 				"CompanyId" => (int)$companyData["CompanyId"]

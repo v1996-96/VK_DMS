@@ -11,19 +11,33 @@ class TaskModel extends \BaseModel implements \IModel
 		
 		$this->entity = "Task";
 		$this->required = array("ProjectId", "Title", "DateAdd");
-		$this->optional = array("Description", "Deadline", "DateClosed", "IsClosed");
+		$this->optional = array("Description", "Deadline", "DateClosed", "IsClosed", "Position");
 	}
 
 
 	private function ForEmployee($employeeId, $companyUrl) {
 		return $this->db->exec("SELECT t.*, p.Title as ProjectTitle FROM Task as t
-								LEFT JOIN TaskEmployee as te ON t.TaskId = te.TaskId
 								LEFT JOIN Project as p ON p.ProjectId = t.ProjectId
+								LEFT JOIN ProjectEmployee as pe ON pe.ProjectId = p.ProjectId
 								LEFT JOIN Department as d ON d.DepartmentId = p.DepartmentId
 								LEFT JOIN Company as c ON c.CompanyId = d.CompanyId
-								WHERE te.UserId = :id and c.Url = :url
+								WHERE pe.UserId = :id and c.Url = :url
 								ORDER BY t.Deadline DESC",
 								array("id" => (int)$employeeId, "url" => $companyUrl));
+	}
+
+
+	private function ForProjectOpen($projectId) {
+		return $this->db->exec("SELECT * FROM Task 
+								WHERE ProjectId = ? AND IsClosed = 0
+								ORDER BY Position", (int)$projectId);
+	} 
+
+
+	private function ForProjectClosed($projectId) {
+		return $this->db->exec("SELECT * FROM Task 
+								WHERE ProjectId = ? AND IsClosed = 1
+								ORDER BY Position", (int)$projectId);
 	}
 
 
@@ -41,6 +55,16 @@ class TaskModel extends \BaseModel implements \IModel
 						return $this->ById($search["id"]);
 					} else return null;
 
+				case 'forProjectOpen':
+					if (isset($search["projectId"])) {
+						return $this->ForProjectOpen($search["projectId"]);
+					} else return null;
+
+				case 'forProjectClosed':
+					if (isset($search["projectId"])) {
+						return $this->ForProjectClosed($search["projectId"]);
+					} else return null;
+
 				case 'forEmployee':
 					if (isset($search["id"]) && isset($search["url"])) {
 						return $this->ForEmployee($search["id"], $search["url"]);
@@ -53,16 +77,17 @@ class TaskModel extends \BaseModel implements \IModel
 
 
 	public function add($data = array()) {
-		return null;
+		$data["DateAdd"] = date("Y-m-d H:i:s");
+		return $this->insert($data);
 	}
 
 
 	public function edit($data = array()) {
-		return null;
+		return $this->update($data, array("TaskId"));
 	}
 
 
 	public function remove($find = null) {
-		return null;
+		return $this->delete($find, array("TaskId"));
 	}
 }

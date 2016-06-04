@@ -8,12 +8,8 @@
     <title>{{ SITE_TITLE }} - {{ @_page_title }}</title>
 
     <include href="templates/Styles.php" />
-    
-    <!-- Data Tables -->
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
-    <link href="{{ @BASE }}/ui/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
 
+    <link href="{{ @BASE }}/ui/css/plugins/jsTree/style.min.css" rel="stylesheet">
 
     <style type="text/css">
     .sort-toggle{
@@ -27,6 +23,22 @@
     .task-item:active{
         color: #333;
         outline: none;
+    }
+    .loading{
+        position: absolute;
+        background: rgba(255, 255, 255, 0.7);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+        /*display: flex;*/
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .processing > .loading{
+        display: flex;
     }
     </style>
 
@@ -65,13 +77,6 @@
 
 
             <div class="wrapper wrapper-content">
-
-                <check if="{{ @project_error }}">
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        {{ @project_error }}
-                    </div>
-                </check>
                 
                 <div class="row">
                     <div class="col-md-4">
@@ -135,43 +140,50 @@
                                 <div id="tasksTab" class="tab-pane active">
                                     <div class="panel-body">
 
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Наименование задачи">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
-                                            </span>
-                                        </div>
+                                        <div class="loading"><span><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></span></div>
 
-                                        <ul class="todo-list m-t m-b">
-                                            <li>
-                                                <a href="#taskDescription" class="task-item" data-toggle="modal">
-                                                    <span class="sort-toggle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>
-                                                    <input type="checkbox" value="" name="" class="i-checks"/>
-                                                    <span class="m-l-xs">Buy a milk</span>
-                                                    <small class="pull-right"> 12/12/2012 12:05:00</small>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="task-item">
-                                                    <span class="sort-toggle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>
-                                                    <input type="checkbox" value="" name="" class="i-checks"/>
-                                                    <span class="m-l-xs">Buy a milk</span>
-                                                    <small class="pull-right"> 12/12/2012 12:05:00</small>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="task-item">
-                                                    <span class="sort-toggle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>
-                                                    <input type="checkbox" value="" name="" class="i-checks"/>
-                                                    <span class="m-l-xs">Buy a milk</span>
-                                                    <small class="pull-right"> 12/12/2012 12:05:00</small>
-                                                </a>
-                                            </li>
+                                        <form method="POST">
+                                            <div class="input-group">
+                                                <input type="text" name="Title" class="form-control" placeholder="Наименование задачи">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary" type="submit" name="action" value="addTask"><i class="fa fa-plus"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+
+                                        <ul id="OpenTaskList" class="todo-list m-t m-b">
+                                            <repeat group="{{ @TaskListOpen }}" value="{{ @task }}">
+                                                <li class="custom">
+                                                    <a href="#taskDescription" data-id="{{ @task.TaskId }}" class="task-item" data-toggle="modal">
+                                                        <span class="sort-toggle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>
+                                                        <input type="checkbox" name="IsClosed" class="i-checks"/>
+                                                        <span class="m-l-xs">{{ @task.Title }}</span>
+                                                        <check if="{{ @task.Deadline }}">
+                                                            <small class="pull-right">{{ @task.Deadline }}</small>
+                                                        </check>
+                                                    </a>
+                                                </li>
+                                            </repeat>
                                         </ul>
 
-                                        <p class="text-center">
-                                            <a class="btn btn-white btn-sm">Просмотреть завершенные (120)</a>
+                                        <p id="ShowClosedTaskList" class="text-center {{ count(@TaskListClosed) > 0 ? '' : 'hidden' }}">
+                                            <a href="#" id="toggleClosed" class="btn btn-white btn-sm">Просмотреть завершенные ({{ count(@TaskListClosed) }})</a>
                                         </p>
+
+                                        <ul id="ClosedTaskList" class="todo-list disabled m-t m-b hidden">
+                                            <repeat group="{{ @TaskListClosed }}" value="{{ @task }}">
+                                                <li class="custom">
+                                                    <a href="#taskDescription" data-id="{{ @task.TaskId }}" class="task-item" data-toggle="modal">
+                                                        <span class="sort-toggle hidden"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>
+                                                        <input type="checkbox" name="IsClosed" class="i-checks" checked="checked" />
+                                                        <span class="m-l-xs">{{ @task.Title }}</span>
+                                                        <check if="{{ @task.Deadline }}">
+                                                            <small class="pull-right">{{ @task.Deadline }}</small>
+                                                        </check>
+                                                    </a>
+                                                </li>
+                                            </repeat>
+                                        </ul>
 
                                     </div>
                                 </div>
@@ -252,13 +264,15 @@
                                             <div class="form-group">
                                                 <label for="titleInput" class="col-sm-2 control-label">Статус</label>
                                                 <div class="col-sm-8" style="padding-top: 7px">
-                                                    <label class="m-r-sm" style="font-weight: normal;">
-                                                        <input type="radio" name="Status" value="1" 
-                                                            {{ @ProjectInfo.Status ? 'checked="checked"' : "" ; }} /> Активный
+                                                    <label class="checkbox-inline">
+                                                        <input class="i-checks" type="radio" name="Status" value="1"
+                                                            {{ @ProjectInfo.Status ? 'checked="checked"' : "" ; }} />&nbsp;
+                                                        <strong>Активный</strong>
                                                     </label>
-                                                    <label class="m-r-sm" style="font-weight: normal;">
-                                                        <input type="radio" name="Status" value="0" 
-                                                            {{ @ProjectInfo.Status ? "" : 'checked="checked"' ; }} /> Закрытый
+                                                    <label class="checkbox-inline">
+                                                        <input class="i-checks" type="radio" name="Status" value="0"
+                                                            {{ @ProjectInfo.Status ? "" : 'checked="checked"' ; }} />&nbsp;
+                                                        <strong>Закрытый</strong>
                                                     </label>
                                                 </div>
                                             </div>
@@ -395,41 +409,141 @@
     </div>
 
 
-    <div class="modal" id="taskDescription" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal inmodal" id="packageResolveModal" tabindex="-1" role="dialog"  aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Редактирование задачи</h4>
+                    <h4 class="modal-title">Передача пакетов документов</h4>
                 </div>
                 <div class="modal-body">
                     
-                    <form>
-                        <div class="form-group">
-                            <label>Наименование</label>
-                            <h2 class="no-margins">Задача 2</h2>
-                            <input type="text" class="form-control hidden">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Описание</label>
-                            <p>бла бла бла</p>
-                            <input type="email" class="form-control hidden">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Дата завершения</label>
-                            <p>12/12/2012 12:05:00</p>
-                            <input type="email" class="form-control hidden">
-                        </div>
+                    <form method="POST" id="resolveForm">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Пакет</th>
+                                    <th>Отдел</th>
+                                </tr>
+                            </thead>
+                            <tbody id="packageResolveList"></tbody>
+                        </table>
                     </form>
-
-                    
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" name="action" value="transferPackages" form="resolveForm" class="btn btn-primary">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="taskDescription" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    
+                    <form class="hidden" id="TaskSummaryBlock" method="POST">
+                        <div class="form-group">
+                            <h2 class="no-margins" id="TaskTitle"></h2>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="hidden">Дата создания: 
+                                <span id="DateAddBlock"></span>
+                            </div>
+                            <div class="hidden">Дата закрытия: 
+                                <span id="DateClosedBlock"></span>
+                            </div>
+                            <div class="m-t-xs">
+                                Статус: 
+                                <span class="label label-primary hidden" id="TaskOpenedStatus">Открытая</span>
+                                <span class="label label-default hidden" id="TaskClosedStatus">Завершенная</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <p id="TaskDescription"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Крайний срок: </label>
+                            <p id="TaskDeadline"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Пакеты документов</label>
+                            <div id="packageList"></div>
+                            <p class="info-block hidden" id="packageListEmpty">Пакеты документов отсутствуют</p>
+                        </div>
+                    </form>
+
+
+                    <form class="hidden form-horizontal" id="TaskEditForm" method="POST">
+                        <div class="form-group">
+                            <div class="col-sm-6 hidden">
+                                <label>Дата создания</label>    
+                                <p id="CreateDateField">2016-06-04 18:24:00</p>                            
+                            </div>
+                            <div class="col-sm-6 hidden">
+                                <label>Дата закрытия</label>
+                                <p id="ClosedDateField">2016-06-04 18:24:00</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group hidden">
+                            <label for="TaskTitleField" class="col-sm-2 control-label">Статус</label>
+                            <div class="col-sm-9">
+                                <label class="checkbox-inline">
+                                    <input id="TaskOpenedField" class="i-checks" type="radio" name="IsClosed" value="0" />&nbsp;
+                                    <strong>Открытая</strong>
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input id="TaskClosedField" class="i-checks" type="radio" name="IsClosed" value="1" />&nbsp;
+                                    <strong>Завершенная</strong>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TaskTitleField" class="col-sm-2 control-label">Название</label>
+                            <div class="col-sm-9">
+                                <input name="Title" type="text" class="form-control" id="TaskTitleField">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TaskDescriptionField" class="col-sm-2 control-label">Описание</label>
+                            <div class="col-sm-9">
+                                <textarea name="Description" class="form-control" id="TaskDescriptionField"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TaskDeadlineField" class="col-sm-2 control-label">Крайний срок</label>
+                            <div class="col-sm-9">
+                                <input name="Deadline" type="text" class="form-control" id="TaskDeadlineField">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Пакеты документов</label>
+                            <div class="col-sm-9" id="TaskPackagesWrap"></div>
+                        </div>
+                    </form>
+
+
+                    <div class="hidden" id="TaskSummaryError">
+                        <h3 class="text-center">Ошибка получения данных задачи</h3>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-success" id="EditTask">Редактировать</button>
+                    <button type="submit" name="action" value="editTask" class="btn btn-primary hidden" form="TaskEditForm" id="SaveTask">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -439,30 +553,20 @@
 
     <include href="templates/Scripts.php" />
 
-    <!-- Data Tables -->
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.responsive.js"></script>
-    <script src="{{ @BASE }}/ui/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <script src="{{ @BASE }}/ui/js/jquery-ui-1.10.4.min.js"></script>
     <script src="{{ @BASE }}/ui/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="{{ @BASE }}/ui/js/plugins/jsTree/jstree.min.js"></script>
+
+    <script src="{{ @BASE }}/ui/js/plugins/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
 
     <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
+    <script src="{{ @BASE }}/ui/js/app/pages/ProjectDashboard.js" type="text/javascript"></script>
 
-
+    <check if="{{ isset(@project_error) }}">
     <script type="text/javascript">
-        $(function(){
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green'
-            });
-
-            $(".departmentEmployeeList").DataTable({
-                lengthChange : false,
-                searching : false,
-                info : false
-            });
-        });
+        App.message.show("Ошибка", "{{ @project_error }}");
     </script>
+    </check>
 
 </body>
 
