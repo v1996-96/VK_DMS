@@ -4,6 +4,14 @@ namespace Projects;
 
 defined('_EXECUTED') or die('Restricted access');
 
+// For PDO errors
+set_error_handler(function ($errno, $errstr, $errfile, $errline ) {
+    if (!(error_reporting() & $errno)) {
+        return;
+    }
+    throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+
 class DashboardController extends \BaseController
 {
 
@@ -11,6 +19,7 @@ class DashboardController extends \BaseController
 
 	private $CompanyUrl = null;
 	private $ProjectId = null;
+	private $UserRights = USER_UNKNOWN;
 
 	function __construct($f3) {
 		$this->f3 = $f3;
@@ -21,6 +30,30 @@ class DashboardController extends \BaseController
 		$this->CheckAuthStatus();
 	}
 
+	private function GetUserRights() {
+		// On the list level we use company-level rights
+		$company = new \CompanyModel($this->f3);
+		$project = new \ProjectModel($this->f3);
+
+		$companyData = $company->getData(array("type" => "byUrl", "url" => $this->CompanyUrl));
+		if (!$companyData) return;
+
+		$userRights = $company->getData(array(
+			"type" => "getUserRights", 
+			"userId" => $this->GetUserInfo()["id"],
+			"companyId" => $companyData["CompanyId"]));
+
+		if ($userRights == USER_EMPLOYEE) {
+			$userRights = $project->getData(array(
+				"type" => "getUserRights",
+				"userId" => $this->GetUserInfo()["id"],
+				"projectId" => (int)$this->ProjectId
+				));
+		}
+
+		$this->UserRights = $userRights;
+		$this->view->UserRights = $userRights;
+	}
 
 	public function Gateway() {
 		// Company url
@@ -42,6 +75,7 @@ class DashboardController extends \BaseController
 			return;
 		}
 
+		$this->GetUserRights();
 
 		if (isset($_POST["action"])) {
 			switch ($_POST["action"]) {
@@ -84,6 +118,11 @@ class DashboardController extends \BaseController
 					$this->EditTask();
 					break;
 
+				case 'deleteTask':
+					$this->DeleteTask();
+					$this->view->ShowPage( self::PAGE_TYPE );
+					break;
+
 				case 'taskSummary':	
 					$this->TaskSummary();
 					break;
@@ -99,6 +138,10 @@ class DashboardController extends \BaseController
 				case 'transferPackages':
 					$this->TransferPackages();
 					$this->view->ShowPage( self::PAGE_TYPE );
+					break;
+
+				case 'saveTaskOrder':
+					$this->SaveTaskOrder();
 					break;
 			}
 		} else $this->view->ShowPage( self::PAGE_TYPE );
@@ -270,6 +313,17 @@ class DashboardController extends \BaseController
 	}
 
 
+	private function DeleteTask() {
+		$task = new \TaskModel($this->f3);
+
+		try {
+			$task->remove($_POST);
+		} catch (\Exception $e) {
+			$this->f3->set("project_error", $e->getMessage());
+		}
+	}
+
+
 	private function TaskSummary() {
 		$task = new \TaskModel($this->f3);
 		$taskPackage = new \TaskPackageModel($this->f3);
@@ -372,11 +426,22 @@ class DashboardController extends \BaseController
 
 	private function GetDepartments() {
 		$department = new \DepartmentModel($this->f3);
+		$project = new \ProjectModel($this->f3);
 
 		try {
+
+			$projectInfo = $project->getData(array(
+				"type" => "byId",
+				"id" => $this->ProjectId
+				));
+
+			if (!$projectInfo) 
+				throw new \Exception("Неверный id проекта");
+
 			$departmentList = $department->getData(array(
-				"type" => "byCompanyUrl",
-				"url" => $this->CompanyUrl
+				"type" => "byCompanyUrlExcept",
+				"url" => $this->CompanyUrl,
+				"id" => $projectInfo["DepartmentId"]
 				));
 
 			die( json_encode( array("departments" => $departmentList) ) );
@@ -457,6 +522,37 @@ class DashboardController extends \BaseController
 			}
 		} catch (\Exception $e) {
 			$this->f3->set("project_error", $e->getMessage());
+		}
+	}
+
+
+	private function SaveTaskOrder() {
+		$task = new \TaskModel($this->f3);
+
+		try {
+			if (!isset($_POST["order"])) 
+				throw new \Exception("Не передан порядок задач");
+			
+			$order = json_decode($_POST["order"], true);
+
+			if (!is_array($order)) 
+				throw new \Exception("Передан неверный список задач");
+			
+			for ($i=0; $i < count($order); $i++) { 
+				$current = $task->getData(array(
+					"type" => "byId",
+					"id" => $order[ $i ]
+					));	
+
+				if ($current) {
+					$current["Position"] = $i;
+					$task->edit($current);
+				}
+			}			
+
+			die( json_encode( array("success" => true) ) );
+		} catch (\Exception $e) {
+			die( json_encode( array("error" => $e->getMessage()) ) );
 		}
 	}
 }

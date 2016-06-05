@@ -36,14 +36,31 @@ var App = (function($) {
 			VK.init({
 				apiId: that.appid
 			});
+
+			this.authVk();
 		},
 
 		getDocumentList : function (groupId, callback) {
 			VK.Api.call("docs.get", {
 				"owner_id" : -1*groupId
 			}, callback);
-		}
+		},
 
+		authVk : function() {
+			var that = this;
+
+			$("#authorize_vk").on("click", function(e) {
+				VK.Auth.login(function(response) {
+					console.log(response);
+
+					if (response.session) { 
+						
+					} else { 
+						
+					} 
+				}, 458752);
+			});
+		}
 	}
 
 

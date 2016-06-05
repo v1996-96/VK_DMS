@@ -10,7 +10,7 @@ class CompanyEmployeeModel extends \BaseModel implements \IModel
 		$this->db = $f3->get('db');
 		
 		$this->entity = "CompanyEmployee";
-		$this->required = array("CompanyId", "UserId", "IsAdmin", "DateAdd", "RoleDescription");
+		$this->required = array("CompanyId", "UserId", "IsAdmin", "DateAdd");
 		$this->optional = array();
 	}
 
@@ -28,12 +28,24 @@ class CompanyEmployeeModel extends \BaseModel implements \IModel
 	}
 
 
+	private function ById($userId, $companyId) {
+		return $this->db->exec("SELECT * FROM CompanyEmployee
+								WHERE UserId = :userId AND CompanyId = :companyId",
+								array("userId" => $userId, "companyId" => $companyId));
+	}
+
+
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
 			switch ($search["type"]) {
 				case 'isVkNew':
 					if (isset($search["vk"]) && isset($search["id"])) {
 						return $this->IsVkNew($search["vk"], $search["id"]);
+					} else return null;
+
+				case 'byId':
+					if (isset($search["userId"]) && isset($search["companyId"])) {
+						return $this->ById($search["userId"], $search["companyId"]);
 					} else return null;
 				
 				default: return null;
@@ -43,16 +55,17 @@ class CompanyEmployeeModel extends \BaseModel implements \IModel
 
 
 	public function add($data = array()) {
+		$data["DateAdd"] = date("Y-m-d H:i:s");
 		return $this->insert($data);
 	}
 
 
 	public function edit($data = array()) {
-		return null;
+		return $this->update($data, array("UserId", "CompanyId"));
 	}
 
 
 	public function remove($find = null) {
-		return null;
+		return $this->delete($find, array("UserId", "CompanyId"));;
 	}
 }

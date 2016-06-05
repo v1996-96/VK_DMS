@@ -286,8 +286,7 @@ class InviteController
 					"CompanyId" => $currentInvite[0]["CompanyId"], 
 					"UserId" => $userData[0]["id"], 
 					"IsAdmin" => false, 
-					"DateAdd" => date("Y-m-d H:i:s"), 
-					"RoleDescription" => "Новый сотрудник"
+					"DateAdd" => date("Y-m-d H:i:s")
 					));
 
 				$invite->remove(array("id" => $currentInvite[0]["id"]));

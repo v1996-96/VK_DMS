@@ -23,7 +23,11 @@ class DocumentsView extends \BaseView
 		$this->PreparePage("Отделы", $page);
 		$this->SetVars();
 
-		echo (new \Template)->render('departmentDocuments2.php');
+		if (in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER))) {
+			echo (new \Template)->render('departmentDocumentsManagement.php');
+		} else {
+			echo (new \Template)->render('departmentDocumentsView.php');
+		}
 	}
 
 

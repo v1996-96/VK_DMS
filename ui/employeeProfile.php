@@ -40,10 +40,24 @@
                         </li>
                     </ol>
                 </div>
+                <div class="col-lg-3">
+                    <check if="{{ @EmployeeRights_Edit }}">
+                        <div class="title-action">
+                            <a href="#editModal" class="btn btn-primary" data-toggle="modal">Редактировать</a>
+                        </div>
+                    </check>
+                </div>
             </div>
 
 
             <div class="wrapper wrapper-content">
+
+                <check if="{{ isset(@employee_error) }}">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ @employee_error }}
+                    </div>
+                </check>
                 
                 <div class="row m-b-lg m-t-lg">
                     <div class="col-md-4">
@@ -69,14 +83,9 @@
                         <h3 class="no-margins">{{ @EmployeeData.DepartmentRole }}</h3>
                     </div>
                     <div class="col-md-3">
-                        <small>Активность за последний месяц</small>
+                        <!-- <small>Активность за последний месяц</small>
                         <h2 class="no-margins">206</h2>
-                        <div id="sparkline1"></div>
-                    </div>
-                    <div class="col-md-2">
-                        <a href="#" class="btn btn-primary btn-sm btn-block">Редактировать</a>
-                        <a href="#" class="btn btn-primary btn-sm btn-block">Изменить отдел</a>
-                        <a href="#" class="btn btn-danger btn-sm btn-block">Уволить</a>
+                        <div id="sparkline1"></div> -->
                     </div>
                 </div>
 
@@ -123,8 +132,7 @@
                                         <ul class="todo-list m-t small-list">
                                             <repeat group="{{ @TaskList }}" value="{{ @task }}">
                                                 <li>
-                                                    <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                                    <span class="m-l-xs">{{ @task.Title }}</span>
+                                                    <span>{{ @task.Title }}</span>
                                                     <check if="{{ @task.Deadline }}">
                                                         <span class="pull-right m-r-xs text-danger">{{ @task.Deadline }}</span>
                                                     </check>
@@ -158,6 +166,39 @@
 
     </div>
 
+    <check if="{{ @EmployeeRights_Edit }}">
+    <div class="modal inmodal" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Редактирование профиля</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-sm-7 block-center">
+                            <form method="POST">
+                                <check if="{{ @EmployeeRights_SetAdmin }}">
+                                    <switch expr="{{ @EmployeeData.EmployeeType }}">
+                                        <case value="{{ 'Администратор' }}" break="{{ true }}">
+                                            <button type="submit" name="action" value="unsetAdmin" class="btn btn-primary btn-block">Сделать сотрудником</button><hr>
+                                        </case>
+                                        <default>
+                                            <button type="submit" name="action" value="setAdmin" class="btn btn-primary btn-block">Сделать администратором</button><hr>
+                                        </default>
+                                    </switch>
+                                </check>
+                                <button type="submit" name="action" value="delete" class="btn btn-danger btn-block">Уволить</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </check>
 
     <include href="templates/Scripts.php" />
 
@@ -165,7 +206,7 @@
 
     <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
 
-    <script>
+    <!--<script>
         $(document).ready(function() {
 
 
@@ -179,7 +220,7 @@
 
 
         });
-    </script>
+    </script>-->
 
 </body>
 

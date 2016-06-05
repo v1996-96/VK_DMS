@@ -133,8 +133,12 @@
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a data-toggle="tab" href="#tasksTab"> Задачи</a></li>
-                                <li class=""><a data-toggle="tab" href="#employeeTab"> Исполнители</a></li>
-                                <li class=""><a data-toggle="tab" href="#settingsTab"> Настройки</a></li>
+                                <?php if ($ProjectRight_ManageEmployees): ?>
+                                    <li class=""><a data-toggle="tab" href="#employeeTab"> Исполнители</a></li>
+                                <?php endif; ?>
+                                <?php if ($ProjectRight_Edit): ?>
+                                    <li class=""><a data-toggle="tab" href="#settingsTab"> Настройки</a></li>
+                                <?php endif; ?>
                             </ul>
                             <div class="tab-content">
                                 <div id="tasksTab" class="tab-pane active">
@@ -142,21 +146,25 @@
 
                                         <div class="loading"><span><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></span></div>
 
-                                        <form method="POST">
-                                            <div class="input-group">
-                                                <input type="text" name="Title" class="form-control" placeholder="Наименование задачи">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-primary" type="submit" name="action" value="addTask"><i class="fa fa-plus"></i></button>
-                                                </span>
-                                            </div>
-                                        </form>
+                                        <?php if ($ProjectRight_AddTask): ?>
+                                            <form method="POST">
+                                                <div class="input-group">
+                                                    <input type="text" name="Title" class="form-control" placeholder="Наименование задачи">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary" type="submit" name="action" value="addTask"><i class="fa fa-plus"></i></button>
+                                                    </span>
+                                                </div>
+                                            </form>
+                                        <?php endif; ?>
 
                                         <ul id="OpenTaskList" class="todo-list m-t m-b">
                                             <?php foreach (($TaskListOpen?:array()) as $task): ?>
                                                 <li class="custom" data-id="<?php echo $task['TaskId']; ?>">
                                                     <a href="#taskDescription" data-id="<?php echo $task['TaskId']; ?>" class="task-item" data-toggle="modal">
                                                         <span class="sort-toggle"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>
-                                                        <input type="checkbox" name="IsClosed" class="i-checks"/>
+                                                        <?php if ($ProjectRight_CompleteTask): ?>
+                                                            <input type="checkbox" name="IsClosed" class="i-checks"/>
+                                                        <?php endif; ?>
                                                         <span class="m-l-xs"><?php echo $task['Title']; ?></span>
                                                         <?php if ($task['Deadline']): ?>
                                                             <small class="pull-right"><?php echo $task['Deadline']; ?></small>
@@ -175,7 +183,9 @@
                                                 <li class="custom" data-id="<?php echo $task['TaskId']; ?>">
                                                     <a href="#taskDescription" data-id="<?php echo $task['TaskId']; ?>" class="task-item" data-toggle="modal">
                                                         <span class="sort-toggle hidden"><i class="fa fa-ellipsis-v"></i><i class="fa fa-ellipsis-v"></i></span>
-                                                        <input type="checkbox" name="IsClosed" class="i-checks" checked="checked" />
+                                                        <?php if ($ProjectRight_CompleteTask): ?>
+                                                            <input type="checkbox" name="IsClosed" class="i-checks" checked="checked" />
+                                                        <?php endif; ?>
                                                         <span class="m-l-xs"><?php echo $task['Title']; ?></span>
                                                         <?php if ($task['Deadline']): ?>
                                                             <small class="pull-right"><?php echo $task['Deadline']; ?></small>
@@ -188,124 +198,129 @@
                                     </div>
                                 </div>
 
-                                <div id="employeeTab" class="tab-pane">
-                                    <div class="panel-body">
-                                        <a href="#addManagerModal" data-toggle="modal" class="btn btn-warning">Добавить менеджера</a>
-                                        <a href="#addEmployeeModal" data-toggle="modal" class="btn btn-primary">Добавить сотрудника</a>
+                                <?php if ($ProjectRight_ManageEmployees): ?>
+                                    <div id="employeeTab" class="tab-pane">
+                                        <div class="panel-body">
+                                            <a href="#addManagerModal" data-toggle="modal" class="btn btn-warning">Добавить менеджера</a>
+                                            <a href="#addEmployeeModal" data-toggle="modal" class="btn btn-primary">Добавить сотрудника</a>
 
-                                        <h4 style="margin: 10px 0 10px 0; border-bottom: 1px solid #787878; padding-bottom: 5px;">Менеджеры</h4>
-                                        <?php if ($ManagerList): ?>
-                                            
-                                                <table id="projectEmployeeList" class="table table-striped table-bordered table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ФИО</th>
-                                                            <th>Действия</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php foreach (($ManagerList?:array()) as $manager): ?>
+                                            <h4 style="margin: 10px 0 10px 0; border-bottom: 1px solid #787878; padding-bottom: 5px;">Менеджеры</h4>
+                                            <?php if ($ManagerList): ?>
+                                                
+                                                    <table id="projectEmployeeList" class="table table-striped table-bordered table-hover">
+                                                        <thead>
                                                             <tr>
-                                                                <td><?php echo $manager['Name']; ?> <?php echo $manager['Surname']; ?></td>
-                                                                <td>
-                                                                    <form method="POST">
-                                                                        <input type="hidden" name="UserId" value="<?php echo $manager['UserId']; ?>" />
-                                                                        <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $manager['UserId']; ?>" class="btn btn-xs btn-primary">Профиль</a>
-                                                                        <button type="submit" name="action" value="deleteManager" class="btn btn-xs btn-danger">Удалить</button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>   
-                                                        <?php endforeach; ?>                                   
-                                                    </tbody>
-                                                </table>
-                                            
-                                            <?php else: ?>
-                                                <p>Менеджеры отсутствуют</p>
-                                            
-                                        <?php endif; ?>
+                                                                <th>ФИО</th>
+                                                                <th>Действия</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach (($ManagerList?:array()) as $manager): ?>
+                                                                <tr>
+                                                                    <td><?php echo $manager['Name']; ?> <?php echo $manager['Surname']; ?></td>
+                                                                    <td>
+                                                                        <form method="POST">
+                                                                            <input type="hidden" name="UserId" value="<?php echo $manager['UserId']; ?>" />
+                                                                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $manager['UserId']; ?>" class="btn btn-xs btn-primary">Профиль</a>
+                                                                            <button type="submit" name="action" value="deleteManager" class="btn btn-xs btn-danger">Удалить</button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>   
+                                                            <?php endforeach; ?>                                   
+                                                        </tbody>
+                                                    </table>
+                                                
+                                                <?php else: ?>
+                                                    <p>Менеджеры отсутствуют</p>
+                                                
+                                            <?php endif; ?>
 
-                                        <h4 style="margin: 30px 0 10px 0; border-bottom: 1px solid #787878; padding-bottom: 5px;">Сотрудники</h4>
-                                        <?php if ($EmployeeList): ?>
-                                            
-                                                <table id="projectManagerList" class="table table-striped table-bordered table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ФИО</th>
-                                                            <th>Действия</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php foreach (($EmployeeList?:array()) as $employee): ?>
+                                            <h4 style="margin: 30px 0 10px 0; border-bottom: 1px solid #787878; padding-bottom: 5px;">Сотрудники</h4>
+                                            <?php if ($EmployeeList): ?>
+                                                
+                                                    <table id="projectManagerList" class="table table-striped table-bordered table-hover">
+                                                        <thead>
                                                             <tr>
-                                                                <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
-                                                                <td>
-                                                                    <form method="POST">
-                                                                        <input type="hidden" name="UserId" value="<?php echo $employee['UserId']; ?>" />
-                                                                        <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $employee['UserId']; ?>" class="btn btn-xs btn-primary">Профиль</a>
-                                                                        <button type="submit" name="action" value="deleteEmployee" class="btn btn-xs btn-danger">Удалить</button>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>   
-                                                        <?php endforeach; ?>                                     
-                                                    </tbody>
-                                                </table>
-                                            
-                                            <?php else: ?>
-                                                <p>Сотрудники отсутствуют</p>
-                                            
-                                        <?php endif; ?>
+                                                                <th>ФИО</th>
+                                                                <th>Действия</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach (($EmployeeList?:array()) as $employee): ?>
+                                                                <tr>
+                                                                    <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
+                                                                    <td>
+                                                                        <form method="POST">
+                                                                            <input type="hidden" name="UserId" value="<?php echo $employee['UserId']; ?>" />
+                                                                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $employee['UserId']; ?>" class="btn btn-xs btn-primary">Профиль</a>
+                                                                            <button type="submit" name="action" value="deleteEmployee" class="btn btn-xs btn-danger">Удалить</button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>   
+                                                            <?php endforeach; ?>                                     
+                                                        </tbody>
+                                                    </table>
+                                                
+                                                <?php else: ?>
+                                                    <p>Сотрудники отсутствуют</p>
+                                                
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
 
-                                <div id="settingsTab" class="tab-pane">
-                                    <div class="panel-body">
-                                        
-                                        <form class="form-horizontal" method="POST">
-                                            <div class="form-group">
-                                                <label for="titleInput" class="col-sm-2 control-label">Статус</label>
-                                                <div class="col-sm-8" style="padding-top: 7px">
-                                                    <label class="checkbox-inline">
-                                                        <input class="i-checks" type="radio" name="Status" value="1"
-                                                            <?php echo $ProjectInfo['Status'] ? 'checked="checked"' : "" ;; ?> />&nbsp;
-                                                        <strong>Активный</strong>
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input class="i-checks" type="radio" name="Status" value="0"
-                                                            <?php echo $ProjectInfo['Status'] ? "" : 'checked="checked"' ;; ?> />&nbsp;
-                                                        <strong>Закрытый</strong>
-                                                    </label>
+                                <?php if ($ProjectRight_Edit): ?>
+                                    <div id="settingsTab" class="tab-pane">
+                                        <div class="panel-body">
+                                            
+                                            <form class="form-horizontal" method="POST">
+                                                <div class="form-group">
+                                                    <label for="titleInput" class="col-sm-2 control-label">Статус</label>
+                                                    <div class="col-sm-8" style="padding-top: 7px">
+                                                        <label class="checkbox-inline">
+                                                            <input class="i-checks" type="radio" name="Status" value="1"
+                                                                <?php echo $ProjectInfo['Status'] ? 'checked="checked"' : "" ;; ?> />&nbsp;
+                                                            <strong>Активный</strong>
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input class="i-checks" type="radio" name="Status" value="0"
+                                                                <?php echo $ProjectInfo['Status'] ? "" : 'checked="checked"' ;; ?> />&nbsp;
+                                                            <strong>Закрытый</strong>
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">Название</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" name="Title" value="<?php echo $ProjectInfo['Title']; ?>">
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Название</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" name="Title" value="<?php echo $ProjectInfo['Title']; ?>">
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">Описание</label>
-                                                <div class="col-sm-8">
-                                                    <textarea class="form-control" name="Description"><?php echo $ProjectInfo['Description']; ?></textarea>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Описание</label>
+                                                    <div class="col-sm-8">
+                                                        <textarea class="form-control" name="Description"><?php echo $ProjectInfo['Description']; ?></textarea>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-group">
-                                                <div class="col-sm-8 col-sm-offset-2">
-                                                    <button type="submit" name="action" value="editProject" class="btn btn-primary">Сохранить</button>
+                                                <div class="form-group">
+                                                    <div class="col-sm-8 col-sm-offset-2">
+                                                        <button type="submit" name="action" value="editProject" class="btn btn-primary">Сохранить</button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </form>
+                                            </form>
 
-                                        <hr>
+                                            <?php if ($ProjectRight_Delete): ?>
+                                                <hr>
+                                                <form method="POST" class="text-center" style="padding: 10px 0; background-color: rgba(255, 0, 0, 0.25);">
+                                                    <button class="btn btn-danger" type="submit" name="action" value="deleteProject">Удалить проект</button>
+                                                </form>
+                                            <?php endif; ?>
 
-                                        <form method="POST" class="text-center" style="padding: 10px 0; background-color: rgba(255, 0, 0, 0.25);">
-                                            <button class="btn btn-danger" type="submit" name="action" value="deleteProject">Удалить проект</button>
-                                        </form>
-
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
 
                             </div>
                         </div>
@@ -328,85 +343,85 @@
     </div>
 
 
-
-    <div class="modal inmodal" id="addEmployeeModal" tabindex="-1" role="dialog"  aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <!-- <i class="fa fa-building-o modal-icon"></i> -->
-                    <h4 class="modal-title">Добавление сотрудников</h4>
-                </div>
-                <div class="modal-body">
-                    
-                    <form method="POST">
-                        <div class="form-group">
-                            <table class="departmentEmployeeList table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Выбрать</th>
-                                        <th>Имя</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach (($DepartmentEmployeeList?:array()) as $index=>$employee): ?>
+    <?php if ($ProjectRight_ManageEmployees): ?>
+        <div class="modal inmodal" id="addEmployeeModal" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <!-- <i class="fa fa-building-o modal-icon"></i> -->
+                        <h4 class="modal-title">Добавление сотрудников</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <form method="POST">
+                            <div class="form-group">
+                                <table class="departmentEmployeeList table table-striped table-bordered table-hover">
+                                    <thead>
                                         <tr>
-                                            <td><input class="i-checks" type="checkbox" name="employeeList[<?php echo $index; ?>]" value="<?php echo $employee['UserId']; ?>" /></td>
-                                            <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
+                                            <th>Выбрать</th>
+                                            <th>Имя</th>
                                         </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary" name="action" value="addEmployees">Добавить сотрудников</button>
-                        </div>
-                    </form>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach (($DepartmentEmployeeList?:array()) as $index=>$employee): ?>
+                                            <tr>
+                                                <td><input class="i-checks" type="checkbox" name="employeeList[<?php echo $index; ?>]" value="<?php echo $employee['UserId']; ?>" /></td>
+                                                <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary" name="action" value="addEmployees">Добавить сотрудников</button>
+                            </div>
+                        </form>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-
-    <div class="modal inmodal" id="addManagerModal" tabindex="-1" role="dialog"  aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <!-- <i class="fa fa-building-o modal-icon"></i> -->
-                    <h4 class="modal-title">Добавление менеджеров</h4>
-                </div>
-                <div class="modal-body">
-                    
-                    <form method="POST">
-                        <div class="form-group">
-                            <table class="departmentEmployeeList table table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Выбрать</th>
-                                        <th>Имя</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach (($DepartmentEmployeeList?:array()) as $employee): ?>
+        <div class="modal inmodal" id="addManagerModal" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <!-- <i class="fa fa-building-o modal-icon"></i> -->
+                        <h4 class="modal-title">Добавление менеджеров</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <form method="POST">
+                            <div class="form-group">
+                                <table class="departmentEmployeeList table table-striped table-bordered table-hover">
+                                    <thead>
                                         <tr>
-                                            <td><input class="i-checks" type="checkbox" name="employeeList[<?php echo $index; ?>]" value="<?php echo $employee['UserId']; ?>" /></td>
-                                            <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
+                                            <th>Выбрать</th>
+                                            <th>Имя</th>
                                         </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary" name="action" value="addManagers">Добавить менеджеров</button>
-                        </div>
-                    </form>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach (($DepartmentEmployeeList?:array()) as $employee): ?>
+                                            <tr>
+                                                <td><input class="i-checks" type="checkbox" name="employeeList[<?php echo $index; ?>]" value="<?php echo $employee['UserId']; ?>" /></td>
+                                                <td><?php echo $employee['Name']; ?> <?php echo $employee['Surname']; ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary" name="action" value="addManagers">Добавить менеджеров</button>
+                            </div>
+                        </form>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
 
 
     <div class="modal inmodal" id="packageResolveModal" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -480,7 +495,7 @@
                         </div>
                     </form>
 
-
+                    <?php if ($ProjectRight_EditTask): ?>
                     <form class="hidden form-horizontal" id="TaskEditForm" method="POST">
                         <div class="form-group">
                             <div class="col-sm-6 hidden">
@@ -533,7 +548,7 @@
                             <div class="col-sm-9" id="TaskPackagesWrap"></div>
                         </div>
                     </form>
-
+                    <?php endif; ?>
 
                     <div class="hidden" id="TaskSummaryError">
                         <h3 class="text-center">Ошибка получения данных задачи</h3>
@@ -541,13 +556,17 @@
 
                 </div>
                 <div class="modal-footer">
-                    <form method="POST" class="pull-left">
-                        <input type="hidden" name="TaskId" id="TaskIdDeleteField" />
-                        <button type="submit" name="action" value="deleteTask" class="btn btn-danger">Удалить</button>
-                    </form>
+                    <?php if ($ProjectRight_DeleteTask): ?>
+                        <form method="POST" class="pull-left">
+                            <input type="hidden" name="TaskId" id="TaskIdDeleteField" />
+                            <button type="submit" name="action" value="deleteTask" class="btn btn-danger">Удалить</button>
+                        </form>
+                    <?php endif; ?>
 
                     <button type="button" class="btn btn-white" data-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-success" id="EditTask">Редактировать</button>
+                    <?php if ($ProjectRight_EditTask): ?>
+                        <button type="button" class="btn btn-success" id="EditTask">Редактировать</button>
+                    <?php endif; ?>
                     <button type="submit" name="action" value="editTask" class="btn btn-primary hidden" form="TaskEditForm" id="SaveTask">Сохранить</button>
                 </div>
             </div>

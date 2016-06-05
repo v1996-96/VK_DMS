@@ -10,6 +10,7 @@ class ListController extends \BaseController
 	const PAGE_TYPE = "project_list";
 
 	private $CompanyUrl = null;
+	private $UserRights = USER_UNKNOWN;
 
 	function __construct($f3) {
 		$this->f3 = $f3;
@@ -18,6 +19,23 @@ class ListController extends \BaseController
 		$this->view = new ListView($f3);
 
 		$this->CheckAuthStatus();
+	}
+
+
+	private function GetUserRights() {
+		// On the list level we use company-level rights
+		$company = new \CompanyModel($this->f3);
+
+		$companyData = $company->getData(array("type" => "byUrl", "url" => $this->CompanyUrl));
+		if (!$companyData) return;
+
+		$userCompanyRights = $company->getData(array(
+			"type" => "getUserRights", 
+			"userId" => $this->GetUserInfo()["id"],
+			"companyId" => $companyData["CompanyId"]));
+
+		$this->UserRights = $userCompanyRights;
+		$this->view->UserRights = $userCompanyRights;
 	}
 
 
@@ -31,6 +49,9 @@ class ListController extends \BaseController
 			$this->view->ShowPage( self::PAGE_TYPE );
 			return;
 		}
+
+		// Get user rights
+		$this->GetUserRights();
 
 		$this->view->ShowPage(self::PAGE_TYPE);
 	}

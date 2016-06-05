@@ -16,6 +16,7 @@ var ProjectDashboard = {
 		this.handlers.showTaskDetails();
 		this.handlers.editTask();
 		this.handlers.saveTaskEdit();
+		this.handlers.sorting();
 	},
 
 	handlers : {
@@ -68,6 +69,7 @@ var ProjectDashboard = {
 				$("#TaskSummaryBlock").addClass("hidden");
 				$("#TaskEditForm").addClass("hidden");
 				$("#SaveTask").addClass("hidden");
+				$("#TaskIdDeleteField").val("");
 
 				if (typeof id !== "undefined") {
 					that.parent.actions.getTaskSummary(id, function(response) {
@@ -163,6 +165,20 @@ var ProjectDashboard = {
 					}
 				});
 			});
+		},
+
+		sorting : function() {
+			var that = this;
+
+			$("#OpenTaskList").on("sortstop", function(e, ui) {
+				var list = $( "#OpenTaskList" ).sortable( "toArray", { attribute : "data-id" } );
+				
+				that.parent.interface.blockList();
+
+				that.parent.actions.saveSorting(list, function(response){
+					that.parent.interface.releaseList();
+				});
+			});
 		}
 	},
 
@@ -202,6 +218,13 @@ var ProjectDashboard = {
 		getDepartments : function(callback) {
 			this.sendRequest({
 				"action" : "getDepartments"
+			}, callback);
+		},
+
+		saveSorting : function(list, callback) {
+			this.sendRequest({
+				"action" : "saveTaskOrder",
+				"order" : JSON.stringify(list)
 			}, callback);
 		},
 
@@ -316,6 +339,8 @@ var ProjectDashboard = {
 			}
 
 			SetViewValue("#DateClosedBlock", response.summary.DateClosed);
+
+			$("#TaskIdDeleteField").val( response.summary.TaskId );
 
 			if (response.summary.IsClosed == 1) {
 				$("#TaskOpenedStatus").addClass("hidden");

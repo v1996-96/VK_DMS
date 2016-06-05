@@ -15,7 +15,7 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu animated pulse m-t-xs">
-                        <li><a href="#">Профиль</a></li>
+                        <li><a href="/<?php echo $PARAMS['CompanyUrl']; ?>/employee/<?php echo $UserInfo['id']; ?>">Профиль</a></li>
                         <li class="divider"></li>
                         <li><a href="/logOut">Выйти</a></li>
                     </ul>

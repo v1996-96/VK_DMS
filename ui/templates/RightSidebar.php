@@ -3,7 +3,7 @@
 defined('_EXECUTED') or die('Restricted access');
 
 ?>
-
+<!--
 <div id="right-sidebar">
     <div class="sidebar-container">
 
@@ -128,3 +128,4 @@ defined('_EXECUTED') or die('Restricted access');
 
     </div>
 </div>
+-->

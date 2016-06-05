@@ -38,6 +38,15 @@ class DepartmentModel extends \BaseModel implements \IModel
 	}
 
 
+	private function ByCompanyUrlExcept($url, $id) {
+		return $this->db->exec("SELECT d.* FROM Department as d
+								LEFT JOIN Company as c ON c.CompanyId = d.CompanyId
+								WHERE c.Url = :url AND d.DepartmentId <> :id
+								GROUP BY d.DepartmentId",
+								array("url" => $url, "id" => $id));
+	}
+
+
 	private function Summary($id, $url) {
 		return $this->db->exec("SELECT 
 									d.*,
@@ -120,6 +129,11 @@ class DepartmentModel extends \BaseModel implements \IModel
 				case 'byCompanyUrl':
 					if (isset($search["url"])) {
 						return $this->ByCompanyUrl($search["url"]);
+					} else return null;
+
+				case 'byCompanyUrlExcept':
+					if (isset($search["url"]) && isset($search["id"])) {
+						return $this->ByCompanyUrlExcept($search["url"], $search["id"]);
 					} else return null;
 
 				case 'summary':

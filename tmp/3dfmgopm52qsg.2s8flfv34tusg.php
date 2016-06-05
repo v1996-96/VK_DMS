@@ -47,13 +47,15 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="title-action text-right">
-                        <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/<?php echo $PARAMS['DepartmentId']; ?>/documents" class="btn btn-primary">
-                            <i class="fa fa-folder-open"></i> 
-                            Документы 
-                            <?php if ($DeletedDoucumentsCount > 0): ?>
-                                &nbsp;<span class="badge"><?php echo $DeletedDoucumentsCount; ?></span>
-                            <?php endif; ?>
-                        </a>
+                        <?php if ($DepartmentRight_ViewDocs): ?>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/<?php echo $PARAMS['DepartmentId']; ?>/documents" class="btn btn-primary">
+                                <i class="fa fa-folder-open"></i> 
+                                Документы 
+                                <?php if ($DeletedDoucumentsCount > 0): ?>
+                                    &nbsp;<span class="badge"><?php echo $DeletedDoucumentsCount; ?></span>
+                                <?php endif; ?>
+                            </a>
+                        <?php endif; ?>
                         <?php if ($DepartmentRight_Edit): ?>
                             <a href="#editDepartmentModal" data-toggle="modal" class="btn btn-white"><i class="fa fa-cog"></i> Настройки</a>
                         <?php endif; ?>

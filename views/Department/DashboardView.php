@@ -133,7 +133,8 @@ class DashboardView extends \BaseView
 			"DepartmentRight_AddEmployee" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER)),
 			"DepartmentRight_DeleteManager" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN)),
 			"DepartmentRight_DeleteEmployee" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER)),
-			"DepartmentRight_AddProject" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER))
+			"DepartmentRight_AddProject" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER)),
+			"DepartmentRight_ViewDocs" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER, USER_EMPLOYEE))
 			));
 	}
 }

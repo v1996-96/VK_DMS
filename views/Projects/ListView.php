@@ -8,6 +8,7 @@ class ListView extends \BaseView
 {
 
 	public $CompanyUrl = null;
+	public $UserRights = USER_UNKNOWN;
 
 	// Class constructor
 	function __construct($f3){
@@ -30,10 +31,22 @@ class ListView extends \BaseView
 		$this->f3->set("_topLineColor", "");
 
 		$project = new \ProjectModel($this->f3);
-		$projectList = $project->getData(array(
-			"type" => "byCompanyUrl", 
-			"url" => $this->CompanyUrl
-			));
+
+		$projectList = array();
+
+		if (in_array($this->UserRights, array(USER_OWNER, USER_ADMIN))) {
+			$projectList = $project->getData(array(
+				"type" => "byCompanyUrl", 
+				"url" => $this->CompanyUrl
+				));
+		} else {
+			$projectList = $project->getData(array(
+				"type" => "byCompanyUrlForUser", 
+				"url" => $this->CompanyUrl,
+				"userId" => $this->GetUserInfo()["id"]
+				));
+		}
+
 		$this->f3->set("ProjectList", $projectList);
 	}
 }

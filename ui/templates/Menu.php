@@ -19,7 +19,7 @@ defined('_EXECUTED') or die('Restricted access');
                         </span>
                     </a>
                     <ul class="dropdown-menu animated pulse m-t-xs">
-                        <li><a href="#">Профиль</a></li>
+                        <li><a href="/{{ @PARAMS.CompanyUrl }}/employee/{{ @UserInfo.id }}">Профиль</a></li>
                         <li class="divider"></li>
                         <li><a href="/logOut">Выйти</a></li>
                     </ul>

@@ -108,7 +108,7 @@ trait CommonMethods
 	 * Check vk id on vk.com
 	 */
 	protected function CheckVkId($vk) {
-		$url = "https://api.vk.com/method/users.get?user_ids=" . (int)$vk;
+		$url = "https://api.vk.com/method/users.get?user_ids=" . $vk;
 		if (!($res = @file_get_contents($url))) { 
             return false; 
         }

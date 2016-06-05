@@ -1,5 +1,5 @@
 
-
+<!--
 <div id="right-sidebar">
     <div class="sidebar-container">
 
@@ -124,3 +124,4 @@
 
     </div>
 </div>
+-->

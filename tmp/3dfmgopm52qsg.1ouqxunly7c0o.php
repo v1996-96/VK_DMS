@@ -40,10 +40,24 @@
                         </li>
                     </ol>
                 </div>
+                <div class="col-lg-3">
+                    <?php if ($EmployeeRights_Edit): ?>
+                        <div class="title-action">
+                            <a href="#editModal" class="btn btn-primary" data-toggle="modal">Редактировать</a>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
 
 
             <div class="wrapper wrapper-content">
+
+                <?php if (isset($employee_error)): ?>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <?php echo $employee_error; ?>
+                    </div>
+                <?php endif; ?>
                 
                 <div class="row m-b-lg m-t-lg">
                     <div class="col-md-4">
@@ -69,14 +83,9 @@
                         <h3 class="no-margins"><?php echo $EmployeeData['DepartmentRole']; ?></h3>
                     </div>
                     <div class="col-md-3">
-                        <small>Активность за последний месяц</small>
+                        <!-- <small>Активность за последний месяц</small>
                         <h2 class="no-margins">206</h2>
-                        <div id="sparkline1"></div>
-                    </div>
-                    <div class="col-md-2">
-                        <a href="#" class="btn btn-primary btn-sm btn-block">Редактировать</a>
-                        <a href="#" class="btn btn-primary btn-sm btn-block">Изменить отдел</a>
-                        <a href="#" class="btn btn-danger btn-sm btn-block">Уволить</a>
+                        <div id="sparkline1"></div> -->
                     </div>
                 </div>
 
@@ -123,8 +132,7 @@
                                         <ul class="todo-list m-t small-list">
                                             <?php foreach (($TaskList?:array()) as $task): ?>
                                                 <li>
-                                                    <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                                    <span class="m-l-xs"><?php echo $task['Title']; ?></span>
+                                                    <span><?php echo $task['Title']; ?></span>
                                                     <?php if ($task['Deadline']): ?>
                                                         <span class="pull-right m-r-xs text-danger"><?php echo $task['Deadline']; ?></span>
                                                     <?php endif; ?>
@@ -158,6 +166,36 @@
 
     </div>
 
+    <?php if ($EmployeeRights_Edit): ?>
+    <div class="modal inmodal" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Редактирование профиля</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-sm-7 block-center">
+                            <form method="POST">
+                                <?php if ($EmployeeRights_SetAdmin): ?>
+                                    <?php switch ($EmployeeData['EmployeeType']): ?><?php case 'Администратор': ?>
+                                            <button type="submit" name="action" value="unsetAdmin" class="btn btn-primary btn-block">Сделать сотрудником</button><hr>
+                                        <?php if (true) break; ?><?php default: ?>
+                                            <button type="submit" name="action" value="setAdmin" class="btn btn-primary btn-block">Сделать администратором</button><hr>
+                                        <?php break; ?><?php endswitch; ?>
+                                <?php endif; ?>
+                                <button type="submit" name="action" value="delete" class="btn btn-danger btn-block">Уволить</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 
     <?php echo $this->render('templates/Scripts.php',$this->mime,get_defined_vars(),0); ?>
 
@@ -165,7 +203,7 @@
 
     <script src="<?php echo $BASE; ?>/ui/js/app/App.js" type="text/javascript"></script>
 
-    <script>
+    <!--<script>
         $(document).ready(function() {
 
 
@@ -179,7 +217,7 @@
 
 
         });
-    </script>
+    </script>-->
 
 </body>
 

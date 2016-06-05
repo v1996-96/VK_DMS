@@ -9,6 +9,7 @@ class DashboardView extends \BaseView
 
 	public $CompanyUrl = null;
 	public $ProjectId = null;
+	public $UserRights = USER_UNKNOWN;
 
 	// Class constructor
 	function __construct($f3){
@@ -22,7 +23,11 @@ class DashboardView extends \BaseView
 		$this->PreparePage("Проекты", $page);
 		$this->SetVars();
 
-		echo (new \Template)->render('projectDashboard.php');
+		if (in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER, USER_PROJ_MANAGER, USER_EMPLOYEE))) {
+			echo (new \Template)->render('projectDashboardManagement.php');
+		} else {
+			echo (new \Template)->render('projectDashboardView.php');
+		}
 	}
 
 
@@ -77,5 +82,16 @@ class DashboardView extends \BaseView
 				));
 			$this->f3->set("DepartmentEmployeeList", $departmentEmployeeList);
 		}
+
+
+		$this->f3->mset(array(
+			"ProjectRight_Delete" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER)),
+			"ProjectRight_Edit" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER, USER_PROJ_MANAGER)),
+			"ProjectRight_ManageEmployees" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER)),
+			"ProjectRight_AddTask" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER, USER_PROJ_MANAGER)),
+			"ProjectRight_CompleteTask" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER, USER_PROJ_MANAGER, USER_EMPLOYEE)),
+			"ProjectRight_EditTask" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER, USER_PROJ_MANAGER)),
+			"ProjectRight_DeleteTask" => in_array($this->UserRights, array(USER_OWNER, USER_ADMIN, USER_DEP_MANAGER, USER_PROJ_MANAGER)),
+			));
 	}
 }

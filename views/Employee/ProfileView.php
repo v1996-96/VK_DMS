@@ -9,6 +9,7 @@ class ProfileView extends \BaseView
 
 	public $EmployeeId = null;
 	public $CompanyUrl = null;
+	public $UserRights = USER_UNKNOWN;
 
 	// Class constructor
 	function __construct($f3){
@@ -53,6 +54,17 @@ class ProfileView extends \BaseView
 		$this->f3->mset(array(
 			"ProjectList" => $projectList,
 			"TaskList" => $taskList
+			));
+
+		$this->f3->mset(array(
+			"EmployeeRights_Edit" => 
+				$employeeData && 
+				(($employeeData[0]["EmployeeType"] !== "Генеральный директор" &&
+				$this->UserRights == USER_OWNER) ||
+				($employeeData[0]["EmployeeType"] !== "Генеральный директор" &&
+				$employeeData[0]["EmployeeType"] !== "Администратор" &&
+				$this->UserRights == USER_ADMIN)),
+			"EmployeeRights_SetAdmin" => $this->UserRights == USER_OWNER	
 			));
 	}
 }

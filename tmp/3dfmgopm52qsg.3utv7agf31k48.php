@@ -25,7 +25,7 @@
                 </li>
             <?php endif; ?>
 
-            <li class="dropdown">
+            <!-- <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                     <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
                 </a>
@@ -66,13 +66,8 @@
                         </div>
                     </li>
                 </ul>
-            </li>
+            </li> -->
 
-            <li>
-                <a class="right-sidebar-toggle">
-                    <i class="fa fa-tasks"></i>
-                </a>
-            </li>
             <li>
                 <a href="/logOut">
                     <i class="fa fa-sign-out"></i> Выйти

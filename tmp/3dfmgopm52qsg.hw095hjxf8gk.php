@@ -152,7 +152,7 @@
 
                             <form method="POST">
                                 <div class="input-group">
-                                    <input type="text" name="VK" class="form-control" placeholder="VK ID">
+                                    <input type="text" name="VK" class="form-control" placeholder="ID или screen_name пользователя ВК">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary" name="action" value="inviteEmployee" type="submit">Добавить</button>
                                     </span>

@@ -39,6 +39,8 @@ class ListController extends \BaseController
 			$company = new \CompanyModel($this->f3);
 			$employee = new \CompanyEmployeeModel($this->f3);
 
+			$uid = null;
+
 			$url = $this->f3->get("PARAMS")["CompanyUrl"];
 			if (is_null($url)) 
 				throw new \Exception("Неверная ссылка компании");
@@ -50,8 +52,10 @@ class ListController extends \BaseController
 			if (!(isset($_POST["VK"]) && $_POST["VK"] !== "")) 
 				throw new \Exception("Не указан vk id");
 
-			if (!$this->CheckVkId($_POST["VK"])) 
+			if (!$uid = $this->CheckVkId($_POST["VK"])) 
 				throw new \Exception("Неверный vk id");
+
+			$uid = $uid["response"][0]["uid"];
 
 			if (!$employee->getData(array("type" => "isVkNew", "id" => $companyInfo["CompanyId"], "vk" => $_POST["VK"]))) 
 				throw new \Exception("Пользователь уже является сотрудником компании");
@@ -71,7 +75,7 @@ class ListController extends \BaseController
 			$data = array(
 				"CompanyId" => $companyInfo["CompanyId"], 
 				"RegistrationToken" => $token, 
-				"VK" => (int) $_POST["VK"], 
+				"VK" => (int) $uid, 
 				"DateAdd" => date("Y-m-d H:i:s")
 				);
 
