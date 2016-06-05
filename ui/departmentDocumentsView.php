@@ -38,7 +38,7 @@
                             <a href="/{{ @PARAMS.CompanyUrl }}/departments">Отделы</a>
                         </li>
                         <li>
-                            <a href="/{{ @PARAMS.CompanyUrl }}/departments/4">Web разработка</a>
+                            <a href="/{{ @PARAMS.CompanyUrl }}/departments/{{ @DepartmentInfo.DepartmentId }}">{{ @DepartmentInfo.Title }}</a>
                         </li>
                         <li class="active">
                             <strong>Документы отдела</strong>

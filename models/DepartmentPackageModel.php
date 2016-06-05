@@ -17,8 +17,7 @@ class DepartmentPackageModel extends \BaseModel implements \IModel
 
 	private function ById($packageId, $departmentId) {
 		$response = $this->db->exec("SELECT * FROM DepartmentPackage 
-										WHERE PackageId = :packageId AND DepartmentId = :departmentId
-										ORDER BY DepartmentPackageId DESC LIMIT 1",
+										WHERE PackageId = :packageId AND DepartmentId = :departmentId",
 										array("packageId" => $packageId, "departmentId" => $departmentId));
 		return $response ? $response[0] : null;
 	}

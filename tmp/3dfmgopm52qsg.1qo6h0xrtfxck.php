@@ -38,7 +38,7 @@
                             <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments">Отделы</a>
                         </li>
                         <li>
-                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/<?php echo $DepartmentInfo['DepartmentId']; ?>">Web разработка</a>
+                            <a href="/<?php echo $PARAMS['CompanyUrl']; ?>/departments/<?php echo $DepartmentInfo['DepartmentId']; ?>"><?php echo $DepartmentInfo['Title']; ?></a>
                         </li>
                         <li class="active">
                             <strong>Документы отдела</strong>
