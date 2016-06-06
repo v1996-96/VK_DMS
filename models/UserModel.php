@@ -84,7 +84,10 @@ class UserModel extends \BaseModel implements \IModel
 		$query =   "SELECT 
 					u.*,
 					case 
-						when c.CompanyId is not null then 'Генеральный директор'
+						when 
+							c.CompanyId is not null
+							and c.Url = :CompanyUrl
+							then 'Генеральный директор'
 						else 
 							case
 								when ce.CompanyId is not null and ce.IsAdmin = 1 then 'Администратор'
