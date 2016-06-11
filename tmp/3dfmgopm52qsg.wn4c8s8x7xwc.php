@@ -9,6 +9,25 @@
 
     <?php echo $this->render('templates/Styles.php',$this->mime,get_defined_vars(),0); ?>
 
+    <style type="text/css">
+    .loading{
+        position: absolute;
+        background: rgba(255, 255, 255, 0.7);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+        /*display: flex;*/
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .processing > .loading{
+        display: flex;
+    }
+    </style>
+
 </head>
 
 <body>
@@ -69,136 +88,64 @@
                     <div class="col-lg-12">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>Трафик пакетов документов</h5>
+                                <h5>Активность компании</h5>
                                 <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-xs btn-white active">Today</button>
-                                        <button type="button" class="btn btn-xs btn-white">Monthly</button>
-                                        <button type="button" class="btn btn-xs btn-white">Annual</button>
+                                    <div class="btn-group" data-toggle="buttons">
+                                      <label class="btn btn-white btn-xs active">
+                                        <input type="radio" name="options" id="activityByDay" autocomplete="off"> День
+                                      </label>
+                                      <label class="btn btn-white btn-xs">
+                                        <input type="radio" name="options" id="activityByMonth" autocomplete="off"> Месяц
+                                      </label>
+                                      <label class="btn btn-white btn-xs">
+                                        <input type="radio" name="options" id="activityByYear" autocomplete="off"> Год
+                                      </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="ibox-content">
+                            <div class="ibox-content" id="chartWrap">
+                                <div class="loading"><span><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></span></div>
+
                                 <div class="row">
-                                <div class="col-lg-9">
-                                    <div class="flot-chart">
-                                        <div class="flot-chart-content" id="flot-dashboard-chart"></div>
+                                    <div class="col-lg-12">
+                                        <div class="flot-chart">
+                                            <div class="flot-chart-content" id="flot-dashboard-chart"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <ul class="stat-list">
-                                        <li>
-                                            <h2 class="no-margins">2,346</h2>
-                                            <small>Total orders in period</small>
-                                            <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div>
-                                            <div class="progress progress-mini">
-                                                <div style="width: 48%;" class="progress-bar"></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <h2 class="no-margins ">4,422</h2>
-                                            <small>Orders in last month</small>
-                                            <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div>
-                                            <div class="progress progress-mini">
-                                                <div style="width: 60%;" class="progress-bar"></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <h2 class="no-margins ">9,180</h2>
-                                            <small>Monthly income from orders</small>
-                                            <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div>
-                                            <div class="progress progress-mini">
-                                                <div style="width: 22%;" class="progress-bar"></div>
-                                            </div>
-                                        </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                    <!-- <div class="col-lg-3">
+                                        <ul class="stat-list">
+                                            <li>
+                                                <h2 class="no-margins">2,346</h2>
+                                                <small>Total orders in period</small>
+                                                <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 48%;" class="progress-bar"></div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <h2 class="no-margins ">4,422</h2>
+                                                <small>Orders in last month</small>
+                                                <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 60%;" class="progress-bar"></div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <h2 class="no-margins ">9,180</h2>
+                                                <small>Monthly income from orders</small>
+                                                <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 22%;" class="progress-bar"></div>
+                                                </div>
+                                            </li>
+                                            </ul>
+                                        </div>
+                                    </div> -->
                                 </div>
 
                             </div>
                         </div>
                 </div><!-- /Chart -->
-
-
-                <!-- Widgets -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-content">
-                                <h2>Текщие задачи</h2>
-
-                                <ul class="todo-list m-t small-list">
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-check-square"></i> </a>
-                                        <span class="m-l-xs todo-completed">Buy a milk</span>
-
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-check-square"></i> </a>
-                                        <span class="m-l-xs  todo-completed">Go to shop and find some products.</span>
-
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Send documents to Mike</span>
-                                        <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 mins</small>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Go to the doctor dr Smith</span>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i> </a>
-                                        <span class="m-l-xs">Plan vacation</span>
-                                    </li>
-                                </ul>
-
-                                <br>
-
-                                <a class="btn btn-primary btn-block">Посмотреть все</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-content">
-                                <h2>Текщие проекты</h2>
-
-                                <div class="project-list">
-
-                                    <table class="table table-hover">
-                                        <tbody>
-                                            <tr>
-                                                <td class="project-title">
-                                                    <a href="project_detail.html">Contract with Zender Company</a>
-                                                    <br/>
-                                                    <small>Created 14.08.2014</small>
-                                                </td>
-                                                <td class="project-actions">
-                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="project-title">
-                                                    <a href="project_detail.html">Contract with Zender Company</a>
-                                                    <br/>
-                                                    <small>Created 14.08.2014</small>
-                                                </td>
-                                                <td class="project-actions">
-                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <a class="btn btn-primary btn-block">Посмотреть все</a>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- /Widgets -->
 
 
             </div>

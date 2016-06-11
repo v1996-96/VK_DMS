@@ -6,6 +6,11 @@ defined('_EXECUTED') or die('Restricted access');
 
 class MainView extends \BaseView
 {
+
+	public $CompanyUrl = null;
+	public $UserRights = USER_UNKNOWN;
+
+
 	// Class constructor
 	function __construct($f3){
 		$this->f3 = $f3;

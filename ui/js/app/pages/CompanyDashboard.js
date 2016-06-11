@@ -1,113 +1,244 @@
-$(function(){
 
-	var data2 = [
-        [gd(2012, 1, 1), 7], [gd(2012, 1, 2), 6], [gd(2012, 1, 3), 4], [gd(2012, 1, 4), 8],
-        [gd(2012, 1, 5), 9], [gd(2012, 1, 6), 7], [gd(2012, 1, 7), 5], [gd(2012, 1, 8), 4],
-        [gd(2012, 1, 9), 7], [gd(2012, 1, 10), 8], [gd(2012, 1, 11), 9], [gd(2012, 1, 12), 6],
-        [gd(2012, 1, 13), 4], [gd(2012, 1, 14), 5], [gd(2012, 1, 15), 11], [gd(2012, 1, 16), 8],
-        [gd(2012, 1, 17), 8], [gd(2012, 1, 18), 11], [gd(2012, 1, 19), 11], [gd(2012, 1, 20), 6],
-        [gd(2012, 1, 21), 6], [gd(2012, 1, 22), 8], [gd(2012, 1, 23), 11], [gd(2012, 1, 24), 13],
-        [gd(2012, 1, 25), 7], [gd(2012, 1, 26), 9], [gd(2012, 1, 27), 9], [gd(2012, 1, 28), 8],
-        [gd(2012, 1, 29), 5], [gd(2012, 1, 30), 8], [gd(2012, 1, 31), 25]
-    ];
+var Dashboard = {
+    init : function () {
+        var that = this;
 
-    var data3 = [
-        [gd(2012, 1, 1), 800], [gd(2012, 1, 2), 500], [gd(2012, 1, 3), 600], [gd(2012, 1, 4), 700],
-        [gd(2012, 1, 5), 500], [gd(2012, 1, 6), 456], [gd(2012, 1, 7), 800], [gd(2012, 1, 8), 589],
-        [gd(2012, 1, 9), 467], [gd(2012, 1, 10), 876], [gd(2012, 1, 11), 689], [gd(2012, 1, 12), 700],
-        [gd(2012, 1, 13), 500], [gd(2012, 1, 14), 600], [gd(2012, 1, 15), 700], [gd(2012, 1, 16), 786],
-        [gd(2012, 1, 17), 345], [gd(2012, 1, 18), 888], [gd(2012, 1, 19), 888], [gd(2012, 1, 20), 888],
-        [gd(2012, 1, 21), 987], [gd(2012, 1, 22), 444], [gd(2012, 1, 23), 999], [gd(2012, 1, 24), 567],
-        [gd(2012, 1, 25), 786], [gd(2012, 1, 26), 666], [gd(2012, 1, 27), 888], [gd(2012, 1, 28), 900],
-        [gd(2012, 1, 29), 178], [gd(2012, 1, 30), 555], [gd(2012, 1, 31), 993]
-    ];
+        this.handlers.parent = this;
+        this.actions.parent = this;
+        this.interface.parent = this;
+
+        this.interface.blockChart();
+
+        this.actions.getActivityByMonth(function(response) {
+            that.interface.releaseChart();
+
+            that.interface.btnSwitch("month");
+
+            if (typeof response.data !== "undefined") {
+                that.interface.initChart(response.data, "month");
+            }
+        });
+
+        this.handlers.setSwitchHandler();
+    },
 
 
-    var dataset = [
-        {
-            label: "Number of orders",
-            data: data3,
-            color: "#1ab394",
-            bars: {
-                show: true,
-                align: "center",
-                barWidth: 24 * 60 * 60 * 600,
-                lineWidth:0
+    handlers : {
+        parent : null,
+
+        setSwitchHandler : function () {
+            var that = this;
+
+            $("#activityByDay").parent().on("click", function(e) {
+                e.preventDefault();
+
+                that.parent.interface.blockChart();
+
+                that.parent.actions.getActivityByDay(function(response) {
+                    that.parent.interface.releaseChart();
+
+                    that.parent.interface.btnSwitch("day");
+
+                    if (typeof response.data !== "undefined") {
+                        that.parent.interface.initChart(response.data, "day");
+                    }
+                });
+            });
+
+
+            $("#activityByMonth").parent().on("click", function(e) {
+                e.preventDefault();
+
+                that.parent.interface.blockChart();
+
+                that.parent.actions.getActivityByMonth(function(response) {
+                    that.parent.interface.releaseChart();
+
+                    that.parent.interface.btnSwitch("month");
+
+                    if (typeof response.data !== "undefined") {
+                        that.parent.interface.initChart(response.data, "month");
+                    }
+                });
+            });
+
+
+            $("#activityByYear").parent().on("click", function(e) {
+                e.preventDefault();
+
+                that.parent.interface.blockChart();
+
+                that.parent.actions.getActivityByYear(function(response) {
+                    that.parent.interface.releaseChart();
+
+                    that.parent.interface.btnSwitch("year");
+
+                    if (typeof response.data !== "undefined") {
+                        that.parent.interface.initChart(response.data, "year");
+                    }
+                });
+            });
+
+
+        }
+    },
+
+
+    actions : {
+        parent : null,
+
+        getActivityByDay : function (callback) {
+            this.sendRequest({
+                "action" : "getActivityByDay"
+            }, callback);
+        },
+
+        getActivityByMonth : function (callback) {
+            this.sendRequest({
+                "action" : "getActivityByMonth"
+            }, callback);
+        },
+
+        getActivityByYear : function (callback) {
+            this.sendRequest({
+                "action" : "getActivityByYear"
+            }, callback);
+        },
+
+
+        sendRequest : function(requestData, callback, errorCallback) {
+            var errorCallback = errorCallback || function(){};
+
+            $.ajax({
+                type : "POST", url : "",
+                data : requestData,
+                success : function (data) {
+                    try {
+                        var response = JSON.parse(data);
+                        if (typeof response.error !== "undefined" ) {
+                            console.log(response.error);
+                            throw {};
+                        }
+
+                        callback(response);
+                    } catch(e) {
+                        console.log(e);
+                        App.message.show("Ошибка", "Ошибка обработки запроса", "error");
+                        errorCallback(data);
+                    }
+                },
+                error : function (data) {
+                    App.message.show("Ошибка", "Ошибка обработки запроса", "error");
+                    errorCallback(data);
+                }
+            });
+        }
+    },
+
+
+    interface : {
+        parent : null,
+
+        btnSwitch : function (type) {
+            $("#activityByDay").parent().removeClass("active");
+            $("#activityByMonth").parent().removeClass("active");
+            $("#activityByYear").parent().removeClass("active");
+
+            switch (type) {
+                case "day":
+                    $("#activityByDay").parent().addClass("active");
+                    break;
+
+                case "month":
+                    $("#activityByMonth").parent().addClass("active");
+                    break;
+
+                case "year":
+                    $("#activityByYear").parent().addClass("active");
+                    break;
+
+                default:
+                    $("#activityByDay").parent().addClass("active");
+                    break;
+            }
+        },
+
+        blockChart : function () {
+            $("#chartWrap")
+                .addClass("processing");
+        },
+
+        releaseChart : function () {
+            $("#chartWrap")
+                .removeClass("processing");
+        },
+
+        initChart : function (data, type) {
+            var options = {
+                grid: {
+                    hoverable: true,
+                    borderColor: "#f3f3f3",
+                    borderWidth: 1,
+                    tickColor: "#f3f3f3"
+                },
+                series: {
+                    shadowSize: 0,
+                    lines: {
+                        show: true
+                    },
+                    points: {
+                        show: true
+                    }
+                },
+                lines: {
+                    fill: false,
+                    color: ["#3c8dbc", "#f56954"]
+                },
+                yaxis: {
+                    show: true,
+                },
+                xaxis: {
+                    show: true,
+                    mode: "time",
+                    timeformat: "%Y/%m/%d"
+                }
             }
 
-        }, {
-            label: "Payments",
-            data: data2,
-            yaxis: 2,
-            color: "#1C84C6",
-            lines: {
-                lineWidth:1,
-                    show: true,
-                    fill: true,
-                fillColor: {
-                    colors: [{
-                        opacity: 0.2
-                    }, {
-                        opacity: 0.4
-                    }]
-                }
-            },
-            splines: {
-                show: false,
-                tension: 0.6,
-                lineWidth: 1,
-                fill: 0.1
-            },
-        }
-    ];
+            switch (type) {
+                case "day":
+                    options.xaxis.timeformat = "%H";
+                    options.xaxis.tickSize = [1, "hour"];
+                    break;
 
+                case "month":
+                    options.xaxis.timeformat = "%d";
+                    options.xaxis.tickSize = [1, "day"];
+                    break;
 
-    var options = {
-        xaxis: {
-            mode: "time",
-            tickSize: [3, "day"],
-            tickLength: 0,
-            axisLabel: "Date",
-            axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: 'Arial',
-            axisLabelPadding: 10,
-            color: "#d5d5d5"
-        },
-        yaxes: [{
-            position: "left",
-            max: 1070,
-            color: "#d5d5d5",
-            axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: 'Arial',
-            axisLabelPadding: 3
-        }, {
-            position: "right",
-            clolor: "#d5d5d5",
-            axisLabelUseCanvas: true,
-            axisLabelFontSizePixels: 12,
-            axisLabelFontFamily: ' Arial',
-            axisLabelPadding: 67
-        }
-        ],
-        legend: {
-            noColumns: 1,
-            labelBoxBorderColor: "#000000",
-            position: "nw"
-        },
-        grid: {
-            hoverable: false,
-            borderWidth: 0
-        }
-    };
+                case "year":
+                    options.xaxis.timeformat = "%m";
+                    options.xaxis.tickSize = [1, "month"];
+                    break;
 
-    function gd(year, month, day) {
-        return new Date(year, month - 1, day).getTime();
+                default:
+                    options.xaxis.timeformat = "%Y/%m/%d";
+                    break;
+            }
+
+            $("#flot-dashboard-chart").plot(
+                [
+                    {
+                        color : "blue",
+                        data : data
+                    }
+                ], options);
+        }
     }
+}
 
-    var previousPoint = null, previousLabel = null;
 
-    $.plot($("#flot-dashboard-chart"), dataset, options);
-	
+$(function(){
+
+    Dashboard.init();
+
 });

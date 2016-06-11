@@ -56,6 +56,69 @@ class CompanyModel extends \BaseModel implements \IModel
 	}
 
 
+	private function GetActivity($url, $type = "day") {
+		$intervals = array();
+
+		switch ($type) {
+			case 'month':
+				$startDate = strtotime("-1 month");
+				$increment = "day";
+				break;
+
+			case 'year':
+				$startDate = strtotime("-1 year");
+				$increment = "month";
+				break;
+
+			case 'day':
+			default:
+				$startDate = strtotime("-1 day");
+				$increment = "hour";
+				break;
+		}
+
+		$endDate = time();
+
+		while ($startDate <= $endDate) {
+			$intervals[] = array(
+				"from" => $startDate,
+				"to" => strtotime("+1 ".$increment, $startDate)
+				);
+			$startDate = strtotime("+1 ".$increment, $startDate);
+		}
+
+		$activity = array();
+
+		foreach ($intervals as $period) {
+			$response = $this->db->exec("SELECT
+											c.CompanyId,
+											COUNT(CASE t.IsClosed
+													WHEN 1 THEN 1 ELSE NULL END) as ClosedCount
+										FROM Company as c
+										LEFT JOIN Department as d ON d.CompanyId = c.CompanyId
+										LEFT JOIN Project as p ON p.DepartmentId = d.DepartmentId
+										LEFT JOIN Task as t ON t.ProjectId = p.ProjectId
+										WHERE 
+											c.Url = :url AND
+											t.DateClosed BETWEEN :startDate AND :endDate
+										GROUP BY c.CompanyId",
+										array(
+											"url" => $url, 
+											"startDate" => date("Y-m-d H:i:s", $period["from"]),
+											"endDate" => date("Y-m-d H:i:s", $period["to"])
+											));
+
+			$count = $response ? $response[0]["ClosedCount"] : 0;
+
+			$activity[] = array(
+				$period["from"]*1000, $count
+				);
+		}
+
+		return $activity;
+	}
+
+
 	private function CompanySummary($companyId) {
 		// Set defaults
 		$summary = array(
@@ -183,6 +246,21 @@ class CompanyModel extends \BaseModel implements \IModel
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
 			switch ($search["type"]) {
+				case 'getActivityByDay':
+					if (isset($search["url"])) {
+						return $this->GetActivity($search["url"], "day");
+					} else return null;
+
+				case 'getActivityByMonth':
+					if (isset($search["url"])) {
+						return $this->GetActivity($search["url"], "month");
+					} else return null;
+
+				case 'getActivityByYear':
+					if (isset($search["url"])) {
+						return $this->GetActivity($search["url"], "year");
+					} else return null;
+
 				case 'isUrlUnique':
 					if (isset($search["url"])) {
 						if (isset($search["id"])) {

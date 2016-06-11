@@ -87,7 +87,8 @@ class DepartmentModel extends \BaseModel implements \IModel
 		foreach ($intervals as $period) {
 			$response = $this->db->exec("SELECT 
 											d.DepartmentId,
-											COUNT(t.IsClosed = 1) as ClosedCount
+											COUNT(CASE t.IsClosed
+													WHEN 1 THEN 1 ELSE NULL END) as ClosedCount
 										FROM Department as d
 										LEFT JOIN Project as p ON d.DepartmentId = p.DepartmentId
 										LEFT JOIN Task as t ON p.ProjectId = t.ProjectId

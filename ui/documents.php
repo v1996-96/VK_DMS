@@ -45,23 +45,12 @@
             <div class="wrapper wrapper-content">
                 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 block-center">
                         <div class="ibox">
                             <div class="ibox-content">
 
-                                <h3>Внутренние документы</h3>
-                                <div id="managedDocuments"></div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="ibox">
-                            <div class="ibox-content">
-
-                                <h3>Не обработанные документы</h3>
-                                <div id="unmanagedDocuments"></div>
+                                <h3>Документы компании</h3>
+                                <div id="companyList"></div>
 
                             </div>
                         </div>
@@ -89,49 +78,7 @@
 
     <script src="{{ @BASE }}/ui/js/app/App.js" type="text/javascript"></script>
 
-    <script type="text/javascript">
-        $(function(){
-            $("#managedDocuments").jstree({
-                'core' : {
-                    'check_callback' : true,
-                    'data' : [
-                        { 
-                            'text' : 'Web development', 
-                            'type' : 'department',
-                            'state' : { 'opened' : true },
-                            'children' : [
-                                { 
-                                    'text' : 'Package1', 
-                                    'type' : 'package',
-                                    'state' : { 'opened' : true },
-                                    'children' : [
-                                        {
-                                            'text' : 'File1', 
-                                            'type' : 'file'
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        { 'text' : 'Web development1', 'type' : 'department' }
-                    ]
-                },
-                'plugins' : [ "dnd", "search", "types" ],
-                'types' : {
-                    'department' : {
-                        'icon' : 'fa fa-cubes'
-                    },
-                    'package' : {
-                        'icon' : 'fa fa-folder'
-                    },
-                    'file' : {
-                        'icon' : 'fa fa-file-o'
-                    }
-
-                }
-            });
-        });
-    </script>
+    <script src="{{ @BASE }}/ui/js/app/pages/Documents.js" type="text/javascript"></script>
 
 </body>
 

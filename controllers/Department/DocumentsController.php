@@ -217,7 +217,10 @@ class DocumentsController extends \BaseController
 			return array(
 				"id" => "doc_" . $item["DocumentId"],
 				"text" => $item["Title"],
-				"type" => $type
+				"type" => $type,
+				"li_attr" => array( 
+					"data-url" => $item["Url"] 
+					)
 				);
 		}, $list);
 

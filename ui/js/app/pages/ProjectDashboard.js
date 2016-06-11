@@ -275,7 +275,7 @@ var ProjectDashboard = {
 
 			$.jstree.defaults.core.check_callback = true;
 			$.jstree.defaults.core.multiple = false;
-			$.jstree.defaults.plugins = [ "types" ];
+			$.jstree.defaults.plugins = [ "types", "contextmenu" ];
 			$.jstree.defaults.types = {
                 'department' : { 'icon' : 'fa fa-cubes' },
                 'package' : { 'icon' : 'fa fa-folder' },
@@ -285,6 +285,28 @@ var ProjectDashboard = {
                 'deleted' : { 'icon' : 'fa fa-minus' },
                 'unknown' : { 'icon' : '' }
             }
+
+            $.jstree.defaults.contextmenu.items = function( node ) {
+            	var items = {};
+
+            	if (node.type == "file" ||
+            		node.type == "new") 
+            		items.download = {
+	            		"separator_before"	: false,
+						"separator_after"	: true,
+						"_disabled"			: false,
+						"label"				: "Скачать",
+						"action"			: function (data) {
+							var inst = $.jstree.reference(data.reference),
+								obj = inst.get_node(data.reference);
+							
+							if (typeof obj.li_attr["data-url"] !== "undefined") 
+								window.open(obj.li_attr["data-url"], "_blank");
+						}
+	            	}
+	            
+	            return items;
+	        }
 
             $("#packageList").jstree({ core : { data : [] }	});
 		},

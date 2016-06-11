@@ -31,6 +31,20 @@ class DepartmentPackageModel extends \BaseModel implements \IModel
 	}
 
 
+	private function IncomingPackages($departmentId) {
+		return $this->db->exec("SELECT p.*, dp.PackageType FROM DepartmentPackage as dp
+								LEFT JOIN Package as p ON p.PackageId = dp.PackageId
+								WHERE dp.DepartmentId = ? AND dp.PackageType = ".(int)PACKAGE_INCOMING, $departmentId);
+	}
+
+
+	private function ManagingPackages($departmentId) {
+		return $this->db->exec("SELECT p.*, dp.PackageType FROM DepartmentPackage as dp
+								LEFT JOIN Package as p ON p.PackageId = dp.PackageId
+								WHERE dp.DepartmentId = ? AND dp.PackageType = ".(int)PACKAGE_MANAGING, $departmentId);
+	}
+
+
 	public function getData($search = array()) {
 		if (isset($search["type"])) {
 			switch ($search["type"]) {
@@ -42,6 +56,16 @@ class DepartmentPackageModel extends \BaseModel implements \IModel
 				case 'currentDepartmentPackages':
 					if (isset($search["departmentId"])) {
 						return $this->CurrentDepartmentPackages($search["departmentId"]);
+					} else return null;
+
+				case 'incomingPackages':
+					if (isset($search["departmentId"])) {
+						return $this->IncomingPackages($search["departmentId"]);
+					} else return null;
+
+				case 'managingPackages':
+					if (isset($search["departmentId"])) {
+						return $this->ManagingPackages($search["departmentId"]);
 					} else return null;
 				
 				default: return null;

@@ -456,6 +456,69 @@ var Documents = {
 
             	return true;
             }
+
+            $.jstree.defaults.contextmenu.items = function( node ) {
+            	var items = {};
+
+            	if (node.type == "file" ||
+            		node.type == "new") 
+            		items.download = {
+	            		"separator_before"	: false,
+						"separator_after"	: true,
+						"_disabled"			: false,
+						"label"				: "Скачать",
+						"action"			: function (data) {
+							var inst = $.jstree.reference(data.reference),
+								obj = inst.get_node(data.reference);
+							
+							if (typeof obj.li_attr["data-url"] !== "undefined") 
+								window.open(obj.li_attr["data-url"], "_blank");
+						}
+	            	}
+	            
+            	items.create = {
+					"separator_before"	: false,
+					"separator_after"	: false,
+					"_disabled"			: false,
+					"label"				: "Добавить",
+					"action"			: function (data) {
+						var inst = $.jstree.reference(data.reference),
+							obj = inst.get_node(data.reference);
+						inst.create_node(obj, {}, "last", function (new_node) {
+							setTimeout(function () { inst.edit(new_node); },0);
+						});
+					}
+				}
+				items.rename = {
+					"separator_before"	: false,
+					"separator_after"	: false,
+					"_disabled"			: false,
+					"label"				: "Переименовать",
+					"action"			: function (data) {
+						var inst = $.jstree.reference(data.reference),
+							obj = inst.get_node(data.reference);
+						inst.edit(obj);
+					}
+				}
+				items.remove = {
+					"separator_before"	: false,
+					"icon"				: false,
+					"separator_after"	: false,
+					"_disabled"			: false,
+					"label"				: "Удалить",
+					"action"			: function (data) {
+						var inst = $.jstree.reference(data.reference),
+							obj = inst.get_node(data.reference);
+						if(inst.is_selected(obj)) {
+							inst.delete_node(inst.get_selected());
+						} else {
+							inst.delete_node(obj);
+						}
+					}
+				}
+
+	            return items;
+	        }
 		},
 
 		renderDocumentsList : function ( data ) {

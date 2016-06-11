@@ -10,7 +10,8 @@ class UserModel extends \BaseModel implements \IModel
 		$this->db = $f3->get('db');
 		
 		$this->entity = "User";
-		$this->required = array("Name", "Surname", "Email", "Password", "Role", "VK", "VK_Avatar", "DateRegistered");
+		$this->required = array("Name", "Surname", "Email", "Password", 
+			"Role", "VK", "VK_Avatar", "DateRegistered");
 		$this->optional = array();
 	}
 
@@ -54,12 +55,12 @@ class UserModel extends \BaseModel implements \IModel
 						ELSE 
 							CASE
 								WHEN EXISTS(SELECT * FROM DepartmentEmployee as DE
-												LEFT JOIN Department as D ON DE.DepartmentId = D.DepartmentId
-												WHERE D.CompanyId = CE.CompanyId AND DE.IsManager = 1) THEN 'Руководитель'
+											LEFT JOIN Department as D ON DE.DepartmentId = D.DepartmentId
+											WHERE D.CompanyId = CE.CompanyId AND DE.IsManager = 1) THEN 'Руководитель'
 								WHEN EXISTS(SELECT * FROM ProjectEmployee as PE
-												LEFT JOIN Project as P ON PE.ProjectId = P.ProjectId
-												LEFT JOIN Department as Dep ON P.DepartmentId = Dep.DepartmentId
-												WHERE Dep.CompanyId = CE.CompanyId AND PE.IsManager = 1) THEN 'Менеджер'
+											LEFT JOIN Project as P ON PE.ProjectId = P.ProjectId
+											LEFT JOIN Department as Dep ON P.DepartmentId = Dep.DepartmentId
+											WHERE Dep.CompanyId = CE.CompanyId AND PE.IsManager = 1) THEN 'Менеджер'
 								ELSE 'Сотрудник'
 				 			END
 					END as Position,

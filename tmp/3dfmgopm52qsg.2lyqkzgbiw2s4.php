@@ -40,6 +40,9 @@
     .processing > .loading{
         display: flex;
     }
+    .vakata-context{
+        z-index: 10000;
+    }
     </style>
 
 </head>
