@@ -58,10 +58,22 @@ class MainController extends \BaseController
 				case 'getTreeData':
 					$this->GetTreeData();
 					break;
-			}
-		}
 
-		$this->view->ShowPage( self::PAGE_TYPE );
+				case 'createPackage':
+					$this->CreatePackage();
+					break;
+
+				case 'editPackage':
+					$this->EditPackage();
+					break;
+
+				case 'deletePackage':
+					$this->DeletePackage();
+					break;
+			}
+		} else {
+			$this->view->ShowPage( self::PAGE_TYPE );
+		}
 	}
 
 
@@ -180,5 +192,71 @@ class MainController extends \BaseController
 		}, $list);
 
 		return $data;
+	}
+
+
+	private function CreatePackage() {
+		$package = new \PackageModel($this->f3);
+		$departmentPackage = new \DepartmentPackageModel($this->f3);
+
+		try {
+			if (!isset($_POST["DepartmentId"]))
+				throw new \Exception("Не передан id отдела");
+
+			$id = $package->add($_POST);
+
+			if (is_null($id)) 
+				throw new \Exception("Ошибка создания пакета");
+
+			$success = $departmentPackage->add(array(
+				"PackageId" => $id,
+				"DepartmentId" => (int)$_POST["DepartmentId"],
+				"PackageType" => PACKAGE_MANAGING
+				));
+				
+			die( json_encode( array("id" => "pack_".$id) ) );
+		} catch (\Exception $e) {
+			die( json_encode( array("error" => $e->getMessage()) ) );
+		}
+	}
+
+
+	private function EditPackage() {
+		$package = new \PackageModel($this->f3);
+
+		try {
+			$package->edit($_POST);
+
+			die("{}");
+		} catch (\Exception $e) {
+			die( json_encode( array("error" => $e->getMessage()) ) );
+		}
+	}
+
+
+	private function DeletePackage() {
+		$package = new \PackageModel($this->f3);
+		$document = new \DocumentModel($this->f3);
+
+		try {
+			if (!isset($_POST["PackageId"])) 
+				throw new \Exception("Не передан id пакета");
+
+			$packageDocument = $document->getData(array(
+				"type" => "byPackage",
+				"packageId" => (int)$_POST["PackageId"]
+				));
+
+			foreach ($packageDocument as $item) {
+				$item["Status"] = FILE_UNMANAGED;
+				$document->edit($item);
+			}
+
+			$package->remove($_POST);
+
+			die("{}");
+		} catch (\Exception $e) {
+			die( json_encode( array("error" => $e->getMessage()) ) );
+		}
 	}
 }

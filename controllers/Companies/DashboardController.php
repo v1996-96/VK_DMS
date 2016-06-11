@@ -46,6 +46,10 @@ class DashboardController extends \BaseController
 				case 'getActivityByYear':
 					$this->GetActivityByYear();
 					break;
+
+				case 'getTaskCompletition':
+					$this->GetTaskCompletition();
+					break;
 			}
 		}
 
@@ -95,6 +99,36 @@ class DashboardController extends \BaseController
 				));
 
 			die( json_encode( array("data" => $activity) ) );
+		} catch (\Exception $e) {
+			die( json_encode( array("error" => $e->getMessage()) ) );
+		}
+	}
+
+
+	private function GetTaskCompletition () {
+		$task = new \TaskModel($this->f3);
+
+		try {
+			$summary = $task->getData(array(
+				"type" => "forCompanySummary",
+				"url" => $this->CompanyUrl
+				));
+
+			$response = array(
+				array(
+					"label" => "Открытые задачи",
+					"color" => "#27ae60",
+					"data" => (int)$summary["CountOpened"]
+					),
+
+				array(
+					"label" => "Закрытые задачи",
+					"color" => "#34495e",
+					"data" => (int)$summary["CountClosed"]
+					)
+				);
+
+			die( json_encode( array("data" => $response) ) );
 		} catch (\Exception $e) {
 			die( json_encode( array("error" => $e->getMessage()) ) );
 		}

@@ -3,15 +3,13 @@ var Documents = {
 	init : function () {
 		var that = this;
 
-		this.handlers.parent = null;
-		this.actions.parent = null;
-		this.interface.parent = null;
+		this.handlers.parent = this;
+		this.actions.parent = this;
+		this.interface.parent = this;
 
 		this.interface.initJstree();
 
 		this.actions.getTreeData(function(data) {
-			console.log(data);
-
 			if (typeof data.error == "undefined" &&
 				typeof data.data !== "undefined") {
 				that.interface.setTreeData(data.data);
@@ -19,11 +17,53 @@ var Documents = {
 				App.message.show("Ошибка", "Ошибка построения дерева документов");
 			}
 		});
+
+		this.handlers.setRenameHandler();
+		this.handlers.setDeleteHandler();
+		this.handlers.setMoveHandler();
+	},
+
+
+	moveBuffer : {
+		node : null,
+		node_parent : null
 	},
 
 
 	handlers : {
-		parent : null
+		parent : null,
+
+		setRenameHandler : function () {
+			var that = this;
+
+			$("#companyList").on("rename_node.jstree", function(e, obj) {
+				that.parent.actions.editPackage(obj.node.id.substr(5), obj.node.text, function (response){
+					console.log(response);
+				});
+			});
+		},
+
+		setDeleteHandler : function () {
+			var that = this;
+
+			$("#companyList").on("delete_node.jstree", function(e, obj) {
+				if (obj.node.type == "package_incoming" ||
+            		obj.node.type == "package_managing") {
+					
+					that.parent.actions.deletePackage(obj.node.id.substr(5), function(response) {
+
+					});
+				} else return false;
+			});
+		},
+
+		setMoveHandler : function () {
+			var that = this;
+
+			$(document).on("dnd_stop.vakata", function(e, obj) {
+				console.log(obj);
+			});
+		}
 	},
 
 	actions : {
@@ -32,6 +72,29 @@ var Documents = {
 		getTreeData : function (callback) {
 			this.sendRequest({
 				"action" : "getTreeData"
+			}, callback);
+		},
+
+		createPackage : function (text, parentId, callback) {			
+			this.sendRequest({
+				"action" : "createPackage",
+				"Title" : text,
+				"DepartmentId" : parentId
+			}, callback);
+		},
+
+		editPackage : function (id, text, callback) {
+			this.sendRequest({
+				"action" : "editPackage",
+				"PackageId" : id,
+				"Title" : text
+			}, callback);
+		},
+
+		deletePackage : function (id, callback) {
+			this.sendRequest({
+				"action" : "deletePackage",
+				"PackageId" : id
 			}, callback);
 		},
 
@@ -51,6 +114,7 @@ var Documents = {
 
 						callback(response);
 					} catch(e) {
+						console.log(e);
 						App.message.show("Ошибка", "Ошибка обработки запроса", "error");
 						errorCallback(data);
 					}
@@ -72,11 +136,16 @@ var Documents = {
 
 			$.jstree.defaults.core.check_callback = function (operation, node, node_parent, node_position, more) {
 				if (operation == "move_node") {
+					return false;
+
 					// Rules for packages
 					if ((node.type == "package_incoming" ||
 						node.type == "package_managing") && 
 						(node_parent.type == "package_managing_list" ||
 						node_parent.type == "package_incoming_list")) {
+
+						that.parent.moveBuffer.node = node;
+						that.parent.moveBuffer.node_parent = node_parent;
 						return true;
 					}
 
@@ -85,6 +154,9 @@ var Documents = {
 						node.type == "new") && 
 						(node_parent.type == "package_incoming" ||
 						node_parent.type == "package_managing")) {
+
+						that.parent.moveBuffer.node = node;
+						that.parent.moveBuffer.node_parent = node_parent;
 						return true;
 					}
 
@@ -139,19 +211,44 @@ var Documents = {
 						"action" : function (data) {
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
-							
+							inst.create_node(obj, {
+								"text" : "Новый пакет документов",
+								"type" : "package_managing"
+							}, "last", function (item) {
+								that.parent.actions.createPackage(
+									item.text, obj.id.substr(16), 
+									function (response) {
+										if (typeof response.id !== "undefined") {
+											$("#companyList").jstree(true).set_id(item, response.id);
+										}
+									}
+								);
+								return true;
+							});
 						}
             		};
             	}
 
             	if (node.type == "package_incoming" ||
             		node.type == "package_managing") {
+            		items.rename = {
+						"label"				: "Переименовать",
+						"action"			: function (data) {
+							var inst = $.jstree.reference(data.reference),
+								obj = inst.get_node(data.reference);
+							inst.edit(obj);
+						}
+            		}
             		items.delete = {
             			"label"	 : "Удалить",
 						"action" : function (data) {
 							var inst = $.jstree.reference(data.reference),
 								obj = inst.get_node(data.reference);
-							
+							if(inst.is_selected(obj)) {
+								inst.delete_node(inst.get_selected());
+							} else {
+								inst.delete_node(obj);
+							}
 						}
             		};
             	}

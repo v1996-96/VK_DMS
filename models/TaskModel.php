@@ -41,6 +41,27 @@ class TaskModel extends \BaseModel implements \IModel
 	}
 
 
+	private function ForCompanySummary($url) {
+		$response = $this->db->exec("SELECT 
+										c.CompanyId,
+										COUNT(CASE t.IsClosed 
+												WHEN 0 THEN 0 ELSE NULL END) as CountOpened,
+										COUNT(CASE t.IsClosed 
+												WHEN 1 THEN 1 ELSE NULL END) as CountClosed
+									FROM Task as t
+									LEFT JOIN Project as p ON p.ProjectId = t.ProjectId
+									LEFT JOIN Department as d ON d.DepartmentId = p.DepartmentId
+									LEFT JOIN Company as c ON c.CompanyId = d.CompanyId
+									WHERE c.Url = ?
+									GROUP BY c.CompanyId", (int)$url);
+		return $response ? $response[0] : array(
+			"CompanyId" => null,
+			"CountOpened" => 0,
+			"CountClosed" => 0
+			);
+	}
+
+
 	private function ById($id) {
 		$response = $this->db->exec("SELECT * FROM Task WHERE TaskId = ?", (int)$id);
 		return $response ? $response[0] : null;
@@ -53,6 +74,11 @@ class TaskModel extends \BaseModel implements \IModel
 				case 'byId':
 					if (isset($search["id"])) {
 						return $this->ById($search["id"]);
+					} else return null;
+
+				case 'forCompanySummary':
+					if (isset($search["url"])) {
+						return $this->ForCompanySummary($search["url"]);
 					} else return null;
 
 				case 'forProjectOpen':

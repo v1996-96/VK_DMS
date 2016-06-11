@@ -19,6 +19,12 @@ var Dashboard = {
             }
         });
 
+        this.actions.getTaskCompletition(function (response) {
+            if (typeof response.data !== "undefined") {
+                that.interface.initPieChart(response.data);
+            }
+        });
+
         this.handlers.setSwitchHandler();
     },
 
@@ -78,8 +84,6 @@ var Dashboard = {
                     }
                 });
             });
-
-
         }
     },
 
@@ -102,6 +106,12 @@ var Dashboard = {
         getActivityByYear : function (callback) {
             this.sendRequest({
                 "action" : "getActivityByYear"
+            }, callback);
+        },
+
+        getTaskCompletition : function (callback) {
+            this.sendRequest({
+                "action" : "getTaskCompletition"
             }, callback);
         },
 
@@ -232,6 +242,34 @@ var Dashboard = {
                         data : data
                     }
                 ], options);
+        },
+
+        initPieChart : function(data) {
+            console.log(data);
+
+            var options = {
+                series : {
+                    pie : {
+                        show : true,
+                        label : {
+                            show : true,
+                            radius : 3/4,
+                            formatter : function(label, series) {
+                                return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+                            },
+                            background : {
+                                opacity : 0.8
+                            },
+                            threshold: 0.1
+                        }
+                    }
+                },
+                legend : {
+                    show : false
+                }
+            }
+
+            $("#flot-dashboard-pie").plot(data, options);
         }
     }
 }
