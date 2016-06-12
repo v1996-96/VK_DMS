@@ -44,10 +44,10 @@ class TaskModel extends \BaseModel implements \IModel
 	private function ForCompanySummary($url) {
 		$response = $this->db->exec("SELECT 
 										c.CompanyId,
-										COUNT(CASE t.IsClosed 
-												WHEN 0 THEN 0 ELSE NULL END) as CountOpened,
-										COUNT(CASE t.IsClosed 
-												WHEN 1 THEN 1 ELSE NULL END) as CountClosed
+										COUNT(distinct CASE t.IsClosed 
+												WHEN 0 THEN t.TaskId ELSE NULL END) as CountOpened,
+										COUNT(distinct CASE t.IsClosed 
+												WHEN 1 THEN t.TaskId ELSE NULL END) as CountClosed
 									FROM Task as t
 									LEFT JOIN Project as p ON p.ProjectId = t.ProjectId
 									LEFT JOIN Department as d ON d.DepartmentId = p.DepartmentId
